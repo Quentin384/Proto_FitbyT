@@ -1,181 +1,273 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth" data-theme="dark">
   <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
+    <meta name="color-scheme" content="dark light" />
+    <title>Fit by T — Formules de coaching</title>
+    <meta name="description" content="Comparez les formules de coaching : Essentielle, Premium et VIP. Choisissez celle qui correspond à vos objectifs." />
 
-    <title>Stitch Design</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind CSS CDN -->
+    <script>
+      // Tailwind config for CDN build
+      window.tailwind = {
+        theme: {
+          extend: {
+            container: { center: true, padding: { DEFAULT: '1rem', md: '1.5rem', lg: '2rem' } },
+          }
+        }
+      }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+
+    <!-- App styles (mêmes tokens que index) -->
+    <style>
+      :root {
+        --bg: 12 12% 6%;       /* #0f0f0d */
+        --card: 45 16% 10%;     /* deep olive */
+        --muted: 48 15% 70%;
+        --brand: 49 88% 51%;    /* #efcd0f approx */
+        --brand-ink: 54 40% 10%;
+      }
+      html { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+      .bg-grid {
+        background-image:
+          radial-gradient(1200px 400px at 10% -10%, hsl(var(--brand)/.16), transparent 40%),
+          radial-gradient(1000px 600px at 90% 0%, hsl(260 90% 66%/.16), transparent 40%),
+          radial-gradient(500px 400px at 60% 110%, hsl(170 80% 60%/.14), transparent 40%),
+          linear-gradient(to bottom, hsl(var(--bg)), hsl(var(--bg)));
+        background-repeat: no-repeat;
+      }
+      .glass { backdrop-filter: saturate(140%) blur(10px); background: hsl(var(--card)/.5); }
+      .ring-gradient { position: relative; }
+      .ring-gradient::before{
+        content: ""; position: absolute; inset:-1px; border-radius: 16px;
+        background: conic-gradient(from 0deg, hsl(var(--brand)) 0deg, transparent 120deg, transparent 240deg, hsl(var(--brand)) 360deg);
+        filter: blur(.5px);
+        -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+        -webkit-mask-composite: xor; mask-composite: exclude;
+        padding:1px; pointer-events:none;
+      }
+      @media(prefers-reduced-motion:no-preference){
+        .hover-lift { transition: transform .3s ease, box-shadow .3s ease; }
+        .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 30px hsl(var(--brand)/.18); }
+      }
+      .price { font-variant-numeric: tabular-nums; }
+      .badge { @apply rounded-full text-xs font-bold px-2 py-1 bg-yellow-300 text-black; }
+      .table-wrap { overflow: auto; border-radius: 16px; }
+      table.pricing { width: 100%; border-collapse: separate; border-spacing: 0; }
+      table.pricing th, table.pricing td { padding: .9rem 1rem; }
+      table.pricing thead th { background: hsl(var(--card)); position: sticky; top: 0; z-index: 1; }
+      table.pricing tr + tr td { border-top: 1px solid hsl(var(--muted)/.18); }
+    </style>
   </head>
-  <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-[#222011] dark group/design-root overflow-x-hidden" style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <header class="relative flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#484323] px-4 md:px-10 py-3">
-          <div class="flex items-center gap-4 text-white">
-            <div class="size-4">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"
-                  fill="currentColor"
-                ></path>
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M39.998 35.764C39.9944 35.7463 39.9875 35.7155 39.9748 35.6706C39.9436 35.5601 39.8949 35.4259 39.8346 35.2825C39.8168 35.2403 39.7989 35.1993 39.7813 35.1602C38.5103 34.2887 35.9788 33.0607 33.7095 32.5189C30.9875 31.8691 27.6413 31.4783 24 31.4783C20.3587 31.4783 17.0125 31.8691 14.2905 32.5189C12.0012 33.0654 9.44505 34.3104 8.18538 35.1832C8.17384 35.2075 8.16216 35.233 8.15052 35.2592C8.09919 35.3751 8.05721 35.4886 8.02977 35.589C8.00356 35.6848 8.00039 35.7333 8.00004 35.7388C8.00004 35.739 8 35.7393 8.00004 35.7388C8.00004 35.7641 8.0104 36.0767 8.68485 36.6314C9.34546 37.1746 10.4222 37.7531 11.9291 38.2772C14.9242 39.319 19.1919 40 24 40C28.8081 40 33.0758 39.319 36.0709 38.2772C37.5778 37.7531 38.6545 37.1746 39.3151 36.6314C39.9006 36.1499 39.9857 35.8511 39.998 35.764ZM4.95178 32.7688L21.4543 6.30267C22.6288 4.4191 25.3712 4.41909 26.5457 6.30267L43.0534 32.777C43.0709 32.8052 43.0878 32.8338 43.104 32.8629L41.3563 33.8352C43.104 32.8629 43.1038 32.8626 43.104 32.8629L43.1051 32.865L43.1065 32.8675L43.1101 32.8739L43.1199 32.8918C43.1276 32.906 43.1377 32.9246 43.1497 32.9473C43.1738 32.9925 43.2062 33.0545 43.244 33.1299C43.319 33.2792 43.4196 33.489 43.5217 33.7317C43.6901 34.1321 44 34.9311 44 35.7391C44 37.4427 43.003 38.7775 41.8558 39.7209C40.6947 40.6757 39.1354 41.4464 37.385 42.0552C33.8654 43.2794 29.133 44 24 44C18.867 44 14.1346 43.2794 10.615 42.0552C8.86463 41.4464 7.30529 40.6757 6.14419 39.7209C4.99695 38.7775 3.99999 37.4427 3.99999 35.7391C3.99999 34.8725 4.29264 34.0922 4.49321 33.6393C4.60375 33.3898 4.71348 33.1804 4.79687 33.0311C4.83898 32.9556 4.87547 32.8935 4.9035 32.8471C4.91754 32.8238 4.92954 32.8043 4.93916 32.7889L4.94662 32.777L4.95178 32.7688ZM35.9868 29.004L24 9.77997L12.0131 29.004C12.4661 28.8609 12.9179 28.7342 13.3617 28.6282C16.4281 27.8961 20.0901 27.4783 24 27.4783C27.9099 27.4783 31.5719 27.8961 34.6383 28.6282C35.082 28.7342 35.5339 28.8609 35.9868 29.004Z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </div>
-            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Fit by T</h2>
+
+  <body class="min-h-screen bg-grid text-white antialiased selection:bg-yellow-300 selection:text-black">
+    <!-- Skip link -->
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-3 focus:py-2 focus:rounded-md focus:bg-black/80 focus:text-white">Aller au contenu</a>
+
+    <!-- Header (identique à l'index) -->
+    <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/50 border-b border-white/10">
+      <div class="container flex h-16 items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2 group">
+          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.998 35.764c-.004-.018-.01-.05-.023-.094a3.13 3.13 0 0 0-.193-.511 6.54 6.54 0 0 0-.053-.12c-1.271-.871-3.802-2.1-6.072-2.641C30.9875 31.8691 27.6413 31.4783 24 31.4783s-6.9875.3908-9.7095 1.0406c-2.29.5465-4.8462 1.7915-6.1059 2.6643-.0115.0243-.0232.0498-.0349.076-.0513.1159-.0933.2294-.1207.3298-.0262.0958-.0294.1443-.0298.1498 0 .0253.0104.3379.68485.8926.66061.5432 1.73734 1.1217 3.24421 1.6458C14.9242 39.319 19.1919 40 24 40s9.0758-.681 12.0709-1.7228c1.5069-.5241 2.5836-1.1026 3.2442-1.6458.5855-.4815.6706-.7803.6829-.8674ZM4.9518 32.7688 21.4543 6.3027c1.1745-1.8836 3.9169-1.88361 5.0914 0L43.0534 32.777c.0175.0282.0344.0568.0506.0859l-1.7477.9723c1.7477-.9723 1.7475-.9726 1.7477-.9723l.0011.0021.0014.0025.0036.0064.0098.0179c.0077.0142.0178.0328.0298.0555.0241.0452.0565.1072.0943.1826.075.1493.1756.3591.2777.6018.1684.4004.4783 1.1994.4783 2.0074 0 1.7036-.997 3.0384-2.1442 3.9818-1.1611.9548-2.7204 1.7255-4.4708 2.3343C33.8654 43.2794 29.133 44 24 44s-9.8669-.7206-13.3865-1.9448c-1.75037-.6088-3.30971-1.3795-4.47081-2.3343C4.9969 38.7775 4 37.4427 4 35.7391c0-.8666.2926-1.6469.4932-2.0998.1105-.2495.2202-.4589.3036-.6082.0421-.0755.0786-.1376.1066-.184 0 0 .0119-.0195.0216-.0341l.0075-.0119.0051-.0082Zm31.035-3.7648L24 9.78 12.0131 29.004c.453-.1431.9048-.2698 1.3486-.3758C16.4281 27.8961 20.0901 27.4783 24 27.4783s7.5719.4178 10.6383 1.1499c.4437.106 .8956.2327 1.3485.3758Z"/></svg>
+          <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
+        </a>
+
+        <nav class="ml-auto hidden md:flex items-center gap-7 text-sm">
+          <a class="hover:opacity-90" href="index.html">Accueil</a>
+          <a class="hover:opacity-90" href="pricing.html" aria-current="page">Tarifs</a>
+          <a class="hover:opacity-90" href="booking.html">Réserver</a>
+          <a class="hover:opacity-90" href="checkout.html">Paiement</a>
+          <a class="hover:opacity-90" href="reservation.html">Mes séances</a>
+          <a class="hover:opacity-90" href="profile.html">Profil</a>
+          <a href="register.html" class="rounded-lg border border-yellow-300/80 px-3 py-1.5 font-semibold text-yellow-300 hover:bg-yellow-300 hover:text-black transition">S'inscrire</a>
+          <a href="booking.html" class="rounded-lg bg-yellow-300 px-4 py-2 font-bold text-black hover:brightness-95 transition">Réserver</a>
+        </nav>
+
+        <!-- Mobile -->
+        <button id="menuBtn" class="ml-auto md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 size-10" aria-controls="mnav" aria-expanded="false" aria-label="Ouvrir le menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/></svg>
+        </button>
+      </div>
+      <div id="mnav" class="hidden md:hidden border-t border-white/10">
+        <nav class="container py-3 grid gap-2 text-sm">
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="index.html">Accueil</a>
+          <a class="px-2 py-2 rounded-md bg-white/5" href="pricing.html" aria-current="page">Tarifs</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="booking.html">Réserver</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="checkout.html">Paiement</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="reservation.html">Mes séances</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="profile.html">Profil</a>
+          <a class="px-2 py-2 rounded-md hover:bg-yellow-300/10 text-yellow-300 border border-yellow-300/30" href="register.html">S'inscrire</a>
+          <a class="px-2 py-2 rounded-md bg-yellow-300 text-black font-semibold" href="booking.html">Réserver</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="relative">
+      <!-- Titre + intro -->
+      <section class="container py-10 md:py-14">
+        <div class="grid lg:grid-cols-3 gap-6 items-end">
+          <div class="lg:col-span-2">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Formules de coaching</h1>
+            <p class="text-white/80 mt-2 max-w-[70ch]">
+              Choisissez la formule qui vous convient. Toutes incluent un suivi sérieux et une méthodologie éprouvée.
+            </p>
           </div>
-          <div class="flex flex-1 justify-end gap-4 md:gap-8">
-            <button id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden inline-flex items-center justify-center rounded-lg border border-[#675f32] text-white size-9">
-              <span class="sr-only">Ouvrir le menu</span>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
-                <path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd" />
-              </svg>
-            </button>
-            <div class="hidden md:flex items-center gap-4 md:gap-9 overflow-x-auto whitespace-nowrap">
-              <a class="text-white text-sm font-medium leading-normal" href="index.html">Accueil</a>
-              <a class="text-white text-sm font-medium leading-normal" href="pricing.html">Tarifs</a>
-              <a class="text-white text-sm font-medium leading-normal" href="booking.html">Réserver</a>
-              <a class="text-white text-sm font-medium leading-normal" href="checkout.html">Paiement</a>
-              <a class="text-white text-sm font-medium leading-normal" href="reservation.html">Mes séances</a>
-              <a class="text-white text-sm font-medium leading-normal" href="profile.html">Profil</a>
-            </div>
-            <a
-              href="booking.html"
-              class="hidden md:flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#efcd0f] text-[#222011] text-sm font-bold leading-normal tracking-[0.015em]"
-            >
-              <span class="truncate">Réserver une séance</span>
+          <div class="flex lg:justify-end">
+            <a href="booking.html" class="hover-lift inline-flex items-center gap-2 rounded-xl bg-yellow-300 px-5 py-3 font-bold text-black">
+              Commencer maintenant
+              <svg xmlns="http://www.w3.org/2000/svg" class="size-5" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M3 12a.75.75 0 0 1 .75-.75h14.69l-3.72-3.72a.75.75 0 1 1 1.06-1.06l5 5a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 1 1-1.06-1.06l3.72-3.72H3.75A.75.75 0 0 1 3 12Z"/></svg>
             </a>
           </div>
-          <!-- Mobile menu panel -->
-          <div id="mobile-menu" class="md:hidden hidden absolute right-4 top-14 w-64 rounded-lg border border-[#484323] bg-[#222011] shadow-lg z-50">
-            <nav class="flex flex-col p-2">
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="index.html">Accueil</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="pricing.html">Tarifs</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="booking.html">Réserver</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="checkout.html">Paiement</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="reservation.html">Mes séances</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="profile.html">Profil</a>
-              <div class="my-2 border-t border-[#484323]"></div>
-              <p class="px-3 pt-1 pb-2 text-[#cac191] text-xs font-semibold uppercase tracking-wide">Espace coach</p>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="disponibility.html">Disponibilités</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="analytics.html">Statistiques</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="contact.html">Contact</a>
-              <a class="mt-2 inline-flex items-center justify-center rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold" href="booking.html">Réserver une séance</a>
-            </nav>
-          </div>
-        </header>
-        <div class="px-4 sm:px-6 lg:px-10 xl:px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Formules de Coaching</p></div>
-            <p class="text-white text-base font-normal leading-normal pb-3 pt-1 px-4">
-              Choisissez la formule qui correspond le mieux à vos objectifs et à votre budget. Chaque formule est conçue pour vous accompagner vers la réussite de votre
-              transformation physique et mentale.
-            </p>
-            <div class="px-4 py-3 @container">
-              <div class="flex overflow-hidden rounded-lg border border-[#675f32] bg-[#222011]">
-                <table class="flex-1">
-                  <thead>
-                    <tr class="bg-[#343019]">
-                      <th class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-120 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">Formule</th>
-                      <th class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-240 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">Prix</th>
-                      <th class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-360 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">Durée</th>
-                      <th class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-480 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">Contenu</th>
-                      <th class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-600 px-4 py-3 text-left text-white w-60 text-[#cac191] text-sm font-medium leading-normal">
-                        Action
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="border-t border-t-[#675f32]">
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-120 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">Essentielle</td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-240 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">99€/mois</td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-360 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">3 mois</td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-480 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        Accès aux programmes de base, suivi hebdomadaire
-                      </td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-600 h-[72px] px-4 py-2 w-60 text-[#cac191] text-sm font-bold leading-normal tracking-[0.015em]">
-                        Choisir cette formule
-                      </td>
-                    </tr>
-                    <tr class="border-t border-t-[#675f32]">
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-120 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">Premium</td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-240 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        199€/mois
-                      </td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-360 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">6 mois</td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-480 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        Accès aux programmes avancés, suivi personnalisé, séances en visio
-                      </td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-600 h-[72px] px-4 py-2 w-60 text-[#cac191] text-sm font-bold leading-normal tracking-[0.015em]">
-                        Choisir cette formule
-                      </td>
-                    </tr>
-                    <tr class="border-t border-t-[#675f32]">
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-120 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">VIP</td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-240 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        299€/mois
-                      </td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-360 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">12 mois</td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-480 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        Accès illimité à tous les programmes, suivi premium, séances en présentiel, accompagnement nutritionnel
-                      </td>
-                      <td class="table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-600 h-[72px] px-4 py-2 w-60 text-[#cac191] text-sm font-bold leading-normal tracking-[0.015em]">
-                        Choisir cette formule
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <style>
-                          @container(max-width:120px){.table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-120{display: none;}}
-                @container(max-width:240px){.table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-240{display: none;}}
-                @container(max-width:360px){.table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-360{display: none;}}
-                @container(max-width:480px){.table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-480{display: none;}}
-                @container(max-width:600px){.table-e5c58542-d9bf-493a-bf20-803f6c4d3efc-column-600{display: none;}}
-              </style>
+        </div>
+      </section>
+
+      <!-- Cartes de formules -->
+      <section class="container pb-8">
+        <div class="grid md:grid-cols-3 gap-5">
+          <!-- Essentielle -->
+          <article class="ring-gradient rounded-2xl p-6 glass hover-lift">
+            <div class="flex items-center justify-between mb-2">
+              <h2 class="text-xl font-bold">Essentielle</h2>
             </div>
+            <p class="text-white/70 text-sm mb-4">Accès aux programmes de base et suivi hebdomadaire.</p>
+            <div class="text-3xl font-extrabold price mb-1">99€<span class="text-base font-semibold text-white/70">/mois</span></div>
+            <p class="text-white/60 text-sm mb-4">Engagement 3 mois</p>
+            <ul class="text-sm text-white/80 space-y-2 mb-6 list-disc pl-5">
+              <li>Programmes de base</li>
+              <li>1 suivi / semaine</li>
+              <li>Espace membre</li>
+            </ul>
+            <a href="booking.html" class="inline-flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2 hover:bg-white/5 transition">Choisir cette formule</a>
+          </article>
+
+          <!-- Premium (populaire) -->
+          <article class="ring-gradient rounded-2xl p-6 glass hover-lift relative">
+            <span class="absolute -top-3 right-4 badge">Populaire</span>
+            <div class="flex items-center justify-between mb-2">
+              <h2 class="text-xl font-bold">Premium</h2>
+            </div>
+            <p class="text-white/70 text-sm mb-4">Programmes avancés, suivi personnalisé et séances visio.</p>
+            <div class="text-3xl font-extrabold price mb-1">199€<span class="text-base font-semibold text-white/70">/mois</span></div>
+            <p class="text-white/60 text-sm mb-4">Engagement 6 mois</p>
+            <ul class="text-sm text-white/80 space-y-2 mb-6 list-disc pl-5">
+              <li>Programmes avancés</li>
+              <li>Suivi personnalisé</li>
+              <li>1 séance visio / semaine</li>
+            </ul>
+            <a href="booking.html" class="inline-flex items-center gap-2 rounded-lg bg-yellow-300 text-black px-4 py-2 font-semibold hover:brightness-95 transition">Choisir cette formule</a>
+          </article>
+
+          <!-- VIP -->
+          <article class="ring-gradient rounded-2xl p-6 glass hover-lift">
+            <div class="flex items-center justify-between mb-2">
+              <h2 class="text-xl font-bold">VIP</h2>
+            </div>
+            <p class="text-white/70 text-sm mb-4">Accès illimité, suivi premium et présentiel.</p>
+            <div class="text-3xl font-extrabold price mb-1">299€<span class="text-base font-semibold text-white/70">/mois</span></div>
+            <p class="text-white/60 text-sm mb-4">Engagement 12 mois</p>
+            <ul class="text-sm text-white/80 space-y-2 mb-6 list-disc pl-5">
+              <li>Accès illimité à tous les programmes</li>
+              <li>Suivi premium + nutritionnel</li>
+              <li>Présentiel & visio</li>
+            </ul>
+            <a href="booking.html" class="inline-flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2 hover:bg-white/5 transition">Choisir cette formule</a>
+          </article>
+        </div>
+      </section>
+
+      <!-- Tableau comparatif (optionnel mais utile) -->
+      <section class="container pb-14">
+        <div class="ring-gradient rounded-2xl glass p-4 md:p-6">
+          <h2 class="text-lg md:text-xl font-extrabold tracking-tight mb-3">Comparatif rapide</h2>
+          <div class="table-wrap ring-1 ring-white/10">
+            <table class="pricing text-sm">
+              <thead class="text-white/90">
+                <tr>
+                  <th class="text-left w-[180px]">Formule</th>
+                  <th class="text-left">Prix</th>
+                  <th class="text-left">Durée</th>
+                  <th class="text-left">Contenu</th>
+                  <th class="text-left w-[160px]">Action</th>
+                </tr>
+              </thead>
+              <tbody class="text-white/80">
+                <tr>
+                  <td>Essentielle</td>
+                  <td>99€/mois</td>
+                  <td>3 mois</td>
+                  <td>Programmes de base, suivi hebdomadaire</td>
+                  <td><a href="booking.html" class="inline-flex items-center gap-2 rounded-md border border-white/15 px-3 py-1.5 hover:bg-white/5">Choisir</a></td>
+                </tr>
+                <tr>
+                  <td>Premium</td>
+                  <td>199€/mois</td>
+                  <td>6 mois</td>
+                  <td>Programmes avancés, suivi personnalisé, séances visio</td>
+                  <td><a href="booking.html" class="inline-flex items-center gap-2 rounded-md border border-white/15 px-3 py-1.5 hover:bg-white/5">Choisir</a></td>
+                </tr>
+                <tr>
+                  <td>VIP</td>
+                  <td>299€/mois</td>
+                  <td>12 mois</td>
+                  <td>Accès illimité, suivi premium, présentiel, nutrition</td>
+                  <td><a href="booking.html" class="inline-flex items-center gap-2 rounded-md border border-white/15 px-3 py-1.5 hover:bg-white/5">Choisir</a></td>
+                </tr>
+              </tbody>
+            </table>
           </div>
+          <p class="text-white/60 text-xs mt-2">Les paiements se font sur la page Paiement, sécurisés et chiffrés.</p>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer (identique à l’index) -->
+    <footer class="border-t border-white/10 bg-black/40">
+      <div class="container py-8 grid md:grid-cols-3 gap-6 text-sm text-white/70">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="size-5 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/></svg>
+            <span class="font-semibold">Fit by T</span>
+          </div>
+          <p>Coaching sportif personnalisé à Paris et en ligne.</p>
+        </div>
+        <nav class="grid gap-2">
+          <a href="index.html" class="hover:opacity-90">Accueil</a>
+          <a href="pricing.html" class="hover:opacity-90">Tarifs</a>
+          <a href="booking.html" class="hover:opacity-90">Réserver</a>
+          <a href="contact.html" class="hover:opacity-90">Contact</a>
+        </nav>
+        <div class="grid gap-2">
+          <a href="#" class="hover:opacity-90">Mentions légales</a>
+          <a href="#" class="hover:opacity-90">Politique de confidentialité</a>
+          <p class="text-xs text-white/50">© <span id="y"></span> Fit by T. Tous droits réservés.</p>
         </div>
       </div>
-    </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Mobile nav (identique à l'index)
+      const btn = document.getElementById('menuBtn');
+      const mnav = document.getElementById('mnav');
+      if(btn && mnav){
+        const toggle = () => {
+          const open = mnav.classList.contains('hidden');
+          mnav.classList.toggle('hidden');
+          btn.setAttribute('aria-expanded', String(open));
+        }
+        btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggle(); });
+        document.addEventListener('click', (e)=>{ if(!mnav.contains(e.target) && e.target !== btn){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+        window.addEventListener('resize', ()=>{ if(window.innerWidth >= 768){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+      }
+      // Year
+      const yEl = document.getElementById('y'); if(yEl) yEl.textContent = new Date().getFullYear();
+    </script>
   </body>
-  <script>
-    (function () {
-      const btn = document.getElementById('mobile-menu-toggle');
-      const menu = document.getElementById('mobile-menu');
-      if (!btn || !menu) return;
-      const close = () => {
-        if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      };
-      const open = () => {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-      };
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menu.classList.contains('hidden') ? open() : close();
-      });
-      document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && e.target !== btn) close();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') close();
-      });
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768) close();
-      });
-    })();
-  </script>
 </html>

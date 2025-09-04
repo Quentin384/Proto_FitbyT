@@ -1,358 +1,315 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth" data-theme="dark">
   <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
+    <meta name="color-scheme" content="dark light" />
+    <title>Fit by T — Paiements</title>
+    <meta name="description" content="Tableau de bord des paiements : revenus, transactions, filtres et statistiques." />
 
-    <title>Stitch Design</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind CSS CDN -->
+    <script>
+      window.tailwind = { theme: { extend: { container: { center: true, padding: { DEFAULT: '1rem', md: '1.5rem', lg: '2rem' } } } } };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+
+    <style>
+      :root {
+        --bg: 12 12% 6%;      /* #0f0f0d */
+        --surface: 45 16% 10%;
+        --muted: 48 15% 70%;
+        --brand: 49 88% 51%;  /* jaune */
+        --ok: 140 70% 45%;
+        --warn: 49 88% 51%;
+        --err: 0 70% 50%;
+      }
+      html { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", Arial; }
+      body { background: hsl(var(--bg)); color: white; }
+      .glass { backdrop-filter: saturate(140%) blur(10px); background: hsl(var(--surface)/.55); border: 1px solid hsl(0 0% 100% / .08); }
+      .ring-gradient { position: relative; }
+      .ring-gradient::before{ content: ""; position: absolute; inset:-1px; border-radius: 16px; background: conic-gradient(from 0deg, hsl(var(--brand)) 0deg, transparent 120deg, transparent 240deg, hsl(var(--brand)) 360deg); filter: blur(.5px); -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000); -webkit-mask-composite: xor; mask-composite: exclude; padding:1px; pointer-events:none; }
+      .hover-lift { transition: transform .25s ease, box-shadow .25s ease; }
+      .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 30px hsl(var(--brand)/.18); }
+      .bg-grid {
+        background-image:
+          radial-gradient(1100px 400px at 10% -10%, hsl(var(--brand)/.15), transparent 40%),
+          radial-gradient(900px 600px at 90% 0%, hsl(260 90% 66%/.14), transparent 40%),
+          radial-gradient(500px 400px at 60% 110%, hsl(170 80% 60%/.12), transparent 40%),
+          linear-gradient(to bottom, hsl(var(--bg)), hsl(var(--bg)));
+        background-repeat: no-repeat;
+      }
+      .status { display:inline-flex; align-items:center; gap:.5rem; padding:.25rem .5rem; border-radius:.5rem; font-weight:600; font-size:.75rem; }
+      .status-paid { color: hsl(var(--ok)); background: hsl(var(--ok)/.15); border: 1px solid hsl(var(--ok)/.35); }
+      .status-pending { color: black; background: hsl(var(--warn)); border: 1px solid hsl(var(--warn)/.8); }
+      .status-failed { color: hsl(var(--err)); background: hsl(var(--err)/.12); border: 1px solid hsl(var(--err)/.38); }
+      .table-sticky thead th{ position: sticky; top:0; background: hsl(var(--surface)); }
+      @media(prefers-reduced-motion:no-preference){ .fade-in{ animation: fade .3s ease both; } @keyframes fade{ from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:none;} } }
+    </style>
   </head>
-  <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-[#222011] dark group/design-root overflow-x-hidden" style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <header class="relative flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#484323] px-4 md:px-10 py-3">
-          <div class="flex items-center gap-4 text-white">
-            <div class="size-4">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </div>
-            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">FitbyT</h2>
+
+  <body class="min-h-screen bg-grid antialiased selection:bg-yellow-300 selection:text-black">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 backdrop-blur bg-black/40 border-b border-white/10">
+      <div class="container flex h-16 items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2">
+          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M47.2426 24 24 47.2426.7574 24 24 .7574 47.2426 24Zm-35  -3h26.515L24 9.2426 12.2426 21Z"/></svg>
+          <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
+        </a>
+        <nav class="ml-auto hidden md:flex items-center gap-7 text-sm">
+          <a class="hover:opacity-90" href="index.html">Accueil</a>
+          <a class="hover:opacity-90" href="pricing.html">Tarifs</a>
+          <a class="hover:opacity-90" href="booking.html">Réserver</a>
+          <a class="hover:opacity-90" href="checkout.html">Paiement</a>
+          <a class="hover:opacity-90" href="reservation.html">Planning</a>
+          <a class="hover:opacity-90" href="profile.html">Profil</a>
+        </nav>
+        <button id="menuBtn" class="ml-auto md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 size-10" aria-controls="mnav" aria-expanded="false" aria-label="Ouvrir le menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/></svg>
+        </button>
+      </div>
+      <div id="mnav" class="hidden md:hidden border-t border-white/10">
+        <nav class="container py-3 grid gap-2 text-sm">
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="index.html">Accueil</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="pricing.html">Tarifs</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="booking.html">Réserver</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="checkout.html">Paiement</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="reservation.html">Planning</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="profile.html">Profil</a>
+        </nav>
+      </div>
+    </header>
+
+    <div class="container grid lg:grid-cols-[240px_1fr] gap-6 py-6">
+      <!-- Sidebar -->
+      <aside class="hidden lg:block">
+        <nav class="grid gap-1 text-sm">
+          <a class="px-3 py-2 rounded-lg hover:bg-white/5" href="#">Accueil</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-white/5" href="#">Clients</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-white/5" href="#">Programmes</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-white/5" href="#">Séances</a>
+          <a class="px-3 py-2 rounded-lg bg-white/10 border border-white/10" href="#">Paiements</a>
+          <a class="px-3 py-2 rounded-lg hover:bg-white/5" href="#">Paramètres</a>
+        </nav>
+      </aside>
+
+      <!-- Main -->
+      <main class="min-w-0">
+        <!-- Title + actions -->
+        <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4">
+          <div>
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Paiements</h1>
+            <p class="text-white/70">Suivi des revenus, transactions et états de règlement.</p>
           </div>
-          <div class="flex flex-1 justify-end gap-4 md:gap-8">
-            <button id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden inline-flex items-center justify-center rounded-lg border border-[#675f32] text-white size-9">
-              <span class="sr-only">Ouvrir le menu</span>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
-                <path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd" />
-              </svg>
-            </button>
-            <div class="hidden md:flex items-center gap-4 md:gap-9 overflow-x-auto whitespace-nowrap">
-              <a class="text-white text-sm font-medium leading-normal" href="index.html">Accueil</a>
-              <a class="text-white text-sm font-medium leading-normal" href="pricing.html">Tarifs</a>
-              <a class="text-white text-sm font-medium leading-normal" href="booking.html">Réserver</a>
-              <a class="text-white text-sm font-medium leading-normal" href="checkout.html">Paiement</a>
-              <a class="text-white text-sm font-medium leading-normal" href="reservation.html">Planning</a>
-              <a class="text-white text-sm font-medium leading-normal" href="profile.html">Profil</a>
+          <div class="flex flex-wrap items-center gap-2">
+            <div class="flex items-center gap-2">
+              <input type="search" inputmode="search" placeholder="Rechercher un client, une ref…" class="w-56 md:w-72 rounded-lg bg-white/5 border-white/10" aria-label="Rechercher" />
+              <select class="rounded-lg bg-white/5 border-white/10" aria-label="Filtre statut">
+                <option value="">Tous statuts</option>
+                <option value="paid">Payé</option>
+                <option value="pending">En attente</option>
+                <option value="failed">Échoué</option>
+              </select>
+              <input type="month" class="rounded-lg bg-white/5 border-white/10" aria-label="Mois" />
             </div>
-          </div>
-          <!-- Mobile menu panel -->
-          <div id="mobile-menu" class="md:hidden hidden absolute right-4 top-14 w-64 rounded-lg border border-[#484323] bg-[#222011] shadow-lg z-50">
-            <nav class="flex flex-col p-2">
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="index.html">Accueil</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="pricing.html">Tarifs</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="booking.html">Réserver</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="checkout.html">Paiement</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="reservation.html">Planning</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="profile.html">Profil</a>
-              <div class="my-2 border-t border-[#484323]"></div>
-              <p class="px-3 pt-1 pb-2 text-[#cac191] text-xs font-semibold uppercase tracking-wide">Espace coach</p>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="disponibility.html">Disponibilités</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="analytics.html">Statistiques</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="contact.html">Contact</a>
-            </nav>
-          </div>
-        </header>
-        <div class="px-4 sm:px-6 lg:px-10 flex flex-1 justify-center py-5 flex-col md:flex-row gap-4">
-          <div class="layout-content-container flex flex-col w-full md:w-80">
-            <div class="flex h-full min-h-[700px] flex-col justify-between bg-[#222011] p-4">
-              <div class="flex flex-col gap-4">
-                <h1 class="text-white text-base font-medium leading-normal">CoachPro</h1>
-                <div class="flex flex-col gap-2">
-                  <div class="flex items-center gap-3 px-3 py-2">
-                    <div class="text-white" data-icon="House" data-size="24px" data-weight="regular">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path
-                          d="M218.83,103.77l-80-75.48a1.14,1.14,0,0,1-.11-.11,16,16,0,0,0-21.53,0l-.11.11L37.17,103.77A16,16,0,0,0,32,115.55V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V160h32v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V115.55A16,16,0,0,0,218.83,103.77ZM208,208H160V160a16,16,0,0,0-16-16H112a16,16,0,0,0-16,16v48H48V115.55l.11-.1L128,40l79.9,75.43.11.1Z"
-                        ></path>
-                      </svg>
-                    </div>
-                    <p class="text-white text-sm font-medium leading-normal">Accueil</p>
-                  </div>
-                  <div class="flex items-center gap-3 px-3 py-2">
-                    <div class="text-white" data-icon="Users" data-size="24px" data-weight="regular">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path
-                          d="M117.25,157.92a60,60,0,1,0-66.5,0A95.83,95.83,0,0,0,3.53,195.63a8,8,0,1,0,13.4,8.74,80,80,0,0,1,134.14,0,8,8,0,0,0,13.4-8.74A95.83,95.83,0,0,0,117.25,157.92ZM40,108a44,44,0,1,1,44,44A44.05,44.05,0,0,1,40,108Zm210.14,98.7a8,8,0,0,1-11.07-2.33A79.83,79.83,0,0,0,172,168a8,8,0,0,1,0-16,44,44,0,1,0-16.34-84.87,8,8,0,1,1-5.94-14.85,60,60,0,0,1,55.53,105.64,95.83,95.83,0,0,1,47.22,37.71A8,8,0,0,1,250.14,206.7Z"
-                        ></path>
-                      </svg>
-                    </div>
-                    <p class="text-white text-sm font-medium leading-normal">Clients</p>
-                  </div>
-                  <div class="flex items-center gap-3 px-3 py-2">
-                    <div class="text-white" data-icon="ListBullets" data-size="24px" data-weight="regular">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path
-                          d="M80,64a8,8,0,0,1,8-8H216a8,8,0,0,1,0,16H88A8,8,0,0,1,80,64Zm136,56H88a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16Zm0,64H88a8,8,0,0,0,0,16H216a8,8,0,0,0,0-16ZM44,52A12,12,0,1,0,56,64,12,12,0,0,0,44,52Zm0,64a12,12,0,1,0,12,12A12,12,0,0,0,44,116Zm0,64a12,12,0,1,0,12,12A12,12,0,0,0,44,180Z"
-                        ></path>
-                      </svg>
-                    </div>
-                    <p class="text-white text-sm font-medium leading-normal">Programmes</p>
-                  </div>
-                  <div class="flex items-center gap-3 px-3 py-2">
-                    <div class="text-white" data-icon="Calendar" data-size="24px" data-weight="regular">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path
-                          d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Zm-96-88v64a8,8,0,0,1-16,0V132.94l-4.42,2.22a8,8,0,0,1-7.16-14.32l16-8A8,8,0,0,1,112,120Zm59.16,30.45L152,176h16a8,8,0,0,1,0,16H136a8,8,0,0,1-6.4-12.8l28.78-38.37A8,8,0,1,0,145.07,132a8,8,0,1,1-13.85-8A24,24,0,0,1,176,136,23.76,23.76,0,0,1,171.16,150.45Z"
-                        ></path>
-                      </svg>
-                    </div>
-                    <p class="text-white text-sm font-medium leading-normal">Séances</p>
-                  </div>
-                  <div class="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#484323]">
-                    <div class="text-white" data-icon="CurrencyCircleDollar" data-size="24px" data-weight="fill">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                        <path
-                          d="M128,24A104,104,0,1,0,232,128,104.11,104.11,0,0,0,128,24Zm12,152h-4v8a8,8,0,0,1-16,0v-8H104a8,8,0,0,1,0-16h36a12,12,0,0,0,0-24H116a28,28,0,0,1,0-56h4V72a8,8,0,0,1,16,0v8h16a8,8,0,0,1,0,16H116a12,12,0,0,0,0,24h24a28,28,0,0,1,0,56Z"
-                        ></path>
-                      </svg>
-                    </div>
-                    <p class="text-white text-sm font-medium leading-normal">Paiements</p>
-                  </div>
-                </div>
-              </div>
-              <div class="flex flex-col gap-1">
-                <div class="flex items-center gap-3 px-3 py-2">
-                  <div class="text-white" data-icon="Gear" data-size="24px" data-weight="regular">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                      <path
-                        d="M128,80a48,48,0,1,0,48,48A48.05,48.05,0,0,0,128,80Zm0,80a32,32,0,1,1,32-32A32,32,0,0,1,128,160Zm88-29.84q.06-2.16,0-4.32l14.92-18.64a8,8,0,0,0,1.48-7.06,107.21,107.21,0,0,0-10.88-26.25,8,8,0,0,0-6-3.93l-23.72-2.64q-1.48-1.56-3-3L186,40.54a8,8,0,0,0-3.94-6,107.71,107.71,0,0,0-26.25-10.87,8,8,0,0,0-7.06,1.49L130.16,40Q128,40,125.84,40L107.2,25.11a8,8,0,0,0-7.06-1.48A107.6,107.6,0,0,0,73.89,34.51a8,8,0,0,0-3.93,6L67.32,64.27q-1.56,1.49-3,3L40.54,70a8,8,0,0,0-6,3.94,107.71,107.71,0,0,0-10.87,26.25,8,8,0,0,0,1.49,7.06L40,125.84Q40,128,40,130.16L25.11,148.8a8,8,0,0,0-1.48,7.06,107.21,107.21,0,0,0,10.88,26.25,8,8,0,0,0,6,3.93l23.72,2.64q1.49,1.56,3,3L70,215.46a8,8,0,0,0,3.94,6,107.71,107.71,0,0,0,26.25,10.87,8,8,0,0,0,7.06-1.49L125.84,216q2.16.06,4.32,0l18.64,14.92a8,8,0,0,0,7.06,1.48,107.21,107.21,0,0,0,26.25-10.88,8,8,0,0,0,3.93-6l2.64-23.72q1.56-1.48,3-3L215.46,186a8,8,0,0,0,6-3.94,107.71,107.71,0,0,0,10.87-26.25,8,8,0,0,0-1.49-7.06Zm-16.1-6.5a73.93,73.93,0,0,1,0,8.68,8,8,0,0,0,1.74,5.48l14.19,17.73a91.57,91.57,0,0,1-6.23,15L187,173.11a8,8,0,0,0-5.1,2.64,74.11,74.11,0,0,1-6.14,6.14,8,8,0,0,0-2.64,5.1l-2.51,22.58a91.32,91.32,0,0,1-15,6.23l-17.74-14.19a8,8,0,0,0-5-1.75h-.48a73.93,73.93,0,0,1-8.68,0,8,8,0,0,0-5.48,1.74L100.45,215.8a91.57,91.57,0,0,1-15-6.23L82.89,187a8,8,0,0,0-2.64-5.1,74.11,74.11,0,0,1-6.14-6.14,8,8,0,0,0-5.1-2.64L46.43,170.6a91.32,91.32,0,0,1-6.23-15l14.19-17.74a8,8,0,0,0,1.74-5.48,73.93,73.93,0,0,1,0-8.68,8,8,0,0,0-1.74-5.48L40.2,100.45a91.57,91.57,0,0,1,6.23-15L69,82.89a8,8,0,0,0,5.1-2.64,74.11,74.11,0,0,1,6.14-6.14A8,8,0,0,0,82.89,69L85.4,46.43a91.32,91.32,0,0,1,15-6.23l17.74,14.19a8,8,0,0,0,5.48,1.74,73.93,73.93,0,0,1,8.68,0,8,8,0,0,0,5.48-1.74L155.55,40.2a91.57,91.57,0,0,1,15,6.23L173.11,69a8,8,0,0,0,2.64,5.1,74.11,74.11,0,0,1,6.14,6.14,8,8,0,0,0,5.1,2.64l22.58,2.51a91.32,91.32,0,0,1,6.23,15l-14.19,17.74A8,8,0,0,0,199.87,123.66Z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <p class="text-white text-sm font-medium leading-normal">Paramètres</p>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="layout-content-container flex flex-col max-w-[960px] w-full flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Paiements</p></div>
-            <div class="flex flex-wrap gap-4 p-4">
-              <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 bg-[#484323]">
-                <p class="text-white text-base font-medium leading-normal">Revenus totaux</p>
-                <p class="text-white tracking-light text-2xl font-bold leading-tight">12 500 €</p>
-              </div>
-              <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 bg-[#484323]">
-                <p class="text-white text-base font-medium leading-normal">Paiements en attente</p>
-                <p class="text-white tracking-light text-2xl font-bold leading-tight">1 200 €</p>
-              </div>
-              <div class="flex min-w-[158px] flex-1 flex-col gap-2 rounded-lg p-6 bg-[#484323]">
-                <p class="text-white text-base font-medium leading-normal">Clients actifs</p>
-                <p class="text-white tracking-light text-2xl font-bold leading-tight">25</p>
-              </div>
-            </div>
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Historique des transactions</h2>
-            <div class="px-4 py-3 @container">
-              <div class="overflow-x-auto rounded-lg border border-[#675f32] bg-[#222011]">
-                <table class="min-w-[720px] w-full">
-                  <thead>
-                    <tr class="bg-[#343019]">
-                      <th class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-120 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">Date</th>
-                      <th class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-240 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">Client</th>
-                      <th class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-360 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">Formule</th>
-                      <th class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-480 px-4 py-3 text-left text-white w-[400px] text-sm font-medium leading-normal">Montant</th>
-                      <th class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-600 px-4 py-3 text-left text-white w-60 text-sm font-medium leading-normal">Statut</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr class="border-t border-t-[#675f32]">
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-120 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        15 mai 2024
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-240 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
-                        Sophie Martin
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-360 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        Formule Essentielle
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-480 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">250 €</td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                        <button
-                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#484323] text-white text-sm font-medium leading-normal w-full"
-                        >
-                          <span class="truncate">Payé</span>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr class="border-t border-t-[#675f32]">
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-120 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        10 mai 2024
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-240 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
-                        Pierre Dubois
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-360 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        Formule Premium
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-480 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">500 €</td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                        <button
-                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#484323] text-white text-sm font-medium leading-normal w-full"
-                        >
-                          <span class="truncate">Payé</span>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr class="border-t border-t-[#675f32]">
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-120 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        5 mai 2024
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-240 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
-                        Marie Leclerc
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-360 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        Formule Essentielle
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-480 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">250 €</td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                        <button
-                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#484323] text-white text-sm font-medium leading-normal w-full"
-                        >
-                          <span class="truncate">Payé</span>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr class="border-t border-t-[#675f32]">
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-120 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        1 mai 2024
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-240 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">
-                        Thomas Durand
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-360 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        Formule Premium
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-480 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">500 €</td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                        <button
-                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#484323] text-white text-sm font-medium leading-normal w-full"
-                        >
-                          <span class="truncate">Payé</span>
-                        </button>
-                      </td>
-                    </tr>
-                    <tr class="border-t border-t-[#675f32]">
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-120 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        25 avril 2024
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-240 h-[72px] px-4 py-2 w-[400px] text-white text-sm font-normal leading-normal">Julie Moreau</td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-360 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">
-                        Formule Essentielle
-                      </td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-480 h-[72px] px-4 py-2 w-[400px] text-[#cac191] text-sm font-normal leading-normal">250 €</td>
-                      <td class="table-0e3ecfad-93e7-489d-bf9e-100349238360-column-600 h-[72px] px-4 py-2 w-60 text-sm font-normal leading-normal">
-                        <button
-                          class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-4 bg-[#484323] text-white text-sm font-medium leading-normal w-full"
-                        >
-                          <span class="truncate">Payé</span>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
-              <style>
-                          @container(max-width:120px){.table-0e3ecfad-93e7-489d-bf9e-100349238360-column-120{display: none;}}
-                @container(max-width:240px){.table-0e3ecfad-93e7-489d-bf9e-100349238360-column-240{display: none;}}
-                @container(max-width:360px){.table-0e3ecfad-93e7-489d-bf9e-100349238360-column-360{display: none;}}
-                @container(max-width:480px){.table-0e3ecfad-93e7-489d-bf9e-100349238360-column-480{display: none;}}
-                @container(max-width:600px){.table-0e3ecfad-93e7-489d-bf9e-100349238360-column-600{display: none;}}
-              </style>
-            </div>
-            <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Statistiques</h2>
-            <div class="flex flex-wrap gap-4 px-4 py-6">
-              <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#675f32] p-6">
-                <p class="text-white text-base font-medium leading-normal">Évolution des revenus</p>
-                <p class="text-white tracking-light text-[32px] font-bold leading-tight truncate">+15%</p>
-                <div class="flex gap-1">
-                  <p class="text-[#cac191] text-base font-normal leading-normal">Ce mois-ci</p>
-                  <p class="text-[#0bda20] text-base font-medium leading-normal">+15%</p>
-                </div>
-                <div class="flex min-h-[180px] flex-1 flex-col gap-8 py-4">
-                  <svg width="100%" height="148" viewBox="-3 0 478 150" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
-                    <path
-                      d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25V149H326.769H0V109Z"
-                      fill="url(#paint0_linear_1131_5935)"
-                    ></path>
-                    <path
-                      d="M0 109C18.1538 109 18.1538 21 36.3077 21C54.4615 21 54.4615 41 72.6154 41C90.7692 41 90.7692 93 108.923 93C127.077 93 127.077 33 145.231 33C163.385 33 163.385 101 181.538 101C199.692 101 199.692 61 217.846 61C236 61 236 45 254.154 45C272.308 45 272.308 121 290.462 121C308.615 121 308.615 149 326.769 149C344.923 149 344.923 1 363.077 1C381.231 1 381.231 81 399.385 81C417.538 81 417.538 129 435.692 129C453.846 129 453.846 25 472 25"
-                      stroke="#cac191"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                    ></path>
-                    <defs>
-                      <linearGradient id="paint0_linear_1131_5935" x1="236" y1="1" x2="236" y2="149" gradientUnits="userSpaceOnUse">
-                        <stop stop-color="#484323"></stop>
-                        <stop offset="1" stop-color="#484323" stop-opacity="0"></stop>
-                      </linearGradient>
-                    </defs>
-                  </svg>
-                  <div class="flex justify-around">
-                    <p class="text-[#cac191] text-[13px] font-bold leading-normal tracking-[0.015em]">Jan</p>
-                    <p class="text-[#cac191] text-[13px] font-bold leading-normal tracking-[0.015em]">Fév</p>
-                    <p class="text-[#cac191] text-[13px] font-bold leading-normal tracking-[0.015em]">Mar</p>
-                    <p class="text-[#cac191] text-[13px] font-bold leading-normal tracking-[0.015em]">Avr</p>
-                    <p class="text-[#cac191] text-[13px] font-bold leading-normal tracking-[0.015em]">Mai</p>
-                  </div>
-                </div>
-              </div>
-              <div class="flex min-w-72 flex-1 flex-col gap-2 rounded-lg border border-[#675f32] p-6">
-                <p class="text-white text-base font-medium leading-normal">Répartition des formules</p>
-                <p class="text-white tracking-light text-[32px] font-bold leading-tight truncate">25</p>
-                <div class="flex gap-1">
-                  <p class="text-[#cac191] text-base font-normal leading-normal">Clients</p>
-                  <p class="text-[#0bda20] text-base font-medium leading-normal">+10%</p>
-                </div>
-                <div class="grid min-h-[180px] grid-flow-col gap-6 grid-rows-[1fr_auto] items-end justify-items-center px-3">
-                  <div class="border-[#cac191] bg-[#484323] border-t-2 w-full" style="height: 70%;"></div>
-                  <p class="text-[#cac191] text-[13px] font-bold leading-normal tracking-[0.015em]">Essentielle</p>
-                  <div class="border-[#cac191] bg-[#484323] border-t-2 w-full" style="height: 30%;"></div>
-                  <p class="text-[#cac191] text-[13px] font-bold leading-normal tracking-[0.015em]">Premium</p>
-                </div>
-              </div>
-            </div>
+            <button id="exportBtn" class="rounded-lg bg-yellow-300 text-black font-semibold px-4 py-2 hover:brightness-95">Exporter CSV</button>
           </div>
         </div>
-      </div>
+
+        <!-- KPIs -->
+        <section class="grid sm:grid-cols-2 xl:grid-cols-3 gap-4 mt-6">
+          <div class="glass rounded-2xl p-5 hover-lift">
+            <p class="text-white/80">Revenus totaux</p>
+            <div class="mt-1 text-3xl font-extrabold">12 500 €</div>
+            <div class="text-xs text-white/60">+8% vs mois dernier</div>
+          </div>
+          <div class="glass rounded-2xl p-5 hover-lift">
+            <p class="text-white/80">Paiements en attente</p>
+            <div class="mt-1 text-3xl font-extrabold">1 200 €</div>
+            <div class="text-xs text-white/60">3 transactions</div>
+          </div>
+          <div class="glass rounded-2xl p-5 hover-lift">
+            <p class="text-white/80">Clients actifs</p>
+            <div class="mt-1 text-3xl font-extrabold">25</div>
+            <div class="text-xs text-white/60">+10% ce mois</div>
+          </div>
+        </section>
+
+        <!-- Transactions table -->
+        <section class="mt-8">
+          <h2 class="sr-only">Historique des transactions</h2>
+          <div class="glass rounded-2xl overflow-hidden">
+            <div class="max-h-[56svh] overflow-auto table-sticky">
+              <table class="w-full text-sm">
+                <thead class="text-left">
+                  <tr>
+                    <th class="px-4 py-3 font-semibold">Date</th>
+                    <th class="px-4 py-3 font-semibold">Client</th>
+                    <th class="px-4 py-3 font-semibold">Formule</th>
+                    <th class="px-4 py-3 font-semibold">Montant</th>
+                    <th class="px-4 py-3 font-semibold">Statut</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- rows -->
+                  <tr class="border-t border-white/10">
+                    <td class="px-4 py-3 text-white/80">15 mai 2024</td>
+                    <td class="px-4 py-3">Sophie Martin</td>
+                    <td class="px-4 py-3 text-white/80">Essentielle</td>
+                    <td class="px-4 py-3 text-white/90">250 €</td>
+                    <td class="px-4 py-3"><span class="status status-paid">Payé</span></td>
+                  </tr>
+                  <tr class="border-t border-white/10">
+                    <td class="px-4 py-3 text-white/80">10 mai 2024</td>
+                    <td class="px-4 py-3">Pierre Dubois</td>
+                    <td class="px-4 py-3 text-white/80">Premium</td>
+                    <td class="px-4 py-3 text-white/90">500 €</td>
+                    <td class="px-4 py-3"><span class="status status-paid">Payé</span></td>
+                  </tr>
+                  <tr class="border-t border-white/10">
+                    <td class="px-4 py-3 text-white/80">7 mai 2024</td>
+                    <td class="px-4 py-3">Nina Pereira</td>
+                    <td class="px-4 py-3 text-white/80">Excellence</td>
+                    <td class="px-4 py-3 text-white/90">1 200 €</td>
+                    <td class="px-4 py-3"><span class="status status-pending">En attente</span></td>
+                  </tr>
+                  <tr class="border-t border-white/10">
+                    <td class="px-4 py-3 text-white/80">5 mai 2024</td>
+                    <td class="px-4 py-3">Marie Leclerc</td>
+                    <td class="px-4 py-3 text-white/80">Essentielle</td>
+                    <td class="px-4 py-3 text-white/90">250 €</td>
+                    <td class="px-4 py-3"><span class="status status-paid">Payé</span></td>
+                  </tr>
+                  <tr class="border-t border-white/10">
+                    <td class="px-4 py-3 text-white/80">2 mai 2024</td>
+                    <td class="px-4 py-3">Hugo Bernard</td>
+                    <td class="px-4 py-3 text-white/80">Premium</td>
+                    <td class="px-4 py-3 text-white/90">500 €</td>
+                    <td class="px-4 py-3"><span class="status status-failed">Échoué</span></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="flex items-center justify-between px-4 py-3 border-t border-white/10 text-xs text-white/70">
+              <div>5 transactions affichées</div>
+              <div class="flex items-center gap-2">
+                <button class="rounded-md border border-white/10 px-2 py-1 hover:bg-white/5">Précédent</button>
+                <button class="rounded-md border border-white/10 px-2 py-1 hover:bg-white/5">Suivant</button>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="mt-8 grid lg:grid-cols-2 gap-4">
+          <div class="glass rounded-2xl p-6">
+            <h3 class="text-base font-semibold mb-1">Évolution des revenus</h3>
+            <p class="text-3xl font-extrabold">+15%</p>
+            <p class="text-white/70 text-sm">Ce mois-ci</p>
+            <div class="mt-4">
+              <!-- Simple inline SVG area/line chart (no external lib) -->
+              <svg width="100%" height="180" viewBox="0 0 480 180" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" aria-label="Graphique des revenus">
+                <defs>
+                  <linearGradient id="g1" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="hsl(var(--brand) / .35)"/>
+                    <stop offset="100%" stop-color="hsl(var(--brand) / 0)"/>
+                  </linearGradient>
+                </defs>
+                <path d="M0 120 C 60 120, 60 30, 120 30 S 180 100, 240 100 300 40, 360 40 420 150, 480 150 L480 180 L0 180 Z" fill="url(#g1)"/>
+                <path d="M0 120 C 60 120, 60 30, 120 30 S 180 100, 240 100 300 40, 360 40 420 150, 480 150" stroke="hsl(var(--muted))" stroke-width="3" stroke-linecap="round"/>
+              </svg>
+              <div class="mt-2 grid grid-cols-5 text-center text-xs text-white/60">
+                <div>Jan</div><div>Fév</div><div>Mar</div><div>Avr</div><div>Mai</div>
+              </div>
+            </div>
+          </div>
+          <div class="glass rounded-2xl p-6">
+            <h3 class="text-base font-semibold mb-1">Répartition des formules</h3>
+            <p class="text-3xl font-extrabold">25</p>
+            <p class="text-white/70 text-sm">Clients actifs</p>
+            <div class="mt-4 grid grid-cols-2 gap-6 items-end justify-items-center min-h-[180px]">
+              <div class="w-full">
+                <div class="h-28 bg-white/5 border-t-2 border-white/30"></div>
+                <div class="mt-1 text-center text-xs text-white/70">Essentielle</div>
+              </div>
+              <div class="w-full">
+                <div class="h-16 bg-white/5 border-t-2 border-white/30"></div>
+                <div class="mt-1 text-center text-xs text-white/70">Premium</div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="mt-8">
+          <div class="glass rounded-2xl p-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-semibold">Automatisez vos relances</h3>
+              <p class="text-white/70 text-sm">Programmez des rappels pour les paiements en attente et des reçus automatiques.</p>
+            </div>
+            <a href="#" class="rounded-lg bg-yellow-300 text-black font-semibold px-4 py-2 hover:brightness-95">Configurer</a>
+          </div>
+        </section>
+      </main>
     </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/40 mt-8">
+      <div class="container py-8 grid md:grid-cols-3 gap-6 text-sm text-white/70">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="size-5 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M47.2426 24 24 47.2426.7574 24 24 .7574 47.2426 24Zm-35  -3h26.515L24 9.2426 12.2426 21Z"/></svg>
+            <span class="font-semibold">Fit by T</span>
+          </div>
+          <p>Coaching sportif personnalisé à Paris et en ligne.</p>
+        </div>
+        <nav class="grid gap-2">
+          <a href="index.html" class="hover:opacity-90">Accueil</a>
+          <a href="pricing.html" class="hover:opacity-90">Tarifs</a>
+          <a href="booking.html" class="hover:opacity-90">Réserver</a>
+          <a href="contact.html" class="hover:opacity-90">Contact</a>
+        </nav>
+        <div class="grid gap-2">
+          <a href="#" class="hover:opacity-90">Mentions légales</a>
+          <a href="#" class="hover:opacity-90">Politique de confidentialité</a>
+          <p class="text-xs text-white/50">© <span id="y"></span> Fit by T.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile nav
+      const btn = document.getElementById('menuBtn');
+      const mnav = document.getElementById('mnav');
+      if(btn && mnav){
+        const toggle = () => { const open = mnav.classList.contains('hidden'); mnav.classList.toggle('hidden'); btn.setAttribute('aria-expanded', String(open)); }
+        btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggle(); });
+        document.addEventListener('click', (e)=>{ if(!mnav.contains(e.target) && e.target !== btn){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+        window.addEventListener('resize', ()=>{ if(window.innerWidth >= 768){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+      }
+      // Export CSV (données mockées à partir du tableau)
+      const exportBtn = document.getElementById('exportBtn');
+      if(exportBtn){
+        exportBtn.addEventListener('click', ()=>{
+          const rows = [
+            ['Date','Client','Formule','Montant','Statut'],
+            ['15/05/2024','Sophie Martin','Essentielle','250','Payé'],
+            ['10/05/2024','Pierre Dubois','Premium','500','Payé'],
+            ['07/05/2024','Nina Pereira','Excellence','1200','En attente'],
+            ['05/05/2024','Marie Leclerc','Essentielle','250','Payé'],
+            ['02/05/2024','Hugo Bernard','Premium','500','Échoué']
+          ];
+          const csv = rows.map(r => r.map(x => '"'+String(x).replaceAll('"','""')+'"').join(',')).join('\n');
+          const url = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8;'}));
+          const a = document.createElement('a'); a.href = url; a.download = 'transactions.csv'; a.click(); URL.revokeObjectURL(url);
+        });
+      }
+      // Year
+      const yEl = document.getElementById('y'); if(yEl) yEl.textContent = new Date().getFullYear();
+    </script>
   </body>
-  <script>
-    (function () {
-      const btn = document.getElementById('mobile-menu-toggle');
-      const menu = document.getElementById('mobile-menu');
-      if (!btn || !menu) return;
-      const close = () => {
-        if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      };
-      const open = () => {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-      };
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menu.classList.contains('hidden') ? open() : close();
-      });
-      document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && e.target !== btn) close();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') close();
-      });
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768) close();
-      });
-    })();
-  </script>
 </html>

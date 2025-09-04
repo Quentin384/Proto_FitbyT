@@ -1,212 +1,268 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth" data-theme="dark">
   <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
+    <meta name="color-scheme" content="dark light" />
+    <title>Fit by T — Paiement sécurisé</title>
+    <meta name="description" content="Finalisez votre commande : récapitulatif, choix du mode de paiement, saisie sécurisée, 3-D Secure." />
 
-    <title>Stitch Design</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind CSS CDN -->
+    <script>
+      window.tailwind = { theme: { extend: { container: { center: true, padding: { DEFAULT: '1rem', md: '1.5rem', lg: '2rem' } } } } };
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+
+    <style>
+      :root { --bg: 12 12% 6%; --surface: 45 16% 10%; --muted: 48 15% 70%; --brand: 49 88% 51%; --ok: 140 70% 45%; }
+      html { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", Arial; }
+      body { background: hsl(var(--bg)); color: white; }
+      .glass { backdrop-filter: saturate(140%) blur(10px); background: hsl(var(--surface)/.55); border: 1px solid hsl(0 0% 100% / .08); }
+      .ring-gradient { position: relative; }
+      .ring-gradient::before{ content: ""; position: absolute; inset:-1px; border-radius: 16px; background: conic-gradient(from 0deg, hsl(var(--brand)) 0deg, transparent 120deg, transparent 240deg, hsl(var(--brand)) 360deg); filter: blur(.5px); -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000); -webkit-mask-composite: xor; mask-composite: exclude; padding:1px; pointer-events:none; }
+      .bg-grid {
+        background-image:
+          radial-gradient(1100px 400px at 10% -10%, hsl(var(--brand)/.15), transparent 40%),
+          radial-gradient(900px 600px at 90% 0%, hsl(260 90% 66%/.14), transparent 40%),
+          radial-gradient(500px 400px at 60% 110%, hsl(170 80% 60%/.12), transparent 40%),
+          linear-gradient(to bottom, hsl(var(--bg)), hsl(var(--bg)));
+        background-repeat: no-repeat;
+      }
+      .tab { border-bottom: 2px solid transparent; }
+      .tab[aria-selected="true"] { border-color: hsl(var(--brand)); color: hsl(var(--brand)); }
+      .pay-btn[disabled] { opacity:.5; cursor:not-allowed; }
+    </style>
   </head>
-  <body>
-    <div
-      class="relative flex size-full min-h-screen flex-col bg-[#222011] dark group/design-root overflow-x-hidden"
-      style="--checkbox-tick-svg: url('data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27rgb(34,32,17)%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath d=%27M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z%27/%3e%3c/svg%3e'); --radio-dot-svg: url('data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27rgb(239,205,15)%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3ccircle cx=%278%27 cy=%278%27 r=%273%27/%3e%3c/svg%3e'); font-family: &quot;Noto Serif&quot;, &quot;Noto Sans&quot;, sans-serif;"
-    >
-      <div class="layout-container flex h-full grow flex-col">
-        <header class="relative flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#484323] px-4 md:px-10 py-3">
-          <div class="flex items-center gap-4 text-white">
-            <div class="size-4">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <g clip-path="url(#clip0_6_535)">
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z"
-                    fill="currentColor"
-                  ></path>
-                </g>
-                <defs>
-                  <clipPath id="clip0_6_535"><rect width="48" height="48" fill="white"></rect></clipPath>
-                </defs>
-              </svg>
-            </div>
-            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Fit by T</h2>
+
+  <body class="min-h-screen bg-grid antialiased selection:bg-yellow-300 selection:text-black">
+    <!-- Header -->
+    <header class="sticky top-0 z-40 backdrop-blur bg-black/40 border-b border-white/10">
+      <div class="container flex h-16 items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2">
+          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M47.2426 24 24 47.2426.7574 24 24 .7574 47.2426 24Zm-35  -3h26.515L24 9.2426 12.2426 21Z"/></svg>
+          <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
+        </a>
+        <nav class="ml-auto hidden md:flex items-center gap-7 text-sm">
+          <a class="hover:opacity-90" href="pricing.html">Tarifs</a>
+          <a class="hover:opacity-90" href="booking.html">Réserver</a>
+          <a class="hover:opacity-90" href="reservation.html">Mes séances</a>
+          <a class="hover:opacity-90" href="profile.html">Profil</a>
+        </nav>
+        <button id="menuBtn" class="ml-auto md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 size-10" aria-controls="mnav" aria-expanded="false" aria-label="Ouvrir le menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/></svg>
+        </button>
+      </div>
+      <div id="mnav" class="hidden md:hidden border-t border-white/10">
+        <nav class="container py-3 grid gap-2 text-sm">
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="pricing.html">Tarifs</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="booking.html">Réserver</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="reservation.html">Mes séances</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="profile.html">Profil</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="container py-6 grid lg:grid-cols-[1.1fr_.9fr] gap-6">
+      <!-- Col gauche: Paiement -->
+      <section class="min-w-0">
+        <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight mb-1 text-center md:text-left">Paiement sécurisé</h1>
+        <p class="text-white/70 mb-6 text-center md:text-left">Choisissez votre méthode et saisissez vos informations. Validation 3‑D Secure si nécessaire.</p>
+
+        <div class="glass rounded-2xl p-4">
+          <!-- Onglets méthodes -->
+          <div class="flex items-center gap-6 border-b border-white/10 px-2">
+            <button class="tab py-3 text-sm font-semibold" role="tab" aria-selected="true" aria-controls="tab-card" id="tab-card-btn">Carte bancaire</button>
+            <button class="tab py-3 text-sm font-semibold" role="tab" aria-selected="false" aria-controls="tab-wallet" id="tab-wallet-btn">Portefeuilles</button>
+            <button class="tab py-3 text-sm font-semibold" role="tab" aria-selected="false" aria-controls="tab-transfer" id="tab-transfer-btn">Virement</button>
           </div>
-          <div class="flex flex-1 justify-end gap-4 md:gap-8">
-            <button id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden inline-flex items-center justify-center rounded-lg border border-[#675f32] text-white size-9">
-              <span class="sr-only">Ouvrir le menu</span>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
-                <path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd" />
-              </svg>
-            </button>
-            <div class="hidden md:flex items-center gap-4 md:gap-9 overflow-x-auto whitespace-nowrap">
-              <a class="text-white text-sm font-medium leading-normal" href="index.html">Accueil</a>
-              <a class="text-white text-sm font-medium leading-normal" href="pricing.html">Tarifs</a>
-              <a class="text-white text-sm font-medium leading-normal" href="booking.html">Réserver</a>
-              <a class="text-white text-sm font-medium leading-normal" href="checkout.html">Paiement</a>
-              <a class="text-white text-sm font-medium leading-normal" href="reservation.html">Mes séances</a>
-              <a class="text-white text-sm font-medium leading-normal" href="profile.html">Profil</a>
+
+          <!-- Contenus -->
+          <div class="p-4 grid gap-6">
+            <!-- Carte -->
+            <form id="tab-card" aria-labelledby="tab-card-btn" role="tabpanel" class="grid gap-3" autocomplete="cc-number">
+              <div class="grid md:grid-cols-2 gap-3">
+                <label class="grid gap-1">
+                  <span class="text-sm text-white/80">Titulaire</span>
+                  <input id="cardName" class="rounded-lg bg-white/5 border-white/10 h-11" placeholder="Nom sur la carte" autocomplete="cc-name"/>
+                </label>
+                <label class="grid gap-1">
+                  <span class="text-sm text-white/80">Numéro</span>
+                  <input id="cardNumber" inputmode="numeric" pattern="[0-9 ]*" maxlength="19" class="rounded-lg bg-white/5 border-white/10 h-11 tracking-widest" placeholder="1234 5678 9012 3456" autocomplete="cc-number"/>
+                </label>
+              </div>
+              <div class="grid md:grid-cols-3 gap-3">
+                <label class="grid gap-1">
+                  <span class="text-sm text-white/80">Expiration</span>
+                  <input id="cardExp" inputmode="numeric" maxlength="5" class="rounded-lg bg-white/5 border-white/10 h-11" placeholder="MM/AA" autocomplete="cc-exp"/>
+                </label>
+                <label class="grid gap-1">
+                  <span class="text-sm text-white/80">CVV</span>
+                  <input id="cardCvv" inputmode="numeric" maxlength="4" class="rounded-lg bg-white/5 border-white/10 h-11" placeholder="123" autocomplete="cc-csc"/>
+                </label>
+                <label class="grid gap-1">
+                  <span class="text-sm text-white/80">Pays</span>
+                  <select id="cardCountry" class="rounded-lg bg-white/5 border-white/10 h-11">
+                    <option>France</option>
+                    <option>Belgique</option>
+                    <option>Suisse</option>
+                    <option>Canada</option>
+                  </select>
+                </label>
+              </div>
+              <label class="inline-flex items-center gap-2 mt-1">
+                <input id="saveCard" type="checkbox" class="rounded border-white/20 bg-transparent"/>
+                <span class="text-sm text-white/80">Sauvegarder la carte pour les prochains paiements</span>
+              </label>
+            </form>
+
+            <!-- Portefeuilles -->
+            <div id="tab-wallet" aria-labelledby="tab-wallet-btn" role="tabpanel" hidden class="grid gap-3">
+              <button class="rounded-lg border border-white/10 h-11 px-4 text-left hover:bg-white/5">Apple Pay</button>
+              <button class="rounded-lg border border-white/10 h-11 px-4 text-left hover:bg-white/5">Google Pay</button>
+              <button class="rounded-lg border border-white/10 h-11 px-4 text-left hover:bg-white/5">PayPal</button>
+              <p class="text-xs text-white/60">Vous serez redirigé pour authentifier le paiement.</p>
             </div>
-            <a
-              href="profile.html"
-              class="hidden md:flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#484323] text-white text-sm font-bold leading-normal tracking-[0.015em]"
-            >
-              <span class="truncate">Mon profil</span>
-            </a>
-          </div>
-          <!-- Mobile menu panel -->
-          <div id="mobile-menu" class="md:hidden hidden absolute right-4 top-14 w-64 rounded-lg border border-[#484323] bg-[#222011] shadow-lg z-50">
-            <nav class="flex flex-col p-2">
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="index.html">Accueil</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="pricing.html">Tarifs</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="booking.html">Réserver</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="checkout.html">Paiement</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="reservation.html">Mes séances</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="profile.html">Profil</a>
-              <div class="my-2 border-t border-[#484323]"></div>
-              <p class="px-3 pt-1 pb-2 text-[#cac191] text-xs font-semibold uppercase tracking-wide">Espace coach</p>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="disponibility.html">Disponibilités</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="analytics.html">Statistiques</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="contact.html">Contact</a>
-            </nav>
-          </div>
-        </header>
-        <div class="px-4 sm:px-6 lg:px-10 xl:px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col w-full max-w-[512px] py-5 flex-1">
-            <h2 class="text-white tracking-light text-[28px] font-bold leading-tight px-4 text-center pb-3 pt-5">Paiement sécurisé</h2>
-            <p class="text-white text-base font-normal leading-normal pb-3 pt-1 px-4 text-center">Veuillez choisir votre méthode de paiement pour finaliser votre commande.</p>
-            <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Récapitulatif de la commande</h3>
-            <div class="p-4 grid grid-cols-[20%_1fr] gap-x-6">
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#675f32] py-5">
-                <p class="text-[#cac191] text-sm font-normal leading-normal">Formule choisie</p>
-                <p class="text-white text-sm font-normal leading-normal">Coaching Premium (3 mois)</p>
-              </div>
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#675f32] py-5">
-                <p class="text-[#cac191] text-sm font-normal leading-normal">Séances supplémentaires</p>
-                <p class="text-white text-sm font-normal leading-normal">2 séances</p>
-              </div>
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#675f32] py-5">
-                <p class="text-[#cac191] text-sm font-normal leading-normal">Total</p>
-                <p class="text-white text-sm font-normal leading-normal">199€</p>
+
+            <!-- Virement -->
+            <div id="tab-transfer" aria-labelledby="tab-transfer-btn" role="tabpanel" hidden class="grid gap-3">
+              <div class="rounded-lg bg-white/5 border border-white/10 p-4">
+                <p class="text-sm">IBAN : <span class="font-mono">FR76 3000 4000 5000 6000 7000 801</span></p>
+                <p class="text-sm">BIC : <span class="font-mono">BNPAFRPP</span></p>
+                <p class="text-xs text-white/60 mt-1">Traitement sous 1 à 2 jours ouvrés. Votre réservation sera confirmée à réception.</p>
               </div>
             </div>
-            <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Méthodes de paiement</h3>
-            <div class="flex flex-col gap-3 p-4">
-              <label class="flex items-center gap-4 rounded-lg border border-solid border-[#675f32] p-[15px]">
-                <input
-                  type="radio"
-                  class="h-5 w-5 border-2 border-[#675f32] bg-transparent text-transparent checked:border-[#efcd0f] checked:bg-[image:--radio-dot-svg] focus:outline-none focus:ring-0 focus:ring-offset-0 checked:focus:border-[#efcd0f]"
-                  name="ec0a1306-76e6-452c-b0d7-c400d893f1ff"
-                  checked=""
-                />
-                <div class="flex grow flex-col"><p class="text-white text-sm font-medium leading-normal">Carte bancaire</p></div>
-              </label>
-              <label class="flex items-center gap-4 rounded-lg border border-solid border-[#675f32] p-[15px]">
-                <input
-                  type="radio"
-                  class="h-5 w-5 border-2 border-[#675f32] bg-transparent text-transparent checked:border-[#efcd0f] checked:bg-[image:--radio-dot-svg] focus:outline-none focus:ring-0 focus:ring-offset-0 checked:focus:border-[#efcd0f]"
-                  name="ec0a1306-76e6-452c-b0d7-c400d893f1ff"
-                />
-                <div class="flex grow flex-col"><p class="text-white text-sm font-medium leading-normal">PayPal</p></div>
-              </label>
-              <label class="flex items-center gap-4 rounded-lg border border-solid border-[#675f32] p-[15px]">
-                <input
-                  type="radio"
-                  class="h-5 w-5 border-2 border-[#675f32] bg-transparent text-transparent checked:border-[#efcd0f] checked:bg-[image:--radio-dot-svg] focus:outline-none focus:ring-0 focus:ring-offset-0 checked:focus:border-[#efcd0f]"
-                  name="ec0a1306-76e6-452c-b0d7-c400d893f1ff"
-                />
-                <div class="flex grow flex-col"><p class="text-white text-sm font-medium leading-normal">Virement bancaire</p></div>
-              </label>
-            </div>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <input
-                  placeholder="Numéro de carte"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#484323] focus:border-none h-14 placeholder:text-[#cac191] p-4 text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-            </div>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <input
-                  placeholder="Date d'expiration"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#484323] focus:border-none h-14 placeholder:text-[#cac191] p-4 text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-              <label class="flex flex-col min-w-40 flex-1">
-                <input
-                  placeholder="CVV"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#484323] focus:border-none h-14 placeholder:text-[#cac191] p-4 text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-            </div>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <input
-                  placeholder="Nom du titulaire de la carte"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#484323] focus:border-none h-14 placeholder:text-[#cac191] p-4 text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-            </div>
-            <div class="px-4">
-              <label class="flex gap-x-3 py-3 flex-row">
-                <input
-                  type="checkbox"
-                  class="h-5 w-5 rounded border-[#675f32] border-2 bg-transparent text-[#efcd0f] checked:bg-[#efcd0f] checked:border-[#efcd0f] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#675f32] focus:outline-none"
-                />
-                <p class="text-white text-base font-normal leading-normal">J'accepte les termes et conditions</p>
-              </label>
-            </div>
-            <div class="flex px-4 py-3">
-              <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-12 px-5 flex-1 bg-[#efcd0f] text-[#222011] text-base font-bold leading-normal tracking-[0.015em]"
-              >
-                <span class="truncate">Confirmer le paiement</span>
-              </button>
-            </div>
-            <p class="text-[#cac191] text-sm font-normal leading-normal pb-3 pt-1 px-4 text-center">Vos informations de paiement sont sécurisées par un cryptage SSL.</p>
+
+            <!-- Terms + action -->
+            <label class="inline-flex items-center gap-2">
+              <input id="terms" type="checkbox" class="rounded border-white/20 bg-transparent"/>
+              <span class="text-sm">J'accepte les <a href="#" class="underline underline-offset-2">conditions générales</a> et la <a href="#" class="underline underline-offset-2">politique de confidentialité</a>.</span>
+            </label>
+            <button id="payBtn" class="pay-btn rounded-lg bg-yellow-300 text-black font-semibold px-4 py-3 mt-1">Confirmer et payer</button>
+            <p class="text-xs text-white/60">Chiffrement TLS 1.2 • Conforme PCI‑DSS • 3‑D Secure activé.</p>
           </div>
         </div>
+      </section>
+
+      <!-- Col droite: Récap -->
+      <aside class="sticky top-24 h-max">
+        <div class="ring-gradient glass rounded-2xl p-5">
+          <h2 class="text-lg font-semibold mb-2">Récapitulatif</h2>
+          <dl class="grid grid-cols-[auto_1fr] gap-x-4 gap-y-2 text-sm">
+            <dt class="text-white/70">Formule</dt><dd id="sumPlan">Coaching Premium (3 mois)</dd>
+            <dt class="text-white/70">Séances supp.</dt><dd id="sumExtra">2 séances</dd>
+            <dt class="text-white/70">Date</dt><dd id="sumDate">—</dd>
+            <dt class="text-white/70">Heure</dt><dd id="sumTime">—</dd>
+          </dl>
+          <div class="my-4 border-t border-white/10"></div>
+          <div class="grid gap-2 text-sm">
+            <div class="flex justify-between"><span>Sous‑total</span><span id="subTotal">189,00 €</span></div>
+            <div class="flex justify-between"><span>Frais</span><span id="fees">10,00 €</span></div>
+            <div class="flex justify-between text-white/80"><span>TVA incluse</span><span id="vat">—</span></div>
+            <div class="flex justify-between text-base font-extrabold pt-1"><span>Total</span><span id="grandTotal">199,00 €</span></div>
+          </div>
+          <div class="mt-4 grid grid-cols-3 gap-2 text-center text-[10px] text-white/60">
+            <div class="rounded-lg border border-white/10 py-2">Paiement sécurisé</div>
+            <div class="rounded-lg border border-white/10 py-2">Protection acheteur</div>
+            <div class="rounded-lg border border-white/10 py-2">Annulation 24h</div>
+          </div>
+        </div>
+      </aside>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/40 mt-8">
+      <div class="container py-8 grid md:grid-cols-3 gap-6 text-sm text-white/70">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="size-5 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M47.2426 24 24 47.2426.7574 24 24 .7574 47.2426 24Zm-35  -3h26.515L24 9.2426 12.2426 21Z"/></svg>
+            <span class="font-semibold">Fit by T</span>
+          </div>
+          <p>Coaching sportif personnalisé à Paris et en ligne.</p>
+        </div>
+        <nav class="grid gap-2">
+          <a href="index.html" class="hover:opacity-90">Accueil</a>
+          <a href="pricing.html" class="hover:opacity-90">Tarifs</a>
+          <a href="booking.html" class="hover:opacity-90">Réserver</a>
+          <a href="contact.html" class="hover:opacity-90">Contact</a>
+        </nav>
+        <div class="grid gap-2">
+          <a href="#" class="hover:opacity-90">Mentions légales</a>
+          <a href="#" class="hover:opacity-90">Politique de confidentialité</a>
+          <p class="text-xs text-white/50">© <span id="y"></span> Fit by T.</p>
+        </div>
       </div>
-    </div>
+    </footer>
+
+    <script>
+      // Mobile nav
+      (function(){
+        const btn=document.getElementById('menuBtn'); const m=document.getElementById('mnav'); if(!btn||!m) return;
+        const toggle=()=>{const open=m.classList.contains('hidden'); m.classList.toggle('hidden'); btn.setAttribute('aria-expanded', String(open));};
+        btn.addEventListener('click',e=>{e.stopPropagation(); toggle();});
+        document.addEventListener('click',e=>{ if(!m.contains(e.target) && e.target!==btn){ m.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); } });
+        addEventListener('resize',()=>{ if(innerWidth>=768){ m.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+      })();
+
+      // Tabs
+      (function(){
+        const tabs = [
+          {btn:'tab-card-btn', panel:'tab-card'},
+          {btn:'tab-wallet-btn', panel:'tab-wallet'},
+          {btn:'tab-transfer-btn', panel:'tab-transfer'},
+        ];
+        const map = new Map();
+        tabs.forEach(t=> map.set(t.btn, t.panel));
+        function select(btnId){
+          tabs.forEach(({btn,panel})=>{
+            document.getElementById(btn).setAttribute('aria-selected', String(btn===btnId));
+            const p = document.getElementById(panel);
+            if(btn===btnId){ p.hidden=false; } else { p.hidden=true; }
+          });
+        }
+        tabs.forEach(({btn})=> document.getElementById(btn).addEventListener('click',()=> select(btn)) );
+        select('tab-card-btn');
+      })();
+
+      // Basic helpers (masking-ish)
+      (function(){
+        const num = document.getElementById('cardNumber');
+        const exp = document.getElementById('cardExp');
+        if(num){ num.addEventListener('input', e=>{ let v=e.target.value.replace(/\D/g,'').slice(0,16); e.target.value=v.replace(/(.{4})/g,'$1 ').trim(); }); }
+        if(exp){ exp.addEventListener('input', e=>{ let v=e.target.value.replace(/\D/g,'').slice(0,4); if(v.length>2) v=v.slice(0,2)+'/'+v.slice(2); e.target.value=v; }); }
+      })();
+
+      // Terms + pay button enable, fake pay
+      (function(){
+        const terms=document.getElementById('terms'); const btn=document.getElementById('payBtn');
+        function sync(){ btn.disabled = !terms.checked; }
+        terms.addEventListener('change', sync); sync();
+        btn.addEventListener('click', ()=>{
+          if(btn.disabled) return;
+          // In prod: call your payment intent endpoint here, then handle 3DS
+          alert('Paiement initié. (Stub)');
+        });
+      })();
+
+      // Pull booking info if present (querystring)
+      (function(){
+        const params = new URLSearchParams(location.search);
+        const date = params.get('date');
+        const time = params.get('time');
+        const plan = params.get('plan');
+        const extra = params.get('extra');
+        if(date) document.getElementById('sumDate').textContent = date;
+        if(time) document.getElementById('sumTime').textContent = time;
+        if(plan) document.getElementById('sumPlan').textContent = plan;
+        if(extra) document.getElementById('sumExtra').textContent = extra;
+      })();
+
+      // Year
+      (function(){ const y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear(); })();
+    </script>
   </body>
-  <script>
-    (function () {
-      const btn = document.getElementById('mobile-menu-toggle');
-      const menu = document.getElementById('mobile-menu');
-      if (!btn || !menu) return;
-      const close = () => {
-        if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      };
-      const open = () => {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-      };
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menu.classList.contains('hidden') ? open() : close();
-      });
-      document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && e.target !== btn) close();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') close();
-      });
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768) close();
-      });
-    })();
-  </script>
 </html>

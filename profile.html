@@ -56,11 +56,16 @@
               <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="checkout.html">Paiement</a>
               <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="reservation.html">Mes séances</a>
               <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="profile.html">Profil</a>
+              <div class="my-2 border-t border-[#484323]"></div>
+              <p class="px-3 pt-1 pb-2 text-[#cac191] text-xs font-semibold uppercase tracking-wide">Espace coach</p>
+              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="disponibility.html">Disponibilités</a>
+              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="analytics.html">Statistiques</a>
+              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="contact.html">Contact</a>
             </nav>
           </div>
         </header>
-        <div class="gap-1 px-6 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col w-full max-w-[20rem]">
+        <div class="gap-1 px-4 md:px-6 flex flex-1 justify-center py-5">
+          <div class="layout-content-container hidden md:flex flex-col w-full max-w-[20rem]">
             <div class="flex h-full min-h-[700px] flex-col justify-between bg-[#222011] p-4">
               <div class="flex flex-col gap-4">
                 <div class="flex gap-3">
@@ -99,7 +104,7 @@
                         ></path>
                       </svg>
                     </div>
-                    <p class="text-white text-sm font-medium leading-normal">Séances</p>
+                    <p class="text-white text-sm font-medium leading-normal">Planning</p>
                   </a>
                   <a href="booking.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#484323] transition-colors">
                     <div class="text-white" data-icon="Bookmark" data-size="24px" data-weight="regular">
@@ -122,15 +127,37 @@
                     <p class="text-white text-sm font-medium leading-normal">Paramètres</p>
                   </a>
                 </div>
-                <div class="flex flex-col gap-2 px-3 pt-1">
-                  <a href="disponibility.html" class="flex w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-3 bg-[#484323] text-white text-sm font-medium leading-normal tracking-[0.015em]">
-                    <span class="truncate">Disponibilités</span>
+                <div class="flex flex-col gap-2">
+                  <a href="disponibility.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#484323] transition-colors">
+                    <div class="text-white" data-icon="Calendar" data-size="24px" data-weight="regular">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                        <path
+                          d="M208,32H184V24a8,8,0,0,0-16,0v8H88V24a8,8,0,0,0-16,0v8H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32ZM72,48v8a8,8,0,0,0,16,0V48h80v8a8,8,0,0,0,16,0V48h24V80H48V48ZM208,208H48V96H208V208Z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <p class="text-white text-sm font-medium leading-normal">Disponibilités</p>
                   </a>
-                  <a href="analytics.html" class="flex w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-3 bg-[#484323] text-white text-sm font-medium leading-normal tracking-[0.015em]">
-                    <span class="truncate">Statistiques</span>
+                  <a href="analytics.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#484323] transition-colors">
+                    <div class="text-white" data-icon="Chart" data-size="24px" data-weight="regular">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                        <rect x="40" y="144" width="32" height="72" rx="4" ry="4"></rect>
+                        <rect x="96" y="112" width="32" height="104" rx="4" ry="4"></rect>
+                        <rect x="152" y="80" width="32" height="136" rx="4" ry="4"></rect>
+                        <rect x="208" y="48" width="32" height="168" rx="4" ry="4"></rect>
+                      </svg>
+                    </div>
+                    <p class="text-white text-sm font-medium leading-normal">Statistiques</p>
                   </a>
-                  <a href="contact.html" class="flex w-full min-w-[84px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-8 px-3 bg-[#484323] text-white text-sm font-medium leading-normal tracking-[0.015em]">
-                    <span class="truncate">Contact</span>
+                  <a href="contact.html" class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#484323] transition-colors">
+                    <div class="text-white" data-icon="Question" data-size="24px" data-weight="regular">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
+                        <path
+                          d="M140,180a12,12,0,1,1-12-12A12,12,0,0,1,140,180ZM128,72c-22.06,0-40,16.15-40,36v4a8,8,0,0,0,16,0v-4c0-11,10.77-20,24-20s24,9,24,20-10.77,20-24,20a8,8,0,0,0-8,8v8a8,8,0,0,0,16,0v-.72c18.24-3.35,32-17.9,32-35.28C168,88.15,150.06,72,128,72Zm104,56A104,104,0,1,1,128,24,104.11,104.11,0,0,1,232,128Zm-16,0a88,88,0,1,0-88,88A88.1,88.1,0,0,0,216,128Z"
+                        ></path>
+                      </svg>
+                    </div>
+                    <p class="text-white text-sm font-medium leading-normal">Contact</p>
                   </a>
                 </div>
               </div>
@@ -149,47 +176,47 @@
             </div>
           </div>
           <div class="layout-content-container flex flex-col max-w-[960px] flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Mon Profil</p></div>
+            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-2xl md:text-[32px] font-bold leading-tight min-w-0 md:min-w-72">Mon Profil</p></div>
             <div class="flex p-4 @container">
               <div class="flex w-full flex-col gap-4 @[520px]:flex-row @[520px]:justify-between @[520px]:items-center">
                 <div class="flex gap-4">
                   <div
-                    class="bg-center bg-no-repeat aspect-square bg-cover rounded-full min-h-32 w-32"
+                    class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-24 md:size-32"
                     style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC4AdCS5yIMq1y3e4A5JEJHyst4XMlvvKMAn5TtE0yQPSGPiaPjivTuUIcrxb8zVlSWWBFv3ALg5yMcF16W2WDsAsGVIOQEGTo01eFrQwhXAzH7kw3EgWr0voMUcFCvH2QcXG6BBrSrHmjEHKvqxF5CVs0Bm3RNV5Be56c2w_cju0DFuQshw-qECeH8WBnS54deLj1Pcs0TMg7ouIUXxQVqb4hMNOT11Dfe5xmZxmgPlIA9izjVQ2nLy25MFYoHoQHLuRE9j1PRM52n");'
                   ></div>
                   <div class="flex flex-col justify-center">
-                    <p class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em]">Sophie Dubois</p>
-                    <p class="text-[#cac191] text-base font-normal leading-normal">Coach sportif certifiée</p>
+                    <p class="text-white text-lg md:text-[22px] font-bold leading-tight tracking-[-0.015em]">Sophie Dubois</p>
+                    <p class="text-[#cac191] text-sm md:text-base font-normal leading-normal">Coach sportif certifiée</p>
                   </div>
                 </div>
               </div>
             </div>
             <h2 class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Informations Personnelles</h2>
-            <div class="p-4 grid grid-cols-[20%_1fr] gap-x-6">
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#675f32] py-5">
+            <div class="p-4 grid grid-cols-1 md:grid-cols-[20%_1fr] gap-x-6">
+              <div class="md:col-span-2 md:grid md:grid-cols-subgrid border-t border-t-[#675f32] py-5 space-y-1 md:space-y-0">
                 <p class="text-[#cac191] text-sm font-normal leading-normal">Nom complet</p>
                 <p class="text-white text-sm font-normal leading-normal">Sophie Dubois</p>
               </div>
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#675f32] py-5">
+              <div class="md:col-span-2 md:grid md:grid-cols-subgrid border-t border-t-[#675f32] py-5 space-y-1 md:space-y-0">
                 <p class="text-[#cac191] text-sm font-normal leading-normal">Email</p>
                 <p class="text-white text-sm font-normal leading-normal">sophie.dubois@email.com</p>
               </div>
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#675f32] py-5">
+              <div class="md:col-span-2 md:grid md:grid-cols-subgrid border-t border-t-[#675f32] py-5 space-y-1 md:space-y-0">
                 <p class="text-[#cac191] text-sm font-normal leading-normal">Téléphone</p>
                 <p class="text-white text-sm font-normal leading-normal">+33 6 12 34 56 78</p>
               </div>
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#675f32] py-5">
+              <div class="md:col-span-2 md:grid md:grid-cols-subgrid border-t border-t-[#675f32] py-5 space-y-1 md:space-y-0">
                 <p class="text-[#cac191] text-sm font-normal leading-normal">Adresse</p>
                 <p class="text-white text-sm font-normal leading-normal">123 Rue de la Liberté, 75001 Paris</p>
               </div>
             </div>
             <h2 id="preferences" class="text-white text-[22px] font-bold leading-tight tracking-[-0.015em] px-4 pb-3 pt-5">Préférences</h2>
-            <div class="p-4 grid grid-cols-[20%_1fr] gap-x-6">
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#675f32] py-5">
+            <div class="p-4 grid grid-cols-1 md:grid-cols-[20%_1fr] gap-x-6">
+              <div class="md:col-span-2 md:grid md:grid-cols-subgrid border-t border-t-[#675f32] py-5 space-y-1 md:space-y-0">
                 <p class="text-[#cac191] text-sm font-normal leading-normal">Langue</p>
                 <p class="text-white text-sm font-normal leading-normal">Français</p>
               </div>
-              <div class="col-span-2 grid grid-cols-subgrid border-t border-t-[#675f32] py-5">
+              <div class="md:col-span-2 md:grid md:grid-cols-subgrid border-t border-t-[#675f32] py-5 space-y-1 md:space-y-0">
                 <p class="text-[#cac191] text-sm font-normal leading-normal">Fuseau horaire</p>
                 <p class="text-white text-sm font-normal leading-normal">Europe/Paris</p>
               </div>

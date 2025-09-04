@@ -10,7 +10,7 @@
       onload="this.rel='stylesheet'"
       href="https://fonts.googleapis.com/css2?display=swap&family=Noto+Serif:wght@400;500;700;900&family=Noto+Sans:wght@400;500;700;900"
     />
-    <title>Fit by T — Planning clients</title>
+    <title>Fit by T — Mes séances</title>
     <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
     <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   </head>
@@ -38,8 +38,6 @@
             <a class="text-sm font-medium" href="pricing.html">Tarifs</a>
             <a class="text-sm font-medium" href="booking.html">Réserver</a>
             <a class="text-sm font-medium" href="checkout.html">Paiement</a>
-            <a class="text-sm font-medium" href="planning.html">Planning (coach)</a>
-            <a class="text-sm font-medium" href="planning-clients.html">Planning (client)</a>
             <a class="text-sm font-medium" href="profile.html">Profil</a>
           </div>
         </nav>
@@ -50,240 +48,141 @@
             <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="pricing.html">Tarifs</a>
             <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="booking.html">Réserver</a>
             <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="checkout.html">Paiement</a>
-            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="planning.html">Planning (coach)</a>
-            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="planning-clients.html">Planning (client)</a>
             <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="profile.html">Profil</a>
+            <div class="my-2 border-t border-[#484323]"></div>
+            <p class="px-3 pt-1 pb-2 text-[#cac191] text-xs font-semibold uppercase tracking-wide">Espace coach</p>
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="disponibility.html">Disponibilités</a>
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="analytics.html">Statistiques</a>
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="contact.html">Contact</a>
           </nav>
         </div>
       </header>
 
-      <main class="flex flex-1 justify-center px-4 md:px-6 py-4 md:py-6 gap-4 md:gap-6">
-        <!-- Sidebar hidden on mobile -->
-        <aside class="hidden md:block w-[280px]">
-          <div class="flex flex-col gap-4">
-            <div class="flex items-center gap-3">
-              <div class="size-10 rounded-full bg-cover bg-center" style="background-image:url('https://lh3.googleusercontent.com/aida-public/AB6AXuAxu0G35FnU9c4ECYcwT-1VQ6aT-gnKlGbyPDV_rSQUUAU9jV9aPaL__PdoJNReSzKvTojIsCcxlobrOxtk5J5rMY7-SizwvEkj3M_ftSG6INLJ_ukIW3xEmUcZFh6HMDm2J6bAit-cLf1HcaphgmTcPnx_Bx8OaLb4imQzDEzUZL4qt9mGOWHN1RcDdTFgs5Es5_CwpKPQ-cUXPfGVFjVShTVv8Eu2byENVW4_zuvmZ_KzcuJNgvci3evXlda9ctvnJ1n2vA_8pNtJ');"></div>
-              <div>
-                <p class="text-base font-medium">Quentin</p>
-                <p class="text-[#cac191] text-sm">Membre</p>
-              </div>
-            </div>
-
-            <div class="flex flex-col gap-2">
-              <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#484323] transition" href="profile.html">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" class="text-white"><path fill="currentColor" d="M117.25 157.92a60 60 0 1 0-66.5 0A95.83 95.83 0 0 0 3.53 195.63a8 8 0 1 0 13.4 8.74a80 80 0 0 1 134.14 0a8 8 0 0 0 13.4-8.74a95.83 95.83 0 0 0-47.22-37.71M40 108a44 44 0 1 1 44 44a44.05 44.05 0 0 1-44-44"/></svg>
-                <span class="text-sm font-medium">Mon profil</span>
-              </a>
-              <a class="flex items-center gap-3 px-3 py-2 rounded-lg bg-[#484323]" href="#">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" class="text-white"><path fill="currentColor" d="M208 32h-24v-8a8 8 0 0 0-16 0v8H88v-8a8 8 0 0 0-16 0v8H48a16 16 0 0 0-16 16v160a16 16 0 0 0 16 16h160a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16M112 184a8 8 0 0 1-16 0v-51.06l-4.42 2.22a8 8 0 1 1-7.16-14.32l16-8A8 8 0 0 1 112 120Zm56-8a8 8 0 0 1 0 16h-32a8 8 0 0 1-6.4-12.8l28.78-38.37A8 8 0 1 0 145.07 132a8 8 0 1 1-13.85-8A24 24 0 0 1 176 136a23.76 23.76 0 0 1-4.84 14.45zM48 80V48h24v8a8 8 0 0 0 16 0v-8h80v8a8 8 0 0 0 16 0v-8h24v32z"/></svg>
-                <span class="text-sm font-medium">Mes séances</span>
-              </a>
-              <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#484323] transition" href="checkout.html">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" class="text-white"><path fill="currentColor" d="M216 72h-34.1l-9.8-19.6A16.2 16.2 0 0 0 157.2 44H98.8a16.2 16.2 0 0 0-14.9 8.4L74.1 72H40a16 16 0 0 0-16 16v8a8 8 0 0 0 8 8h16l12.7 86.8A24 24 0 0 0 84.5 232h87a24 24 0 0 0 23.8-20.2L208 104h16a8 8 0 0 0 8-8v-8a16 16 0 0 0-16-16m-44.6 144.2a8.1 8.1 0 0 1-7.9 6.8h-87a8.1 8.1 0 0 1-7.9-6.8L53.2 104h149.6z"/></svg>
-                <span class="text-sm font-medium">Paiements & reçus</span>
-              </a>
-              <a class="flex items-center gap-3 px-3 py-2 rounded-lg hover:bg-[#484323] transition" href="pricing.html">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 256 256" class="text-white"><path fill="currentColor" d="M136 32a8 8 0 0 0-8 8v16h-8a40 40 0 0 0 0 80h16a24 24 0 0 1 0 48h-24a24 24 0 0 1-24-24a8 8 0 0 0-16 0a40 40 0 0 0 40 40h8v16a8 8 0 0 0 16 0v-16h8a40 40 0 0 0 0-80h-16a24 24 0 0 1 0-48h24a24 24 0 0 1 24 24a8 8 0 0 0 16 0a40 40 0 0 0-40-40h-8V40a8 8 0 0 0-8-8"/></svg>
-                <span class="text-sm font-medium">Mes crédits</span>
-              </a>
-            </div>
-
-            <div class="mt-4 rounded-lg border border-[#675f32] p-4">
-              <p class="text-sm text-[#cac191]">Crédits restants</p>
-              <div class="mt-1 flex items-end gap-2">
-                <p class="text-3xl font-extrabold">6</p>
-                <p class="text-sm text-[#cac191]">/ 10</p>
-              </div>
-              <div class="mt-3 h-2 w-full rounded-full bg-[#343019]">
-                <div class="h-full w-[60%] rounded-full bg-[#efcd0f]"></div>
-              </div>
-              <p class="mt-2 text-xs text-[#cac191]">Renouvellement le 30/09/2025</p>
-              <a href="pricing.html" class="mt-3 inline-flex items-center justify-center rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold">Acheter des crédits</a>
-            </div>
-          </div>
-        </aside>
-
-        <!-- Content -->
-        <section class="flex-1 max-w-[1000px]">
-          <div class="flex items-center justify-between flex-wrap gap-3">
-            <h1 class="text-[28px] md:text-[32px] font-bold tracking-[-0.015em]">Mes séances</h1>
-            <!-- Desktop filters -->
-            <div class="hidden md:flex items-center gap-2">
-              <label class="sr-only" for="date-from">Du</label>
-              <input id="date-from" type="date" class="rounded-md border-[#675f32] bg-transparent text-white text-sm" />
-              <span class="text-[#cac191] text-sm">→</span>
-              <label class="sr-only" for="date-to">Au</label>
-              <input id="date-to" type="date" class="rounded-md border-[#675f32] bg-transparent text-white text-sm" />
-              <select id="filter-type" class="rounded-md border-[#675f32] bg-transparent text-white text-sm">
-                <option class="bg-[#222011]">Toutes</option>
-                <option class="bg-[#222011]">Individuelle</option>
-                <option class="bg-[#222011]">Groupe</option>
-                <option class="bg-[#222011]">À domicile</option>
-                <option class="bg-[#222011]">En ligne</option>
-              </select>
-              <select id="filter-status" class="rounded-md border-[#675f32] bg-transparent text-white text-sm">
-                <option class="bg-[#222011]">Statut: Tous</option>
-                <option class="bg-[#222011]">Confirmée</option>
-                <option class="bg-[#222011]">À confirmer</option>
-                <option class="bg-[#222011]">En attente de paiement</option>
-                <option class="bg-[#222011]">Annulée</option>
-              </select>
-            </div>
-            <!-- Mobile filters trigger -->
-            <button id="toggle-filters" class="md:hidden inline-flex items-center gap-2 rounded-lg border border-[#675f32] px-3 py-2 text-sm">
-              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 256 256" class="text-white"><path fill="currentColor" d="M232 64a8 8 0 0 1-8 8h-41.38a32 32 0 0 1-61.24 0H32a8 8 0 0 1 0-16h89.38a32 32 0 0 1 61.24 0H224a8 8 0 0 1 8 8m-8 56H134.62a32 32 0 0 1-61.24 0H32a8 8 0 0 1 0-16h41.38a32 32 0 0 1 61.24 0H224a8 8 0 0 1 0 16m0 48h-89.38a32 32 0 0 1-61.24 0H32a8 8 0 0 1 0 16h41.38a32 32 0 0 1 61.24 0H224a8 8 0 0 1 0 16"/></svg>
-              Filtres
-            </button>
+      <!-- Main -->
+      <main class="flex flex-1 justify-center px-4 md:px-6 py-6 pb-24">
+        <section class="w-full max-w-3xl">
+          <div class="flex items-center justify-between gap-3">
+            <h1 class="text-[22px] md:text-[26px] font-extrabold tracking-[-0.02em]">Mes séances</h1>
+            <a href="booking.html" class="inline-flex items-center gap-2 rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold">
+              <span>Réserver</span>
+            </a>
           </div>
 
-          <!-- Mobile filters panel -->
-          <div id="mobile-filters" class="md:hidden mt-3 hidden rounded-lg border border-[#675f32] p-3 space-y-2">
-            <div class="grid grid-cols-1 gap-2">
-              <label class="text-xs text-[#cac191]" for="m-date-from">Du</label>
-              <input id="m-date-from" type="date" class="rounded-md border-[#675f32] bg-transparent text-white text-sm" />
-              <label class="text-xs text-[#cac191]" for="m-date-to">Au</label>
-              <input id="m-date-to" type="date" class="rounded-md border-[#675f32] bg-transparent text-white text-sm" />
-              <select id="m-filter-type" class="rounded-md border-[#675f32] bg-transparent text-white text-sm">
-                <option class="bg-[#222011]">Toutes</option>
-                <option class="bg-[#222011]">Individuelle</option>
-                <option class="bg-[#222011]">Groupe</option>
-                <option class="bg-[#222011]">À domicile</option>
-                <option class="bg-[#222011]">En ligne</option>
-              </select>
-              <select id="m-filter-status" class="rounded-md border-[#675f32] bg-transparent text-white text-sm">
-                <option class="bg-[#222011]">Statut: Tous</option>
-                <option class="bg-[#222011]">Confirmée</option>
-                <option class="bg-[#222011]">À confirmer</option>
-                <option class="bg-[#222011]">En attente de paiement</option>
-                <option class="bg-[#222011]">Annulée</option>
-              </select>
-              <button class="w-full rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold">Appliquer</button>
-            </div>
-          </div>
-
-          <!-- Tabs -->
-          <div class="mt-4 border-b border-[#675f32] flex gap-6 sm:gap-8 px-1 sticky top-0 bg-[#222011] z-10">
-            <button class="border-b-[3px] border-[#efcd0f] pb-3 pt-4 text-sm font-bold">À venir</button>
-            <button class="border-b-[3px] border-transparent pb-3 pt-4 text-sm font-bold text-[#cac191]">Passées</button>
-          </div>
-
-          <!-- List -->
-          <div class="mt-4 flex flex-col gap-3 pb-24">
-            <!-- Item -->
-            <article class="rounded-lg border border-[#675f32] bg-[#222011] p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div class="flex items-start gap-4">
-                <div class="rounded-lg bg-[#343019] px-3 py-2 text-center">
-                  <p class="text-xs text-[#cac191]">Lun</p>
-                  <p class="text-2xl font-extrabold leading-none">09</p>
-                  <p class="text-xs text-[#cac191]">Sep</p>
-                </div>
-                <div>
-                  <h3 class="text-base font-bold leading-tight">Séance individuelle — Haut du corps</h3>
-                  <p class="text-sm text-[#cac191]">10:00–11:00 • Avec Thomas • En ligne</p>
-                  <div class="mt-2 flex flex-wrap items-center gap-2">
-                    <span class="inline-flex items-center rounded-full bg-[#343019] px-2.5 py-1 text-xs">Crédit 1/1</span>
-                    <span class="inline-flex items-center rounded-full bg-[#1f4421]/50 px-2.5 py-1 text-xs">Confirmée</span>
+          <div class="mt-6 space-y-8">
+            <div>
+              <h2 class="text-[18px] md:text-[20px] font-bold tracking-[-0.01em]">À venir</h2>
+              <div class="mt-3 flex flex-col gap-3">
+                <!-- Upcoming item 1 -->
+                <article class="rounded-lg border border-[#675f32] bg-[#222011] p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div class="flex items-start gap-4">
+                    <div class="rounded-lg bg-[#343019] px-3 py-2 text-center shrink-0">
+                      <p class="text-xs text-[#cac191]">Ven</p>
+                      <p class="text-2xl font-extrabold leading-none">13</p>
+                      <p class="text-xs text-[#cac191]">Sep</p>
+                    </div>
+                    <div>
+                      <h3 class="text-base font-bold leading-tight">Coaching individuel — Haut du corps</h3>
+                      <p class="text-sm text-[#cac191]">10:00—11:00 • Studio B</p>
+                      <span class="mt-2 inline-flex items-center rounded-full bg-[#1f4421]/50 px-2.5 py-1 text-xs">Confirmée</span>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 w-full md:w-auto">
-                <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Ajouter au calendrier</a>
-                <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Détails</a>
-                <button class="rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold w-full md:w-auto">Reprogrammer</button>
-                <button class="rounded-lg bg-transparent px-3 py-2 text-sm text-red-300 hover:bg-red-900/20 border border-red-400/40 w-full md:w-auto">Annuler</button>
-              </div>
-            </article>
-
-            <!-- Item -->
-            <article class="rounded-lg border border-[#675f32] bg-[#222011] p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div class="flex items-start gap-4">
-                <div class="rounded-lg bg-[#343019] px-3 py-2 text-center">
-                  <p class="text-xs text-[#cac191]">Mer</p>
-                  <p class="text-2xl font-extrabold leading-none">11</p>
-                  <p class="text-xs text-[#cac191]">Sep</p>
-                </div>
-                <div>
-                  <h3 class="text-base font-bold leading-tight">Cours de groupe — HIIT</h3>
-                  <p class="text-sm text-[#cac191]">18:00–19:00 • Salle Studio A</p>
-                  <div class="mt-2 flex flex-wrap items-center gap-2">
-                    <span class="inline-flex items-center rounded-full bg-[#343019] px-2.5 py-1 text-xs">Crédit 1/1</span>
-                    <span class="inline-flex items-center rounded-full bg-[#6a5b1a] px-2.5 py-1 text-xs">En attente de paiement</span>
+                  <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 w-full md:w-auto">
+                    <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Reprogrammer</a>
+                    <button class="rounded-lg bg-transparent px-3 py-2 text-sm text-red-300 hover:bg-red-900/20 border border-red-400/40 w-full md:w-auto">Annuler</button>
                   </div>
-                </div>
-              </div>
-              <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 w-full md:w-auto">
-                <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Payer</a>
-                <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Détails</a>
-                <button class="rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold w-full md:w-auto">Reprogrammer</button>
-                <button class="rounded-lg bg-transparent px-3 py-2 text-sm text-red-300 hover:bg-red-900/20 border border-red-400/40 w-full md:w-auto">Annuler</button>
-              </div>
-            </article>
+                </article>
 
-            <!-- Item -->
-            <article class="rounded-lg border border-[#675f32] bg-[#222011] p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div class="flex items-start gap-4">
-                <div class="rounded-lg bg-[#343019] px-3 py-2 text-center">
-                  <p class="text-xs text-[#cac191]">Ven</p>
-                  <p class="text-2xl font-extrabold leading-none">20</p>
-                  <p class="text-xs text-[#cac191]">Sep</p>
-                </div>
-                <div>
-                  <h3 class="text-base font-bold leading-tight">Séance à domicile — Bas du corps</h3>
-                  <p class="text-sm text-[#cac191]">08:30–09:30 • 12 Rue des Fleurs, Lyon</p>
-                  <div class="mt-2 flex flex-wrap items-center gap-2">
-                    <span class="inline-flex items-center rounded-full bg-[#343019] px-2.5 py-1 text-xs">Crédit 2/2</span>
-                    <span class="inline-flex items-center rounded-full bg-[#5b1a1a]/60 px-2.5 py-1 text-xs">À confirmer</span>
+                <!-- Upcoming item 2 -->
+                <article class="rounded-lg border border-[#675f32] bg-[#222011] p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div class="flex items-start gap-4">
+                    <div class="rounded-lg bg-[#343019] px-3 py-2 text-center shrink-0">
+                      <p class="text-xs text-[#cac191]">Mer</p>
+                      <p class="text-2xl font-extrabold leading-none">11</p>
+                      <p class="text-xs text-[#cac191]">Sep</p>
+                    </div>
+                    <div>
+                      <h3 class="text-base font-bold leading-tight">Cours de groupe — HIIT</h3>
+                      <p class="text-sm text-[#cac191]">18:00—19:00 • Studio A</p>
+                      <span class="mt-2 inline-flex items-center rounded-full bg-[#1f4421]/50 px-2.5 py-1 text-xs">Confirmée</span>
+                    </div>
                   </div>
-                </div>
-              </div>
-              <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 w-full md:w-auto">
-                <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Confirmer</a>
-                <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Détails</a>
-                <button class="rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold w-full md:w-auto">Proposer un autre créneau</button>
-              </div>
-            </article>
-          </div>
-
-          <!-- Past sessions -->
-          <h2 class="mt-8 text-[20px] md:text-[22px] font-bold tracking-[-0.015em]">Séances passées</h2>
-          <div class="mt-3 flex flex-col gap-3 pb-24">
-            <article class="rounded-lg border border-[#675f32] bg-[#222011] p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
-              <div class="flex items-start gap-4">
-                <div class="rounded-lg bg-[#343019] px-3 py-2 text-center opacity-70">
-                  <p class="text-xs text-[#cac191]">Lun</p>
-                  <p class="text-2xl font-extrabold leading-none">26</p>
-                  <p class="text-xs text-[#cac191]">Aoû</p>
-                </div>
-                <div>
-                  <h3 class="text-base font-bold leading-tight">Séance individuelle — Full body</h3>
-                  <p class="text-sm text-[#cac191]">17:00–18:00 • Studio B</p>
-                  <div class="mt-2 flex flex-wrap items-center gap-2">
-                    <span class="inline-flex items-center rounded-full bg-[#343019] px-2.5 py-1 text-xs">Terminée</span>
+                  <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 w-full md:w-auto">
+                    <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Reprogrammer</a>
+                    <button class="rounded-lg bg-transparent px-3 py-2 text-sm text-red-300 hover:bg-red-900/20 border border-red-400/40 w-full md:w-auto">Annuler</button>
                   </div>
-                </div>
+                </article>
               </div>
-              <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 w-full md:w-auto">
-                <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Télécharger le reçu</a>
-                <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Donner un avis</a>
-                <a href="#" class="rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold w-full md:w-auto text-center">Réserver à nouveau</a>
-              </div>
-            </article>
-          </div>
+            </div>
 
-          <!-- Floating action (mobile) -->
-          <div class="fixed bottom-16 right-5 md:hidden z-50">
-            <a href="booking.html" class="inline-flex items-center justify-center rounded-full bg-[#efcd0f] text-[#222011] size-14 font-extrabold shadow-lg">+</a>
+            <div>
+              <h2 class="text-[18px] md:text-[20px] font-bold tracking-[-0.01em]">Passées</h2>
+              <div class="mt-3 flex flex-col gap-3 pb-24">
+                <article class="rounded-lg border border-[#675f32] bg-[#222011] p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                  <div class="flex items-start gap-4">
+                    <div class="rounded-lg bg-[#343019] px-3 py-2 text-center opacity-70 shrink-0">
+                      <p class="text-xs text-[#cac191]">Lun</p>
+                      <p class="text-2xl font-extrabold leading-none">26</p>
+                      <p class="text-xs text-[#cac191]">Aoû</p>
+                    </div>
+                    <div>
+                      <h3 class="text-base font-bold leading-tight">Séance individuelle — Full body</h3>
+                      <p class="text-sm text-[#cac191]">17:00—18:00 • Studio B</p>
+                      <span class="mt-2 inline-flex items-center rounded-full bg-[#343019] px-2.5 py-1 text-xs">Terminée</span>
+                    </div>
+                  </div>
+                  <div class="flex flex-col md:flex-row items-stretch md:items-center gap-2 w-full md:w-auto">
+                    <a href="#" class="rounded-lg border border-[#675f32] px-3 py-2 text-sm w-full md:w-auto text-center">Donner un avis</a>
+                    <a href="#" class="rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold">Réserver à nouveau</a>
+                  </div>
+                </article>
+              </div>
+            </div>
           </div>
         </section>
       </main>
 
       <!-- Bottom nav (mobile) -->
-      <nav class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#222011] border-t border-[#484323] px-4 pb-[calc(12px+env(safe-area-inset-bottom))] pt-2">
-        <ul class="grid grid-cols-4 gap-3 text-xs">
-          <li><a href="index.html" class="flex flex-col items-center gap-1 py-1"><span>Accueil</span></a></li>
-          <li><a href="booking.html" class="flex flex-col items-center gap-1 py-1"><span>Réserver</span></a></li>
-          <li><a href="reservation.html" class="flex flex-col items-center gap-1 py-1 font-bold text-[#efcd0f]"><span>Planning</span></a></li>
-          <li><a href="profile.html" class="flex flex-col items-center gap-1 py-1"><span>Profil</span></a></li>
+      <nav aria-label="Navigation principale" class="md:hidden fixed bottom-0 left-0 right-0 z-50 bg-[#222011]/95 backdrop-blur border-t border-[#484323] px-3 pt-1 pb-[calc(10px+env(safe-area-inset-bottom))]">
+        <ul class="grid grid-cols-4 gap-1.5 text-xs">
+          <!-- Accueil -->
+          <li>
+            <a href="index.html" class="group flex flex-col items-center gap-0.5 py-1.5 rounded-lg text-[#cac191] hover:bg-[#343019]">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4 opacity-90 group-hover:opacity-100">
+                <path d="M11.47 3.84a.75.75 0 0 1 1.06 0l7.5 7.5a.75.75 0 1 1-1.06 1.06L18 12.53V19a2 2 0 0 1-2 2h-2.25a.75.75 0 0 1-.75-.75V16a1 1 0 0 0-1-1h-1.5a1 1 0 0 0-1 1v4.25a.75.75 0 0 1-.75.75H6a2 2 0 0 1-2-2v-6.47l-.97.97a.75.75 0 1 1-1.06-1.06z"/>
+              </svg>
+              <span>Accueil</span>
+            </a>
+          </li>
+
+          <!-- Réserver -->
+          <li>
+            <a href="booking.html" class="group flex flex-col items-center gap-0.5 py-1.5 rounded-lg text-[#cac191] hover:bg-[#343019]">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4 opacity-90 group-hover:opacity-100">
+                <path d="M6.75 2a.75.75 0 0 1 .75.75V4h9V2.75a.75.75 0 0 1 1.5 0V4h.5A2.25 2.25 0 0 1 21 6.25v11.5A2.25 2.25 0 0 1 18.75 20H5.25A2.25 2.25 0 0 1 3 17.75V6.25A2.25 2.25 0 0 1 5.25 4h.5V2.75A.75.75 0 0 1 6.75 2zm0 4.5h-1.5a.75.75 0 0 0-.75.75V9h15V7.25a.75.75 0 0 0-.75-.75h-1.5V8a.75.75 0 0 1-1.5 0V6.5h-9V8a.75.75 0 0 1-1.5 0zM8 12.75a.75.75 0 0 1 .75-.75h6.5a.75.75 0 0 1 0 1.5h-6.5A.75.75 0 0 1 8 12.75z"/>
+              </svg>
+              <span>Réserver</span>
+            </a>
+          </li>
+
+          <!-- Planning (actif) -->
+          <li>
+            <a href="reservation.html" aria-current="page" class="group flex flex-col items-center gap-0.5 py-1.5 rounded-lg bg-[#efcd0f]/10 text-[#efcd0f] ring-1 ring-[#efcd0f]/30">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                <path d="M6.75 2a.75.75 0 0 1 .75.75V4h9V2.75a.75.75 0 0 1 1.5 0V4h.5A2.25 2.25 0 0 1 21 6.25v11.5A2.25 2.25 0 0 1 18.75 20H5.25A2.25 2.25 0 0 1 3 17.75V6.25A2.25 2.25 0 0 1 5.25 4h.5V2.75A.75.75 0 0 1 6.75 2zM4.5 10.5v7.25c0 .414.336.75.75.75h13.5a.75.75 0 0 0 .75-.75V10.5z"/>
+              </svg>
+              <span>Planning</span>
+            </a>
+          </li>
+
+          <!-- Profil -->
+          <li>
+            <a href="profile.html" class="group flex flex-col items-center gap-0.5 py-1.5 rounded-lg text-[#cac191] hover:bg-[#343019]">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-4 opacity-90 group-hover:opacity-100">
+                <path d="M12 2a5 5 0 1 1 0 10a5 5 0 0 1 0-10m-7 18a7 7 0 1 1 14 0v1H5z"/>
+              </svg>
+              <span>Profil</span>
+            </a>
+          </li>
         </ul>
       </nav>
 
@@ -294,41 +193,33 @@
 
       <!-- JS hooks -->
       <script>
-        // Toggle mobile filters
-        const toggleBtn = document.getElementById('toggle-filters');
-        const panel = document.getElementById('mobile-filters');
-        if (toggleBtn && panel) {
-          toggleBtn.addEventListener('click', () => panel.classList.toggle('hidden'));
-        }
+        (function () {
+          const btn = document.getElementById('mobile-menu-toggle');
+          const menu = document.getElementById('mobile-menu');
+          if (!btn || !menu) return;
+          const close = () => {
+            if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
+            btn.setAttribute('aria-expanded', 'false');
+          };
+          const open = () => {
+            menu.classList.remove('hidden');
+            btn.setAttribute('aria-expanded', 'true');
+          };
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            menu.classList.contains('hidden') ? open() : close();
+          });
+          document.addEventListener('click', (e) => {
+            if (!menu.contains(e.target) && e.target !== btn) close();
+          });
+          document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') close();
+          });
+          window.addEventListener('resize', () => {
+            if (window.innerWidth >= 768) close();
+          });
+        })();
       </script>
     </div>
   </body>
-  <script>
-    (function () {
-      const btn = document.getElementById('mobile-menu-toggle');
-      const menu = document.getElementById('mobile-menu');
-      if (!btn || !menu) return;
-      const close = () => {
-        if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      };
-      const open = () => {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-      };
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menu.classList.contains('hidden') ? open() : close();
-      });
-      document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && e.target !== btn) close();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') close();
-      });
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768) close();
-      });
-    })();
-  </script>
 </html>

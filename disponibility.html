@@ -1,355 +1,402 @@
-<html>
+﻿<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth" data-theme="dark">
   <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
+    <meta name="color-scheme" content="dark light" />
+    <title>Fit by T — Disponibilités</title>
+    <meta name="description" content="Définissez vos disponibilités par jour via un calendrier et des créneaux horaires." />
 
-    <title>Stitch Design</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind CSS CDN -->
+    <script>
+      window.tailwind = {
+        theme: { extend: { container: { center: true, padding: { DEFAULT: '1rem', md: '1.5rem', lg: '2rem' } } } }
+      }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+
+    <!-- Styles -->
+    <style>
+      :root{ --bg:12 12% 6%; --card:45 16% 10%; --brand:49 88% 51%; }
+      html{ font-family: Inter,system-ui,-apple-system,Segoe UI,Roboto,"Noto Sans",Arial; }
+      .bg-grid{
+        background-image:
+          radial-gradient(1200px 400px at 10% -10%, hsl(var(--brand)/.16), transparent 40%),
+          radial-gradient(1000px 600px at 90% 0%, hsl(260 90% 66%/.16), transparent 40%),
+          radial-gradient(500px 400px at 60% 110%, hsl(170 80% 60%/.14), transparent 40%),
+          linear-gradient(to bottom, hsl(var(--bg)), hsl(var(--bg)));
+        background-repeat:no-repeat;
+      }
+      .glass{ backdrop-filter:saturate(140%) blur(10px); background:hsl(var(--card)/.5); border:1px solid hsl(0 0% 100% /.08); }
+      .ring-gradient{ position:relative; }
+      .ring-gradient::before{
+        content:""; position:absolute; inset:-1px; border-radius:16px;
+        background:conic-gradient(from 0deg, hsl(var(--brand)) 0deg, transparent 120deg, transparent 240deg, hsl(var(--brand)) 360deg);
+        filter:blur(.5px);
+        -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+        -webkit-mask-composite:xor; mask-composite:exclude; padding:1px; pointer-events:none;
+      }
+      .btn{ height:2.5rem; border-radius:.65rem; padding:0 .9rem; border:1px solid hsl(0 0% 100% /.15); background:transparent; color:#fff; }
+      .btn-primary{ background:hsl(var(--brand)); color:#000; border-color:transparent; font-weight:800; }
+      .btn-danger{ border-color:rgba(255,255,255,.18); color:#fca5a5; }
+      .field{ border-radius:.65rem; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15); color:#fff; height:2.75rem; padding:0 .75rem; }
+      .field:focus{ outline:none; box-shadow:0 0 0 2px hsl(var(--brand)/.35); border-color:hsl(var(--brand)/.6) }
+      .field::placeholder{ color:rgba(255,255,255,.55); }
+      .row-error{ outline:2px solid #ef4444; outline-offset:2px; border-radius:.75rem; }
+
+      /* Calendar */
+      .cal-grid{ display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:.45rem; }
+      .cal-day{ position:relative; height:2.75rem; display:flex; align-items:center; justify-content:center; border-radius:.9rem; }
+      .cal-day:hover{ background-color: rgba(255,255,255,.06); }
+      .cal-day.is-muted{ opacity:.45; }
+      .cal-day.is-today{ outline:2px dashed hsl(var(--brand)/.7); outline-offset:2px; }
+      .cal-day.is-picked{ background:hsl(var(--brand)); color:#000; font-weight:800; }
+      .cal-head{ color:rgba(255,255,255,.8); font-weight:700; display:flex; align-items:center; justify-content:center; height:2.25rem; }
+
+      /* Badges inside calendar cells (count of slots) */
+      .cal-badge{
+        position:absolute; right:.35rem; top:.35rem; min-width:1.15rem; height:1.15rem;
+        border-radius:9999px; background:hsl(var(--brand)); color:#111; font-weight:800;
+        display:grid; place-items:center; font-size:.7rem; padding:0 .2rem;
+      }
+
+      /* Force dark native time inputs across browsers */
+      input[type="time"]{ background:transparent; color:#fff; color-scheme: dark; }
+      input[type="time"]::-webkit-calendar-picker-indicator{ filter: invert(1) opacity(.85); }
+      input[type="time"]::-webkit-datetime-edit-fields-wrapper{ color:#fff; }
+      input[type="time"]::-webkit-datetime-edit{ padding:0 0.25rem; }
+      input[type="time"]::-webkit-datetime-edit-hour-field,
+      input[type="time"]::-webkit-datetime-edit-minute-field,
+      input[type="time"]::-webkit-datetime-edit-ampm-field{ background:transparent; color:#fff; }
+      input[type="time"]::-moz-focus-inner{ border:0; }
+      input[type="time"]::-ms-clear{ display:none; }
+
+      @media(prefers-reduced-motion:no-preference){
+        .hover-lift{ transition: transform .3s ease, box-shadow .3s ease; }
+        .hover-lift:hover{ transform: translateY(-2px); box-shadow: 0 10px 30px hsl(var(--brand)/.18); }
+      }
+    </style>
   </head>
-  <body>
-    <div
-      class="relative flex size-full min-h-screen flex-col bg-[#222011] dark group/design-root overflow-x-hidden"
-      style='--checkbox-tick-svg: url(&apos;data:image/svg+xml,%3csvg viewBox=%270 0 16 16%27 fill=%27rgb(34,32,17)%27 xmlns=%27http://www.w3.org/2000/svg%27%3e%3cpath d=%27M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z%27/%3e%3c/svg%3e&apos;); font-family: "Noto Serif", "Noto Sans", sans-serif;'
-    >
-      <div class="layout-container flex h-full grow flex-col">
-        <header class="relative flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#484323] px-4 md:px-10 py-3">
-          <div class="flex items-center gap-4 text-white">
-            <div class="size-4">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M39.475 21.6262C40.358 21.4363 40.6863 21.5589 40.7581 21.5934C40.7876 21.655 40.8547 21.857 40.8082 22.3336C40.7408 23.0255 40.4502 24.0046 39.8572 25.2301C38.6799 27.6631 36.5085 30.6631 33.5858 33.5858C30.6631 36.5085 27.6632 38.6799 25.2301 39.8572C24.0046 40.4502 23.0255 40.7407 22.3336 40.8082C21.8571 40.8547 21.6551 40.7875 21.5934 40.7581C21.5589 40.6863 21.4363 40.358 21.6262 39.475C21.8562 38.4054 22.4689 36.9657 23.5038 35.2817C24.7575 33.2417 26.5497 30.9744 28.7621 28.762C30.9744 26.5497 33.2417 24.7574 35.2817 23.5037C36.9657 22.4689 38.4054 21.8562 39.475 21.6262ZM4.41189 29.2403L18.7597 43.5881C19.8813 44.7097 21.4027 44.9179 22.7217 44.7893C24.0585 44.659 25.5148 44.1631 26.9723 43.4579C29.9052 42.0387 33.2618 39.5667 36.4142 36.4142C39.5667 33.2618 42.0387 29.9052 43.4579 26.9723C44.1631 25.5148 44.659 24.0585 44.7893 22.7217C44.9179 21.4027 44.7097 19.8813 43.5881 18.7597L29.2403 4.41187C27.8527 3.02428 25.8765 3.02573 24.2861 3.36776C22.6081 3.72863 20.7334 4.58419 18.8396 5.74801C16.4978 7.18716 13.9881 9.18353 11.5858 11.5858C9.18354 13.988 7.18717 16.4978 5.74802 18.8396C4.58421 20.7334 3.72865 22.6081 3.36778 24.2861C3.02574 25.8765 3.02429 27.8527 4.41189 29.2403Z"
-                  fill="currentColor"
-                ></path>
-              </svg>
-            </div>
-            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Fit by T</h2>
-          </div>
-          <div class="flex flex-1 justify-end gap-4 md:gap-8">
-            <button id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden inline-flex items-center justify-center rounded-lg border border-[#675f32] text-white size-9">
-              <span class="sr-only">Ouvrir le menu</span>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
-                <path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd" />
-              </svg>
-            </button>
-            <div class="hidden md:flex items-center gap-4 md:gap-9 overflow-x-auto whitespace-nowrap">
-              <a class="text-white text-sm font-medium leading-normal" href="index.html">Accueil</a>
-              <a class="text-white text-sm font-medium leading-normal" href="pricing.html">Tarifs</a>
-              <a class="text-white text-sm font-medium leading-normal" href="booking.html">Réserver</a>
-              <a class="text-white text-sm font-medium leading-normal" href="checkout.html">Paiement</a>
-              <a class="text-white text-sm font-medium leading-normal" href="reservation.html">Mes séances</a>
-              <a class="text-white text-sm font-medium leading-normal" href="profile.html">Profil</a>
-            </div>
-          </div>
-          <!-- Mobile menu panel -->
-          <div id="mobile-menu" class="md:hidden hidden absolute right-4 top-14 w-64 rounded-lg border border-[#484323] bg-[#222011] shadow-lg z-50">
-            <nav class="flex flex-col p-2">
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="index.html">Accueil</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="pricing.html">Tarifs</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="booking.html">Réserver</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="checkout.html">Paiement</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="reservation.html">Mes séances</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="profile.html">Profil</a>
-              <div class="my-2 border-t border-[#484323]"></div>
-              <p class="px-3 pt-1 pb-2 text-[#cac191] text-xs font-semibold uppercase tracking-wide">Espace coach</p>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="disponibility.html">Disponibilités</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="analytics.html">Statistiques</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="contact.html">Contact</a>
-            </nav>
-          </div>
-        </header>
-        <div class="px-4 sm:px-6 lg:px-10 xl:px-40 flex flex-1 justify-center py-5">
-          <div class="layout-content-container flex flex-col max-w-[960px] w-full flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Disponibilités</p></div>
-            <div class="flex flex-wrap items-center justify-center gap-6 p-4">
-              <div class="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5">
-                <div class="flex items-center p-1 justify-between">
-                  <button>
-                    <div class="text-white flex size-10 items-center justify-center" data-icon="CaretLeft" data-size="18px" data-weight="regular">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"></path>
-                      </svg>
-                    </div>
-                  </button>
-                  <p class="text-white text-base font-bold leading-tight flex-1 text-center pr-10">Juillet 2024</p>
-                </div>
-                <div class="grid grid-cols-7">
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">M</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">W</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">F</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
-                  <button class="h-12 w-full text-white col-start-4 text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">1</div>
-                  </button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">2</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">3</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">4</div></button>
-                  <button class="h-12 w-full text-[#222011] rounded-l-full bg-[#484323] text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full bg-[#f0ce0f]">5</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">6</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">7</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">8</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">9</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">10</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">11</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">12</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">13</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">14</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">15</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">16</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">17</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">18</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">19</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">20</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">21</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">22</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">23</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">24</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">25</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">26</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">27</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">28</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">29</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">30</div>
-                  </button>
-                </div>
-              </div>
-              <div class="flex min-w-72 max-w-[336px] flex-1 flex-col gap-0.5">
-                <div class="flex items-center p-1 justify-between">
-                  <p class="text-white text-base font-bold leading-tight flex-1 text-center pl-10">Août 2024</p>
-                  <button>
-                    <div class="text-white flex size-10 items-center justify-center" data-icon="CaretRight" data-size="18px" data-weight="regular">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="18px" height="18px" fill="currentColor" viewBox="0 0 256 256">
-                        <path d="M181.66,133.66l-80,80a8,8,0,0,1-11.32-11.32L164.69,128,90.34,53.66a8,8,0,0,1,11.32-11.32l80,80A8,8,0,0,1,181.66,133.66Z"></path>
-                      </svg>
-                    </div>
-                  </button>
-                </div>
-                <div class="grid grid-cols-7">
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">M</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">W</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">T</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">F</p>
-                  <p class="text-white text-[13px] font-bold leading-normal tracking-[0.015em] flex h-12 w-full items-center justify-center pb-0.5">S</p>
-                  <button class="h-12 w-full bg-[#484323] text-white col-start-4 text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">1</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">2</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">3</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">4</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">5</div>
-                  </button>
-                  <button class="h-12 w-full bg-[#484323] text-white text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full">6</div>
-                  </button>
-                  <button class="h-12 w-full text-[#222011] rounded-r-full bg-[#484323] text-sm font-medium leading-normal">
-                    <div class="flex size-full items-center justify-center rounded-full bg-[#f0ce0f]">7</div>
-                  </button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">8</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">9</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">10</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">11</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">12</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">13</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">14</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">15</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">16</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">17</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">18</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">19</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">20</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">21</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">22</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">23</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">24</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">25</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">26</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">27</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">28</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">29</div></button>
-                  <button class="h-12 w-full text-white text-sm font-medium leading-normal"><div class="flex size-full items-center justify-center rounded-full">30</div></button>
-                </div>
-              </div>
-            </div>
-            <h3 class="text-white text-lg font-bold leading-tight tracking-[-0.015em] px-4 pb-2 pt-4">Récurrence</h3>
-            <div class="px-4">
-              <label class="flex gap-x-3 py-3 flex-row">
-                <input
-                  type="checkbox"
-                  class="h-5 w-5 rounded border-[#675f32] border-2 bg-transparent text-[#f0ce0f] checked:bg-[#f0ce0f] checked:border-[#f0ce0f] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#675f32] focus:outline-none"
-                />
-                <p class="text-white text-base font-normal leading-normal">Lundi</p>
-              </label>
-              <label class="flex gap-x-3 py-3 flex-row">
-                <input
-                  type="checkbox"
-                  class="h-5 w-5 rounded border-[#675f32] border-2 bg-transparent text-[#f0ce0f] checked:bg-[#f0ce0f] checked:border-[#f0ce0f] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#675f32] focus:outline-none"
-                />
-                <p class="text-white text-base font-normal leading-normal">Mardi</p>
-              </label>
-              <label class="flex gap-x-3 py-3 flex-row">
-                <input
-                  type="checkbox"
-                  class="h-5 w-5 rounded border-[#675f32] border-2 bg-transparent text-[#f0ce0f] checked:bg-[#f0ce0f] checked:border-[#f0ce0f] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#675f32] focus:outline-none"
-                />
-                <p class="text-white text-base font-normal leading-normal">Mercredi</p>
-              </label>
-              <label class="flex gap-x-3 py-3 flex-row">
-                <input
-                  type="checkbox"
-                  class="h-5 w-5 rounded border-[#675f32] border-2 bg-transparent text-[#f0ce0f] checked:bg-[#f0ce0f] checked:border-[#f0ce0f] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#675f32] focus:outline-none"
-                />
-                <p class="text-white text-base font-normal leading-normal">Jeudi</p>
-              </label>
-              <label class="flex gap-x-3 py-3 flex-row">
-                <input
-                  type="checkbox"
-                  class="h-5 w-5 rounded border-[#675f32] border-2 bg-transparent text-[#f0ce0f] checked:bg-[#f0ce0f] checked:border-[#f0ce0f] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#675f32] focus:outline-none"
-                />
-                <p class="text-white text-base font-normal leading-normal">Vendredi</p>
-              </label>
-              <label class="flex gap-x-3 py-3 flex-row">
-                <input
-                  type="checkbox"
-                  class="h-5 w-5 rounded border-[#675f32] border-2 bg-transparent text-[#f0ce0f] checked:bg-[#f0ce0f] checked:border-[#f0ce0f] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#675f32] focus:outline-none"
-                />
-                <p class="text-white text-base font-normal leading-normal">Samedi</p>
-              </label>
-              <label class="flex gap-x-3 py-3 flex-row">
-                <input
-                  type="checkbox"
-                  class="h-5 w-5 rounded border-[#675f32] border-2 bg-transparent text-[#f0ce0f] checked:bg-[#f0ce0f] checked:border-[#f0ce0f] checked:bg-[image:--checkbox-tick-svg] focus:ring-0 focus:ring-offset-0 focus:border-[#675f32] focus:outline-none"
-                />
-                <p class="text-white text-base font-normal leading-normal">Dimanche</p>
-              </label>
-            </div>
-            <div class="flex max-w-[480px] flex-wrap items-end gap-4 px-4 py-3">
-              <label class="flex flex-col min-w-40 flex-1">
-                <p class="text-white text-base font-medium leading-normal pb-2">Heure de début</p>
-                <input
-                  placeholder="09:00"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#484323] focus:border-none h-14 placeholder:text-[#cac191] p-4 text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-              <label class="flex flex-col min-w-40 flex-1">
-                <p class="text-white text-base font-medium leading-normal pb-2">Heure de fin</p>
-                <input
-                  placeholder="18:00"
-                  class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#484323] focus:border-none h-14 placeholder:text-[#cac191] p-4 text-base font-normal leading-normal"
-                  value=""
-                />
-              </label>
-            </div>
-            <div class="flex px-4 py-3 justify-end">
-              <button
-                class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#f0ce0f] text-[#222011] text-sm font-bold leading-normal tracking-[0.015em]"
-              >
-                <span class="truncate">Enregistrer les disponibilités</span>
-              </button>
-            </div>
+
+  <body class="min-h-screen bg-grid text-white antialiased selection:bg-yellow-300 selection:text-black">
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-3 focus:py-2 focus:rounded-md focus:bg-black/80 focus:text-white">Aller au contenu</a>
+
+    <!-- Header -->
+    <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/50 border-b border-white/10">
+      <div class="container flex h-16 items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2 group">
+          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.998 35.764c-.004-.018-.01-.05-.023-.094a3.13 3.13 0 0 0-.193-.511 6.54 6.54 0 0 0-.053-.12c-1.271-.871-3.802-2.1-6.072-2.641C30.9875 31.8691 27.6413 31.4783 24 31.4783s-6.9875.3908-9.7095 1.0406c-2.29.5465-4.8462 1.7915-6.1059 2.6643-.0115.0243-.0232.0498-.0349.076-.0513.1159-.0933.2294-.1207.3298-.0262.0958-.0294.1443-.0298.1498 0 .0253.0104.3379.68485.8926.66061.5432 1.73734 1.1217 3.24421 1.6458C14.9242 39.319 19.1919 40 24 40s9.0758-.681 12.0709-1.7228c1.5069-.5241 2.5836-1.1026 3.2442-1.6458.5855-.4815.6706-.7803.6829-.8674ZM4.9518 32.7688 21.4543 6.3027c1.1745-1.8836 3.9169-1.88361 5.0914 0L43.0534 32.777c.0175.0282.0344.0568.0506.0859l-1.7477.9723c1.7477-.9723 1.7475-.9726 1.7477-.9723l.0011.0021.0014.0025.0036.0064.0098.0179c.0077.0142.0178.0328.0298.0555.0241.0452.0565.1072.0943.1826.075.1493.1756.3591.2777.6018.1684.4004.4783 1.1994.4783 2.0074 0 1.7036-.997 3.0384-2.1442 3.9818-1.1611.9548-2.7204 1.7255-4.4708 2.3343C33.8654 43.2794 29.133 44 24 44s-9.8669-.7206-13.3865-1.9448c-1.75037-.6088-3.30971-1.3795-4.47081-2.3343C4.9969 38.7775 4 37.4427 4 35.7391c0-.8666.2926-1.6469.4932-2.0998.1105-.2495.2202-.4589.3036-.6082.0421-.0755.0786-.1376.1066-.184 0 0 .0119-.0195 .0216-.0341l.0075-.0119.0051-.0082Z"/></svg>
+          <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
+        </a>
+
+        <nav class="ml-auto hidden md:flex items-center gap-7 text-sm">
+          <a class="hover:opacity-90" href="index.html">Accueil</a>
+          <a class="hover:opacity-90" href="pricing.html">Tarifs</a>
+          <a class="hover:opacity-90" href="booking.html">Réserver</a>
+          <a class="hover:opacity-90" href="checkout.html">Paiement</a>
+          <a class="hover:opacity-90" href="reservation.html">Mes séances</a>
+          <a class="hover:opacity-90" href="profile.html">Profil</a>
+          <a class="hover:opacity-90" href="analytics.html">Statistiques</a>
+          <a class="hover:opacity-90" href="planning.html">Planning</a>
+          <a class="hover:opacity-90 font-semibold text-yellow-300" href="disponibility.html" aria-current="page">Disponibilités</a>
+        </nav>
+
+        <button id="menuBtn" class="ml-auto md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 size-10" aria-controls="mnav" aria-expanded="false" aria-label="Ouvrir le menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/></svg>
+        </button>
+      </div>
+      <div id="mnav" class="hidden md:hidden border-t border-white/10">
+        <nav class="container py-3 grid gap-2 text-sm">
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="index.html">Accueil</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="pricing.html">Tarifs</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="booking.html">Réserver</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="checkout.html">Paiement</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="reservation.html">Mes séances</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="profile.html">Profil</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="analytics.html">Statistiques</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="planning.html">Planning</a>
+          <a class="px-2 py-2 rounded-md bg-white/5" href="disponibility.html" aria-current="page">Disponibilités</a>
+        </nav>
+      </div>
+    </header>
+
+    <main id="main" class="relative">
+      <section class="container py-8 md:py-12">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div class="max-w-2xl">
+            <h1 class="text-3xl md:text-4xl font-extrabold tracking-tight">Disponibilités</h1>
+            <p class="text-white/80 mt-2">Choisissez un jour et définissez vos créneaux. (Démo locale)</p>
           </div>
         </div>
+      </section>
+
+      <section class="container pb-12 grid lg:grid-cols-[1.1fr_.9fr] gap-6 items-start">
+        <!-- Calendrier -->
+        <div class="ring-gradient glass rounded-2xl p-5">
+          <div class="flex items-center justify-between mb-3">
+            <button id="prev" class="btn" aria-label="Mois précédent">⟵</button>
+            <div class="text-lg font-semibold" id="monthTitle">—</div>
+            <button id="next" class="btn" aria-label="Mois suivant">⟶</button>
+          </div>
+          <div class="cal-grid">
+            <div class="cal-head">L</div><div class="cal-head">M</div><div class="cal-head">M</div>
+            <div class="cal-head">J</div><div class="cal-head">V</div><div class="cal-head">S</div><div class="cal-head">D</div>
+          </div>
+          <div id="calDays" class="cal-grid mt-1"></div>
+          <p class="text-sm text-white/70 mt-3">Jour sélectionné : <span class="font-semibold" id="pickedLabel">—</span></p>
+        </div>
+
+        <!-- Éditeur de créneaux -->
+        <div class="ring-gradient glass rounded-2xl p-5 grid gap-4">
+          <div class="flex items-center justify-between gap-3">
+            <h2 class="text-[22px] md:text-2xl font-extrabold tracking-tight">Créneaux du jour</h2>
+            <button id="addSlot" class="btn">+ Ajouter un créneau</button>
+          </div>
+
+          <!-- Résumé du jour -->
+          <div id="chips" class="flex flex-wrap gap-2 -mt-1"></div>
+
+          <div id="slotsWrap" class="grid gap-3">
+            <!-- rows -->
+          </div>
+
+          <div class="flex items-center justify-end gap-2 pt-2">
+            <button id="resetDay" class="btn btn-danger">Effacer la journée</button>
+            <button id="saveDay" class="btn btn-primary">Enregistrer</button>
+          </div>
+
+          <p class="text-xs text-white/60">Astuce : gardez 15–30 min de marge entre deux créneaux.</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="border-t border-white/10 bg-black/40">
+      <div class="container py-8 grid md:grid-cols-3 gap-6 text-sm text-white/70">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="size-5 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/></svg>
+            <span class="font-semibold">Fit by T</span>
+          </div>
+          <p>Coaching sportif personnalisé à Grenoble et en ligne.</p>
+        </div>
+        <nav class="grid gap-2">
+          <a href="index.html" class="hover:opacity-90">Accueil</a>
+          <a href="pricing.html" class="hover:opacity-90">Tarifs</a>
+          <a href="booking.html" class="hover:opacity-90">Réserver</a>
+          <a href="reservation.html" class="hover:opacity-90">Mes séances</a>
+          <a href="profile.html" class="hover:opacity-90">Profil</a>
+          <a href="analytics.html" class="hover:opacity-90">Statistiques</a>
+          <a href="planning.html" class="hover:opacity-90">Planning</a>
+          <a href="disponibility.html" class="hover:opacity-90">Disponibilités</a>
+        </nav>
+        <div class="grid gap-2">
+          <a href="#" class="hover:opacity-90">Mentions légales</a>
+          <a href="#" class="hover:opacity-90">Politique de confidentialité</a>
+          <p class="text-xs text-white/50">© <span id="y"></span> Fit by T. Tous droits réservés.</p>
+        </div>
       </div>
-    </div>
+    </footer>
+
+    <script>
+      // Mobile nav
+      (function(){
+        const btn=document.getElementById('menuBtn'); const mnav=document.getElementById('mnav');
+        if(!btn||!mnav) return;
+        const toggle=()=>{ const open=mnav.classList.contains('hidden'); mnav.classList.toggle('hidden'); btn.setAttribute('aria-expanded', String(open)); };
+        btn.addEventListener('click',e=>{ e.stopPropagation(); toggle(); });
+        document.addEventListener('click',e=>{ if(!mnav.contains(e.target) && e.target!==btn){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+        addEventListener('resize',()=>{ if(innerWidth>=768){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+      })();
+
+      // Year
+      (function(){ const y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear(); })();
+
+      // --------- Calendrier + Disponibilités (localStorage) ----------
+      const today=new Date(); today.setHours(0,0,0,0);
+      const toISO = (d)=> d.toISOString().slice(0,10);
+      const fmtFRLong = new Intl.DateTimeFormat('fr-FR',{weekday:'long', day:'2-digit', month:'long', year:'numeric'});
+
+      (function(){
+        const daysHost = document.getElementById('calDays');
+        const monthTitle = document.getElementById('monthTitle');
+        const pickedLabel = document.getElementById('pickedLabel');
+        const slotsWrap = document.getElementById('slotsWrap');
+        const chips = document.getElementById('chips');
+
+        let anchor = new Date(today.getFullYear(), today.getMonth(), 1);
+        let picked = new Date(today);
+
+        // Storage
+        const KEY='fitbyT_avail_v1';
+        const loadAll = ()=> JSON.parse(localStorage.getItem(KEY) || '{}');
+        const saveAll = (obj)=> localStorage.setItem(KEY, JSON.stringify(obj));
+        const loadDay = (iso)=> { const all=loadAll(); return Array.isArray(all[iso]) ? all[iso] : []; };
+        const saveDay = (iso, slots)=> { const all=loadAll(); all[iso]=slots; saveAll(all); };
+
+        // Utils
+        const daysInMonth=(d)=> new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
+        const isSameDay=(a,b)=> a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+
+        function drawCalendar(){
+          daysHost.innerHTML='';
+          monthTitle.textContent = anchor.toLocaleDateString('fr-FR',{month:'long',year:'numeric'});
+          const first = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+          const startOffset = ((first.getDay()+6)%7); // Lundi=0
+          const prevLast = new Date(anchor.getFullYear(), anchor.getMonth(), 0).getDate();
+
+          // previous muted
+          for(let i=startOffset; i>0; i--){
+            const el=document.createElement('button');
+            el.className='cal-day is-muted';
+            el.textContent = String(prevLast - i + 1);
+            el.disabled=true; daysHost.appendChild(el);
+          }
+
+          // current month
+          const n=daysInMonth(anchor);
+          for(let d=1; d<=n; d++){
+            const el=document.createElement('button');
+            el.className='cal-day';
+            el.textContent = String(d);
+            const cur = new Date(anchor.getFullYear(), anchor.getMonth(), d);
+            if (isSameDay(cur, today))  el.classList.add('is-today');
+            if (isSameDay(cur, picked)) el.classList.add('is-picked');
+
+            // badge count
+            const count = loadDay(toISO(cur)).length;
+            if(count){
+              const b=document.createElement('span');
+              b.className='cal-badge';
+              b.textContent=String(count);
+              el.appendChild(b);
+            }
+
+            el.addEventListener('click', ()=>{ picked = cur; drawCalendar(); drawSlots(); });
+            daysHost.appendChild(el);
+          }
+
+          // trailing muted
+          while(daysHost.children.length % 7 !== 0){
+            const el=document.createElement('button');
+            el.className='cal-day is-muted'; el.textContent=''; el.disabled=true;
+            daysHost.appendChild(el);
+          }
+
+          pickedLabel.textContent = fmtFRLong.format(picked);
+        }
+
+        function makeRow(sl, i, iso){
+          const wrap=document.createElement('div');
+          wrap.className='grid grid-cols-[1fr_1fr_auto] gap-2 items-center';
+          const s=document.createElement('input');
+          const e=document.createElement('input');
+          const del=document.createElement('button');
+          s.type='time'; e.type='time'; s.step=60; e.step=60;
+          s.className='field'; e.className='field';
+          s.placeholder='09:00'; e.placeholder='10:00';
+          s.value = sl.start || ''; e.value = sl.end || '';
+          del.textContent='Supprimer'; del.className='btn btn-danger h-11';
+
+          const validate = ()=>{
+            wrap.classList.remove('row-error');
+            if(s.value && e.value && s.value >= e.value){ wrap.classList.add('row-error'); return false; }
+            return true;
+          };
+
+          s.addEventListener('change', ()=>{
+            const cur=loadDay(iso); if(!cur[i]) return; cur[i].start=s.value; saveDay(iso,cur);
+            validate(); drawCalendar(); drawChips();
+          });
+          e.addEventListener('change', ()=>{
+            const cur=loadDay(iso); if(!cur[i]) return; cur[i].end=e.value; saveDay(iso,cur);
+            validate(); drawCalendar(); drawChips();
+          });
+          del.addEventListener('click', ()=>{
+            const cur=loadDay(iso); cur.splice(i,1); saveDay(iso,cur);
+            drawCalendar(); drawSlots();
+          });
+
+          wrap.appendChild(s); wrap.appendChild(e); wrap.appendChild(del);
+          if(!validate()) wrap.classList.add('row-error');
+          return wrap;
+        }
+
+        function drawChips(){
+          const iso = toISO(picked);
+          const slots = loadDay(iso).slice().sort((a,b)=> (a.start||'').localeCompare(b.start||''));
+          chips.innerHTML='';
+          if(!slots.length){ return; }
+          slots.forEach(sl=>{
+            const c=document.createElement('span');
+            c.className='px-2.5 py-1 rounded-full text-xs font-semibold bg-white/10 ring-1 ring-white/15';
+            c.textContent = sl.start && sl.end ? `${sl.start} – ${sl.end}` : 'créneau incomplet';
+            chips.appendChild(c);
+          });
+        }
+
+        function drawSlots(){
+          const iso = toISO(picked);
+          const slots = loadDay(iso);
+          slotsWrap.innerHTML='';
+          if(slots.length===0){
+            slotsWrap.innerHTML = `
+              <div class="rounded-xl bg-white/5 border border-white/10 p-4 text-white/70">
+                Aucun créneau défini pour ce jour. Ajoutez-en avec “+ Ajouter un créneau”.
+              </div>`;
+          }else{
+            slots
+              .slice()
+              .sort((a,b)=> (a.start||'').localeCompare(b.start||''))
+              .forEach((sl,i)=> slotsWrap.appendChild( makeRow(sl, i, iso) ));
+          }
+          drawChips();
+        }
+
+        // Actions
+        document.getElementById('prev').addEventListener('click', ()=>{ anchor.setMonth(anchor.getMonth()-1); drawCalendar(); });
+        document.getElementById('next').addEventListener('click', ()=>{ anchor.setMonth(anchor.getMonth()+1); drawCalendar(); });
+
+        document.getElementById('addSlot').addEventListener('click', ()=>{
+          const iso = toISO(picked);
+          const cur=loadDay(iso);
+          // suggestion automatique d'un créneau qui ne chevauche pas
+          const base = cur.length ? (cur.slice().sort((a,b)=>a.end.localeCompare(b.end)).at(-1).end || '09:00') : '09:00';
+          const [h,m]=base.split(':').map(Number);
+          const start = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+          const endH = Math.min(h+1, 23); // +1h
+          const end = `${String(endH).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
+          cur.push({start, end});
+          saveDay(iso, cur);
+          drawCalendar(); drawSlots();
+        });
+
+        document.getElementById('resetDay').addEventListener('click', ()=>{
+          const iso = toISO(picked);
+          saveDay(iso, []);
+          drawCalendar(); drawSlots();
+        });
+
+        document.getElementById('saveDay').addEventListener('click', ()=>{
+          // Validation globale
+          const iso = toISO(picked);
+          const cur = loadDay(iso);
+          const invalid = cur.some(s=> !s.start || !s.end || s.start>=s.end);
+          if(invalid){
+            alert('Certains créneaux sont incomplets ou invalides (début ≥ fin).');
+            return;
+          }
+          const btn = document.getElementById('saveDay'); const old=btn.textContent;
+          btn.textContent='Enregistré ✔'; setTimeout(()=> btn.textContent=old, 1200);
+        });
+
+        // init
+        drawCalendar(); drawSlots();
+      })();
+    </script>
   </body>
-  <script>
-    (function () {
-      const btn = document.getElementById('mobile-menu-toggle');
-      const menu = document.getElementById('mobile-menu');
-      if (!btn || !menu) return;
-      const close = () => {
-        if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      };
-      const open = () => {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-      };
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menu.classList.contains('hidden') ? open() : close();
-      });
-      document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && e.target !== btn) close();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') close();
-      });
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768) close();
-      });
-    })();
-  </script>
 </html>

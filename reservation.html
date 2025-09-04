@@ -17,7 +17,7 @@
   <body>
     <div class="relative flex min-h-screen flex-col bg-[#222011] text-white overflow-x-hidden" style='font-family:"Noto Serif","Noto Sans",sans-serif;'>
       <!-- Header -->
-      <header class="flex items-center justify-between border-b border-[#484323] px-4 md:px-10 py-3">
+      <header class="relative flex items-center justify-between border-b border-[#484323] px-4 md:px-10 py-3">
         <div class="flex items-center gap-3">
           <div class="size-4">
             <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg" class="text-white">
@@ -27,6 +27,12 @@
           <h2 class="text-lg font-bold tracking-[-0.015em]">Fit by T</h2>
         </div>
         <nav class="flex flex-1 justify-end gap-4 md:gap-8">
+          <button id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden inline-flex items-center justify-center rounded-lg border border-[#675f32] text-white size-9">
+            <span class="sr-only">Ouvrir le menu</span>
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+              <path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd" />
+            </svg>
+          </button>
           <div class="hidden sm:flex items-center gap-4 md:gap-9 overflow-x-auto whitespace-nowrap">
             <a class="text-sm font-medium" href="index.html">Accueil</a>
             <a class="text-sm font-medium" href="pricing.html">Tarifs</a>
@@ -37,6 +43,18 @@
             <a class="text-sm font-medium" href="profile.html">Profil</a>
           </div>
         </nav>
+        <!-- Mobile menu panel -->
+        <div id="mobile-menu" class="md:hidden hidden absolute right-4 top-14 w-64 rounded-lg border border-[#484323] bg-[#222011] shadow-lg z-50">
+          <nav class="flex flex-col p-2">
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="index.html">Accueil</a>
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="pricing.html">Tarifs</a>
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="booking.html">Réserver</a>
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="checkout.html">Paiement</a>
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="planning.html">Planning (coach)</a>
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="planning-clients.html">Planning (client)</a>
+            <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="profile.html">Profil</a>
+          </nav>
+        </div>
       </header>
 
       <main class="flex flex-1 justify-center px-4 md:px-6 py-4 md:py-6 gap-4 md:gap-6">
@@ -285,4 +303,32 @@
       </script>
     </div>
   </body>
+  <script>
+    (function () {
+      const btn = document.getElementById('mobile-menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      if (!btn || !menu) return;
+      const close = () => {
+        if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      };
+      const open = () => {
+        menu.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      };
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu.classList.contains('hidden') ? open() : close();
+      });
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && e.target !== btn) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) close();
+      });
+    })();
+  </script>
 </html>

@@ -17,7 +17,7 @@
   <body>
     <div class="relative flex size-full min-h-screen flex-col bg-[#222011] dark group/design-root overflow-x-hidden" style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
       <div class="layout-container flex h-full grow flex-col">
-        <header class="flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#484323] px-4 md:px-10 py-3">
+        <header class="relative flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#484323] px-4 md:px-10 py-3">
           <div class="flex items-center gap-4 text-white">
             <div class="size-4">
               <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -36,7 +36,13 @@
             <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">Fit by T</h2>
           </div>
           <div class="flex flex-1 justify-end gap-4 md:gap-8">
-            <div class="flex items-center gap-4 md:gap-9 overflow-x-auto whitespace-nowrap">
+            <button id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden inline-flex items-center justify-center rounded-lg border border-[#675f32] text-white size-9">
+              <span class="sr-only">Ouvrir le menu</span>
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+                <path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd" />
+              </svg>
+            </button>
+            <div class="hidden md:flex items-center gap-4 md:gap-9 overflow-x-auto whitespace-nowrap">
               <a class="text-white text-sm font-medium leading-normal" href="index.html">Accueil</a>
               <a class="text-white text-sm font-medium leading-normal" href="pricing.html">Tarifs</a>
               <a class="text-white text-sm font-medium leading-normal" href="booking.html">Réserver</a>
@@ -52,7 +58,7 @@
             </div>
             <a
               href="booking.html"
-              class="flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#efcd0f] text-[#222011] text-sm font-bold leading-normal tracking-[0.015em]"
+              class="hidden md:flex min-w-[84px] max-w-[480px] cursor-pointer items-center justify-center overflow-hidden rounded-lg h-10 px-4 bg-[#efcd0f] text-[#222011] text-sm font-bold leading-normal tracking-[0.015em]"
             >
               <span class="truncate">Réserver une séance</span>
             </a>
@@ -60,6 +66,19 @@
               class="bg-center bg-no-repeat aspect-square bg-cover rounded-full size-10"
               style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBW6Qi2mvbYRolc_qugm42v7xUQ8etrxNHg3JgO9dhncrnJ79KeSOWdfvavDpD3PWJ4TypfmlhoRxcDp3-JfYOXMH11zl3HRTJDMms8XEUWzKq6O9LTs7q-dgxCgw4_9f8d0CDnAgO-6TPDtlpNbIPF1YIVxLoFIIhOMkhQuCP9jpIot3yE56ZLMcbwTy9T_evDP9HEVCfmJuvowIz-wao9q9YWXWQYUY4vRUFsOl9Htf-zxj6WB1w8VRpG4LvN7rQu8CsSQ3WE5vg1");'
             ></div>
+          </div>
+          <!-- Mobile menu panel -->
+          <div id="mobile-menu" class="md:hidden hidden absolute right-4 top-14 w-64 rounded-lg border border-[#484323] bg-[#222011] shadow-lg z-50">
+            <nav class="flex flex-col p-2">
+              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="index.html">Accueil</a>
+              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="pricing.html">Tarifs</a>
+              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="booking.html">Réserver</a>
+              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="checkout.html">Paiement</a>
+              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="reservation.html">Mes séances</a>
+              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="profile.html">Profil</a>
+              <a class="mt-2 inline-flex items-center justify-center rounded-lg bg-[#efcd0f] px-3 py-2 text-[#222011] text-sm font-bold" href="booking.html">Réserver une séance</a>
+              <a class="mt-2 inline-flex items-center justify-center rounded-lg border border-[#efcd0f] px-3 py-2 text-[#efcd0f] text-sm font-bold" href="register.html">S'inscrire</a>
+            </nav>
           </div>
         </header>
         <div class="px-4 sm:px-6 lg:px-10 xl:px-40 flex flex-1 justify-center py-5">
@@ -85,6 +104,30 @@
                     href="pricing.html"
                   >
                     <span class="truncate">Découvrir les formules</span>
+                  </a>
+                </div>
+            </div>
+          </div>
+            <!-- Offre inscription: première séance gratuite (mise en avant) -->
+            <div class="p-4">
+              <div class="rounded-xl bg-[#efcd0f] text-[#222011] p-5 md:p-6 flex flex-col md:flex-row md:items-center gap-4 md:gap-6 shadow-[0_6px_24px_rgba(239,205,15,0.18)]">
+                <div class="flex items-start md:items-center gap-3 flex-1">
+                  <div class="size-10 rounded-full bg-[#222011]/10 flex items-center justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 256 256" class="text-[#222011]">
+                      <path fill="currentColor" d="M216 72h-34.11a40 40 0 0 0-65.78-42.06A40 40 0 0 0 56.11 72H22a6 6 0 0 0-6 6v28a14 14 0 0 0 14 14h2v92a22 22 0 0 0 22 22h148a22 22 0 0 0 22-22v-92h2a14 14 0 0 0 14-14V78a6 6 0 0 0-6-6M152 40a28 28 0 0 1 28 28a4 4 0 0 1-4 4h-36a4 4 0 0 1-4-4a28 28 0 0 1 16-25.38Zm-64 0a28 28 0 0 1 28 28a4 4 0 0 1-4 4H76a4 4 0 0 1-4-4a28 28 0 0 1 16-25.38ZM28 106a2 2 0 0 1-2-2V84h88v22Zm28 106a10 10 0 0 1-10-10v-92h82v102Zm168-10a10 10 0 0 1-10 10H138V110h82Z"/>
+                    </svg>
+                  </div>
+                  <div class="flex flex-col gap-1">
+                    <p class="text-xl md:text-2xl font-extrabold leading-tight tracking-[-0.02em]">Première séance offerte</p>
+                    <p class="text-sm md:text-base leading-normal opacity-90">
+                      Créez un compte et profitez d'une séance gratuite pour définir vos besoins et faire connaissance.
+                      <span class="hidden md:inline">Sans engagement.</span>
+                    </p>
+                  </div>
+                </div>
+                <div class="flex items-center gap-3 w-full md:w-auto">
+                  <a href="register.html" class="flex w-full md:w-auto items-center justify-center h-12 px-5 rounded-lg bg-[#222011] text-[#efcd0f] text-sm md:text-base font-extrabold tracking-[0.01em] hover:brightness-95 transition">
+                    Créer mon compte
                   </a>
                 </div>
               </div>
@@ -173,4 +216,32 @@
       </div>
     </div>
   </body>
+  <script>
+    (function () {
+      const btn = document.getElementById('mobile-menu-toggle');
+      const menu = document.getElementById('mobile-menu');
+      if (!btn || !menu) return;
+      const close = () => {
+        if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+      };
+      const open = () => {
+        menu.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+      };
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        menu.classList.contains('hidden') ? open() : close();
+      });
+      document.addEventListener('click', (e) => {
+        if (!menu.contains(e.target) && e.target !== btn) close();
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+      });
+      window.addEventListener('resize', () => {
+        if (window.innerWidth >= 768) close();
+      });
+    })();
+  </script>
 </html>

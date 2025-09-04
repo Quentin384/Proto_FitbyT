@@ -14,80 +14,126 @@
 
     <!-- Tailwind CSS CDN -->
     <script>
-      window.tailwind = { theme: { extend: { container: { center: true, padding: { DEFAULT:'1rem', md:'1.5rem', lg:'2rem' } } } } };
+      // Tailwind config (même convention que pages OK)
+      window.tailwind = {
+        theme: {
+          extend: {
+            container: { center: true, padding: { DEFAULT: '1rem', md: '1.5rem', lg: '2rem' } },
+          }
+        }
+      };
     </script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
 
-    <!-- Tokens / décor -->
+    <!-- Styles globaux alignés sur index/pricing -->
     <style>
-      :root{ --bg:12 12% 6%; --card:45 16% 10%; --brand:49 88% 51%; }
-      html{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", Arial; }
-      body{ background:hsl(var(--bg)); color:white; }
-      .bg-grid{
+      :root { --bg:12 12% 6%; --card:45 16% 10%; --muted:48 15% 70%; --brand:49 88% 51%; --brand-ink:54 40% 10%; }
+      html { font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+      .bg-grid {
         background-image:
           radial-gradient(1200px 400px at 10% -10%, hsl(var(--brand)/.16), transparent 40%),
           radial-gradient(1000px 600px at 90% 0%, hsl(260 90% 66%/.16), transparent 40%),
           radial-gradient(500px 400px at 60% 110%, hsl(170 80% 60%/.14), transparent 40%),
           linear-gradient(to bottom, hsl(var(--bg)), hsl(var(--bg)));
-        background-repeat:no-repeat;
+        background-repeat: no-repeat;
       }
-      .glass{ backdrop-filter:saturate(140%) blur(10px); background:hsl(var(--card)/.55); border:1px solid hsl(0 0% 100% / .08); }
-      .ring-gradient{ position:relative; }
+      .glass { backdrop-filter: saturate(140%) blur(10px); background: hsl(var(--card)/.5); }
+      .ring-gradient { position: relative; }
       .ring-gradient::before{
-        content:""; position:absolute; inset:-1px; border-radius:16px;
-        background:conic-gradient(from 0deg, hsl(var(--brand)) 0deg, transparent 120deg, transparent 240deg, hsl(var(--brand)) 360deg);
-        filter:blur(.5px);
-        -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
-        -webkit-mask-composite:xor; mask-composite:exclude; padding:1px; pointer-events:none;
+        content: ""; position: absolute; inset:-1px; border-radius: 16px;
+        background: conic-gradient(from 0deg, hsl(var(--brand)) 0deg, transparent 120deg, transparent 240deg, hsl(var(--brand)) 360deg);
+        filter: blur(.5px);
+        -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+        -webkit-mask-composite: xor; mask-composite: exclude;
+        padding:1px; pointer-events:none;
       }
+      @media(prefers-reduced-motion:no-preference){
+        .hover-lift { transition: transform .3s ease, box-shadow .3s ease; }
+        .hover-lift:hover { transform: translateY(-2px); box-shadow: 0 10px 30px hsl(var(--brand)/.18); }
+      }
+      .price { font-variant-numeric: tabular-nums; }
+      .table-wrap { overflow: auto; border-radius: 16px; }
+      table.clean { width: 100%; border-collapse: separate; border-spacing: 0; }
+      table.clean th, table.clean td { padding: .75rem 1rem; }
+      table.clean thead th { background: hsl(var(--card)); position: sticky; top: 0; z-index: 1; }
+      table.clean tr + tr td { border-top: 1px solid hsl(var(--muted)/.18); }
+      /* Qualité mobile iOS */
+      @supports (-webkit-touch-callout: none){ input, select, textarea { font-size:16px; } }
+      html, body { overflow-x:hidden; }
+      * { word-break: break-word; overflow-wrap: anywhere; box-sizing: border-box; }
     </style>
   </head>
 
-  <body class="min-h-screen bg-grid antialiased selection:bg-yellow-300 selection:text-black">
-    <!-- Header -->
-    <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/50 border-b border-white/10">
-      <div class="container flex h-16 items-center gap-3">
-        <a href="index.html" class="flex items-center gap-2">
-          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
-            <path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/>
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M39.998 35.764c-.004-.018-.01-.05-.023-.094a3.13 3.13 0 0 0-.193-.511 6.54 6.54 0 0 0-.053-.12c-1.271-.871-3.802-2.1-6.072-2.641C30.9875 31.8691 27.6413 31.4783 24 31.4783s-6.9875.3908-9.7095 1.0406c-2.29.5465-4.8462 1.7915-6.1059 2.6643-.0115.0243-.0232.0498-.0349.076-.0513.1159-.0933.2294-.1207.3298-.0262.0958-.0294.1443-.0298.1498 0 .0253.0104.3379.68485.8926.66061.5432 1.73734 1.1217 3.24421 1.6458C14.9242 39.319 19.1919 40 24 40s9.0758-.681 12.0709-1.7228c1.5069-.5241 2.5836-1.1026 3.2442-1.6458.5855-.4815.6706-.7803.6829-.8674Z"/>
-          </svg>
-          <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
-        </a>
+  <body class="min-h-screen bg-grid text-white antialiased selection:bg-yellow-300 selection:text-black">
+    <!-- Skip link -->
+    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-3 focus:py-2 focus:rounded-md focus:bg-black/80 focus:text-white">Aller au contenu</a>
 
-        <nav class="ml-auto hidden md:flex items-center gap-7 text-sm">
-          <a class="hover:opacity-90" href="index.html">Accueil</a>
-          <a class="hover:opacity-90" href="pricing.html">Tarifs</a>
-          <a class="hover:opacity-90" href="booking.html">Réserver</a>
-          <a class="hover:opacity-90" href="checkout.html">Paiement</a>
-          <a class="hover:opacity-90" href="reservation.html">Mes séances</a>
-          <a class="hover:opacity-90 font-semibold text-yellow-300" href="profile.html" aria-current="page">Profil</a>
-          <a href="register.html" class="rounded-lg border border-yellow-300/80 px-3 py-1.5 font-semibold text-yellow-300 hover:bg-yellow-300 hover:text-black transition">S'inscrire</a>
-          <a href="booking.html" class="rounded-lg bg-yellow-300 px-4 py-2 font-bold text-black hover:brightness-95 transition">Réserver</a>
-        </nav>
+<header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/50 border-b border-white/10">
+  <div class="container flex h-16 items-center gap-3">
+    <a href="index.html" class="flex items-center gap-2 group">
+      <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+        <path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/>
+        <path fill-rule="evenodd" clip-rule="evenodd" d="M39.998 35.764c-.004-.018-.01-.05-.023-.094a3.13 3.13 0 0 0-.193-.511 6.54 6.54 0 0 0-.053-.12c-1.271-.871-3.802-2.1-6.072-2.641C30.9875 31.8691 27.6413 31.4783 24 31.4783s-6.9875.3908-9.7095 1.0406c-2.29.5465-4.8462 1.7915-6.1059 2.6643-.0115.0243-.0232.0498-.0349.076-.0513.1159-.0933.2294-.1207.3298-.0262.0958-.0294.1443-.0298.1498 0 .0253.0104.3379.68485.8926.66061.5432 1.73734 1.1217 3.24421 1.6458C14.9242 39.319 19.1919 40 24 40s9.0758-.681 12.0709-1.7228c1.5069-.5241 2.5836-1.1026 3.2442-1.6458.5855-.4815.6706-.7803.6829-.8674Z"/>
+      </svg>
+      <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
+    </a>
 
-        <!-- Mobile -->
-        <button id="menuBtn" class="ml-auto md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 size-10" aria-controls="mnav" aria-expanded="false" aria-label="Ouvrir le menu">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/></svg>
-        </button>
-      </div>
-      <div id="mnav" class="hidden md:hidden border-t border-white/10">
-        <nav class="container py-3 grid gap-2 text-sm">
-          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="index.html">Accueil</a>
-          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="pricing.html">Tarifs</a>
-          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="booking.html">Réserver</a>
-          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="checkout.html">Paiement</a>
-          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="reservation.html">Mes séances</a>
-          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="profile.html" aria-current="page">Profil</a>
-          <a class="px-2 py-2 rounded-md hover:bg-yellow-300/10 text-yellow-300 border border-yellow-300/30" href="register.html">S'inscrire</a>
-          <a class="px-2 py-2 rounded-md bg-yellow-300 text-black font-semibold" href="booking.html">Réserver</a>
-        </nav>
-      </div>
-    </header>
+    <nav class="ml-auto hidden md:flex items-center gap-7 text-sm">
+      <a class="hover:opacity-90" href="index.html">Accueil</a>
+      <a class="hover:opacity-90" href="pricing.html">Tarifs</a>
+      <a class="hover:opacity-90" href="booking.html">Réserver</a>
+      <a class="hover:opacity-90" href="checkout.html">Paiement</a>
+      <a class="hover:opacity-90" href="reservation.html">Mes séances</a>
+      <a class="hover:opacity-90 font-semibold text-yellow-300" href="profile.html" aria-current="page">Profil</a>
+      <a href="register.html" class="rounded-lg border border-yellow-300/80 px-3 py-1.5 font-semibold text-yellow-300 hover:bg-yellow-300 hover:text-black transition">S'inscrire</a>
+      <a href="booking.html" class="rounded-lg bg-yellow-300 px-4 py-2 font-bold text-black hover:brightness-95 transition">Réserver</a>
+    </nav>
 
-    <main id="main">
-      <section class="container py-10 md:py-14 grid lg:grid-cols-[280px_1fr] gap-6 items-start">
-        <!-- Sidebar -->
+    <!-- Mobile -->
+    <button id="menuBtn" class="ml-auto md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 size-10" aria-controls="mnav" aria-expanded="false" aria-label="Ouvrir le menu">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
+        <path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mnav" class="hidden md:hidden border-t border-white/10">
+    <nav class="container py-3 grid gap-2 text-sm">
+      <a class="px-2 py-2 rounded-md hover:bg-white/5" href="index.html">Accueil</a>
+      <a class="px-2 py-2 rounded-md hover:bg-white/5" href="pricing.html">Tarifs</a>
+      <a class="px-2 py-2 rounded-md hover:bg-white/5" href="booking.html">Réserver</a>
+      <a class="px-2 py-2 rounded-md hover:bg-white/5" href="checkout.html">Paiement</a>
+      <a class="px-2 py-2 rounded-md hover:bg-white/5" href="reservation.html">Mes séances</a>
+      <a class="px-2 py-2 rounded-md bg-white/5 font-semibold text-yellow-300" href="profile.html" aria-current="page">Profil</a>
+      <a class="px-2 py-2 rounded-md hover:bg-yellow-300/10 text-yellow-300 border border-yellow-300/30" href="register.html">S'inscrire</a>
+      <a class="px-2 py-2 rounded-md bg-yellow-300 text-black font-semibold" href="booking.html">Réserver</a>
+    </nav>
+  </div>
+</header>
+
+
+    <main id="main" class="relative">
+      <!-- En-tête profil -->
+      <section class="container py-8">
+        <div class="ring-gradient rounded-2xl glass p-6 md:p-8">
+          <div class="flex items-center gap-5 flex-wrap">
+            <div class="rounded-2xl overflow-clip ring-gradient">
+              <img src="https://images.unsplash.com/photo-1544006659-f0b21884ce1d?q=80&w=800&auto=format&fit=crop" alt="Photo de profil cliente" class="size-24 md:size-28 object-cover aspect-square" />
+            </div>
+            <div class="min-w-0">
+              <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Emma Martin</h1>
+              <p class="text-white/70">Cliente Fit by T — depuis 2024</p>
+              <div class="mt-3 flex flex-wrap gap-2">
+                <a href="reservation.html" class="inline-flex items-center gap-2 rounded-lg bg-yellow-300 px-4 py-2 text-sm font-bold text-black">Mes séances</a>
+                <a href="booking.html" class="inline-flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2 text-sm hover:bg-white/5">Réserver</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Grille principale -->
+      <section class="container pb-10 md:pb-14 grid lg:grid-cols-[280px_1fr] gap-6 items-start">
+        <!-- Sidebar desktop -->
         <aside class="hidden lg:block sticky top-20 self-start">
           <div class="glass ring-gradient rounded-2xl p-4">
             <nav class="grid">
@@ -101,30 +147,10 @@
           </div>
         </aside>
 
-        <!-- Content -->
+        <!-- Contenu -->
         <div class="grid gap-6">
-          <!-- En-tête profil -->
-          <section class="rounded-3xl glass p-6 md:p-8 ring-gradient overflow-hidden">
-            <div class="flex flex-wrap items-center gap-5">
-              <div class="relative">
-                <div class="absolute -inset-2 -z-10 rounded-2xl bg-yellow-300/20 blur-xl"></div>
-                <div class="rounded-2xl overflow-clip ring-gradient">
-                  <img src="https://images.unsplash.com/photo-1544006659-f0b21884ce1d?q=80&w=800&auto=format&fit=crop" alt="Photo de profil cliente" class="size-24 md:size-28 object-cover aspect-square" />
-                </div>
-              </div>
-              <div class="min-w-0">
-                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Emma Martin</h1>
-                <p class="text-white/70">Cliente Fit by T — depuis 2024</p>
-                <div class="mt-3 flex flex-wrap gap-2">
-                  <a href="reservation.html" class="inline-flex items-center gap-2 rounded-lg bg-yellow-300 px-4 py-2 text-sm font-bold text-black">Mes séances</a>
-                  <a href="booking.html" class="inline-flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2 text-sm hover:bg-white/5">Réserver</a>
-                </div>
-              </div>
-            </div>
-          </section>
-
           <!-- Identité -->
-          <section id="identite" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
+          <section id="identite" class="ring-gradient rounded-2xl glass p-6 md:p-8">
             <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Informations personnelles</h2>
             <div class="grid md:grid-cols-2 gap-3">
               <label class="grid gap-1">
@@ -151,7 +177,7 @@
           </section>
 
           <!-- Coordonnées -->
-          <section id="coordonnees" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
+          <section id="coordonnees" class="ring-gradient rounded-2xl glass p-6 md:p-8">
             <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Coordonnées</h2>
             <div class="grid md:grid-cols-2 gap-3">
               <label class="grid gap-1">
@@ -174,7 +200,7 @@
           </section>
 
           <!-- Objectifs & mesures -->
-          <section id="objectifs" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
+          <section id="objectifs" class="ring-gradient rounded-2xl glass p-6 md:p-8">
             <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Objectifs & mesures</h2>
             <div class="grid md:grid-cols-3 gap-3">
               <label class="grid gap-1">
@@ -207,7 +233,7 @@
           </section>
 
           <!-- Préférences -->
-          <section id="preferences" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
+          <section id="preferences" class="ring-gradient rounded-2xl glass p-6 md:p-8">
             <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Préférences</h2>
             <div class="grid md:grid-cols-3 gap-3">
               <label class="grid gap-1">
@@ -240,7 +266,7 @@
           </section>
 
           <!-- Sécurité -->
-          <section id="securite" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
+          <section id="securite" class="ring-gradient rounded-2xl glass p-6 md:p-8">
             <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Sécurité du compte</h2>
             <div class="grid gap-3 md:grid-cols-2">
               <div class="rounded-xl bg-white/5 border border-white/10 p-4">
@@ -265,7 +291,7 @@
           </section>
 
           <!-- Abonnement & factures -->
-          <section id="facturation" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
+          <section id="facturation" class="ring-gradient rounded-2xl glass p-6 md:p-8">
             <div class="flex items-center justify-between gap-4 mb-4">
               <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight">Abonnement & factures</h2>
               <a href="checkout.html" class="rounded-lg border border-white/15 px-3 py-1.5 text-sm hover:bg-white/5">Gérer mes paiements</a>
@@ -291,31 +317,31 @@
 
             <div class="mt-6">
               <h3 class="text-lg font-semibold mb-2">Dernières factures</h3>
-              <div class="rounded-xl overflow-hidden border border-white/10">
-                <table class="w-full text-sm">
-                  <thead class="bg-white/5">
-                    <tr class="text-left">
-                      <th class="px-4 py-2">Date</th>
-                      <th class="px-4 py-2">Référence</th>
-                      <th class="px-4 py-2">Montant</th>
-                      <th class="px-4 py-2">Statut</th>
-                      <th class="px-4 py-2"></th>
+              <div class="table-wrap ring-1 ring-white/10">
+                <table class="clean text-sm">
+                  <thead class="text-white/90">
+                    <tr>
+                      <th class="text-left">Date</th>
+                      <th class="text-left">Référence</th>
+                      <th class="text-left">Montant</th>
+                      <th class="text-left">Statut</th>
+                      <th class="text-left w-[120px]"></th>
                     </tr>
                   </thead>
-                  <tbody>
-                    <tr class="border-t border-white/10">
-                      <td class="px-4 py-2">15/08/2025</td>
-                      <td class="px-4 py-2">INV-2025-0821</td>
-                      <td class="px-4 py-2">199,00 €</td>
-                      <td class="px-4 py-2"><span class="rounded-full bg-white/10 px-2 py-0.5">Payée</span></td>
-                      <td class="px-4 py-2 text-right"><a href="#" class="underline underline-offset-2">Télécharger</a></td>
+                  <tbody class="text-white/80">
+                    <tr>
+                      <td>15/08/2025</td>
+                      <td>INV-2025-0821</td>
+                      <td>199,00 €</td>
+                      <td><span class="rounded-full bg-white/10 px-2 py-0.5">Payée</span></td>
+                      <td class="text-right"><a href="#" class="underline underline-offset-2">Télécharger</a></td>
                     </tr>
-                    <tr class="border-t border-white/10">
-                      <td class="px-4 py-2">15/07/2025</td>
-                      <td class="px-4 py-2">INV-2025-0721</td>
-                      <td class="px-4 py-2">199,00 €</td>
-                      <td class="px-4 py-2"><span class="rounded-full bg-white/10 px-2 py-0.5">Payée</span></td>
-                      <td class="px-4 py-2 text-right"><a href="#" class="underline underline-offset-2">Télécharger</a></td>
+                    <tr>
+                      <td>15/07/2025</td>
+                      <td>INV-2025-0721</td>
+                      <td>199,00 €</td>
+                      <td><span class="rounded-full bg-white/10 px-2 py-0.5">Payée</span></td>
+                      <td class="text-right"><a href="#" class="underline underline-offset-2">Télécharger</a></td>
                     </tr>
                   </tbody>
                 </table>
@@ -326,70 +352,70 @@
       </section>
 
       <!-- CTA -->
-      <section class="py-8">
-        <div class="container">
-          <div class="rounded-3xl glass p-6 md:p-10 text-center">
-            <h2 class="text-2xl md:text-3xl font-extrabold mb-3">Besoin d'aide ?</h2>
-            <p class="text-white/80 mb-6">Notre équipe vous accompagne pour toute question liée à votre compte.</p>
-            <a href="contact.html" class="inline-flex items-center gap-2 rounded-xl bg-yellow-300 px-6 py-3 font-bold text-black hover:brightness-95 transition">Contacter le support</a>
-          </div>
+      <section class="container py-8">
+        <div class="ring-gradient rounded-2xl glass p-6 md:p-10 text-center">
+          <h2 class="text-2xl md:text-3xl font-extrabold mb-3">Besoin d'aide ?</h2>
+          <p class="text-white/80 mb-6">Notre équipe vous accompagne pour toute question liée à votre compte.</p>
+          <a href="contact.html" class="inline-flex items-center gap-2 rounded-xl bg-yellow-300 px-6 py-3 font-bold text-black hover:brightness-95 transition">Contacter le support</a>
         </div>
       </section>
     </main>
 
-<!-- Footer -->
-<footer class="border-t border-white/10 bg-black/40">
-  <div class="container py-8 grid grid-cols-3 md:grid-cols-4 gap-6 text-sm text-white/70">
-    <!-- Marque : pleine largeur en mobile, 1 col en desktop -->
-    <div class="col-span-3 md:col-span-1">
-      <div class="flex items-center gap-2 mb-2">
-        <svg class="size-5 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/></svg>
-        <span class="font-semibold">Fit by T</span>
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/40">
+      <div class="container py-8 grid grid-cols-3 md:grid-cols-4 gap-6 text-sm text-white/70">
+        <!-- Marque -->
+        <div class="col-span-3 md:col-span-1">
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="size-5 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/></svg>
+            <span class="font-semibold">Fit by T</span>
+          </div>
+          <p>Coaching sportif personnalisé à Grenoble et en ligne.</p>
+          <p class="text-xs text-white/50 mt-3">© <span id="y"></span> Fit by T. Tous droits réservés.</p>
+        </div>
+        <!-- Nav -->
+        <nav class="grid gap-2">
+          <h3 class="text-white font-semibold mb-1">Navigation</h3>
+          <a href="index.html" class="hover:opacity-90">Accueil</a>
+          <a href="pricing.html" class="hover:opacity-90">Tarifs</a>
+          <a href="booking.html" class="hover:opacity-90">Réserver</a>
+          <a href="reservation.html" class="hover:opacity-90">Mes séances</a>
+          <a href="profile.html" class="hover:opacity-90">Profil</a>
+          <a href="checkout.html" class="hover:opacity-90">Paiement</a>
+        </nav>
+        <!-- Espace coach -->
+        <nav class="grid gap-2">
+          <h3 class="text-white font-semibold mb-1">Espace coach</h3>
+          <a href="analytics.html" class="hover:opacity-90">Statistiques</a>
+          <a href="planning.html" class="hover:opacity-90">Planning</a>
+          <a href="disponibilite.html" class="hover:opacity-90">Disponibilités</a>
+        </nav>
+        <!-- Légal -->
+        <div class="grid gap-2">
+          <h3 class="text-white font-semibold mb-1">Légal</h3>
+          <a href="#" class="hover:opacity-90">Mentions légales</a>
+          <a href="#" class="hover:opacity-90">Politique de confidentialité</a>
+        </div>
       </div>
-      <p>Coaching sportif personnalisé à Grenoble et en ligne.</p>
-      <p class="text-xs text-white/50 mt-3">© <span id="y"></span> Fit by T. Tous droits réservés.</p>
-    </div>
-
-    <!-- Navigation -->
-    <nav class="grid gap-2">
-      <h3 class="text-white font-semibold mb-1">Navigation</h3>
-      <a href="index.html" class="hover:opacity-90">Accueil</a>
-      <a href="pricing.html" class="hover:opacity-90">Tarifs</a>
-      <a href="booking.html" class="hover:opacity-90">Réserver</a>
-      <a href="reservation.html" class="hover:opacity-90">Mes séances</a>
-      <a href="profile.html" class="hover:opacity-90">Profil</a>
-      <a href="checkout.html" class="hover:opacity-90">Paiement</a>
-    </nav>
-
-    <!-- Espace coach -->
-    <nav class="grid gap-2">
-      <h3 class="text-white font-semibold mb-1">Espace coach</h3>
-      <a href="analytics.html" class="hover:opacity-90">Statistiques</a>
-      <a href="planning.html" class="hover:opacity-90">Planning</a>
-      <a href="disponibilite.html" class="hover:opacity-90">Disponibilités</a>
-    </nav>
-
-    <!-- Légal -->
-    <div class="grid gap-2">
-      <h3 class="text-white font-semibold mb-1">Légal</h3>
-      <a href="#" class="hover:opacity-90">Mentions légales</a>
-      <a href="#" class="hover:opacity-90">Politique de confidentialité</a>
-    </div>
-  </div>
-</footer>
+    </footer>
 
     <!-- Scripts -->
     <script>
-      // Mobile nav
-      (function(){
-        const btn=document.getElementById('menuBtn'); const m=document.getElementById('mnav'); if(!btn||!m) return;
-        const toggle=()=>{const open=m.classList.contains('hidden'); m.classList.toggle('hidden'); btn.setAttribute('aria-expanded', String(open));};
-        btn.addEventListener('click',e=>{e.stopPropagation(); toggle();});
-        document.addEventListener('click',e=>{ if(!m.contains(e.target) && e.target!==btn){ m.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
-        addEventListener('resize',()=>{ if(innerWidth>=768){ m.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
-      })();
+      // Mobile nav (identique à l'index)
+      const btn = document.getElementById('menuBtn');
+      const mnav = document.getElementById('mnav');
+      if(btn && mnav){
+        const toggle = () => {
+          const open = mnav.classList.contains('hidden');
+          mnav.classList.toggle('hidden');
+          btn.setAttribute('aria-expanded', String(open));
+        };
+        btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggle(); });
+        document.addEventListener('click', (e)=>{ if(!mnav.contains(e.target) && e.target !== btn){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+        window.addEventListener('resize', ()=>{ if(window.innerWidth >= 768){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+      }
       // Year
-      (function(){ const y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear(); })();
+      const yEl = document.getElementById('y'); if(yEl) yEl.textContent = new Date().getFullYear();
     </script>
   </body>
 </html>

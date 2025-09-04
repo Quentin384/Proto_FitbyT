@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="dark light" />
     <title>Fit by T — Mon profil</title>
-    <meta name="description" content="Gérez vos informations personnelles, préférences et sécurité de compte Fit by T." />
+    <meta name="description" content="Espace cliente : informations personnelles, préférences, sécurité et facturation." />
 
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -14,65 +14,44 @@
 
     <!-- Tailwind CSS CDN -->
     <script>
-      // Tailwind config for CDN build
-      window.tailwind = {
-        theme: {
-          extend: {
-            container: { center: true, padding: { DEFAULT: '1rem', md: '1.5rem', lg: '2rem' } },
-          }
-        }
-      }
+      window.tailwind = { theme: { extend: { container: { center: true, padding: { DEFAULT:'1rem', md:'1.5rem', lg:'2rem' } } } } };
     </script>
     <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
 
-    <!-- App styles -->
+    <!-- Tokens / décor -->
     <style>
-      :root{
-        --bg: 12 12% 6%;
-        --card: 45 16% 10%;
-        --muted: 48 15% 70%;
-        --brand: 49 88% 51%;
-        --brand-ink: 54 40% 10%;
-      }
-      html{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+      :root{ --bg:12 12% 6%; --card:45 16% 10%; --brand:49 88% 51%; }
+      html{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", Arial; }
+      body{ background:hsl(var(--bg)); color:white; }
       .bg-grid{
         background-image:
           radial-gradient(1200px 400px at 10% -10%, hsl(var(--brand)/.16), transparent 40%),
           radial-gradient(1000px 600px at 90% 0%, hsl(260 90% 66%/.16), transparent 40%),
           radial-gradient(500px 400px at 60% 110%, hsl(170 80% 60%/.14), transparent 40%),
           linear-gradient(to bottom, hsl(var(--bg)), hsl(var(--bg)));
-        background-repeat: no-repeat;
+        background-repeat:no-repeat;
       }
-      .glass{ backdrop-filter: saturate(140%) blur(10px); background: hsl(var(--card)/.5); }
+      .glass{ backdrop-filter:saturate(140%) blur(10px); background:hsl(var(--card)/.55); border:1px solid hsl(0 0% 100% / .08); }
       .ring-gradient{ position:relative; }
       .ring-gradient::before{
         content:""; position:absolute; inset:-1px; border-radius:16px;
-        background: conic-gradient(from 0deg, hsl(var(--brand)) 0deg, transparent 120deg, transparent 240deg, hsl(var(--brand)) 360deg);
-        filter: blur(.5px);
-        -webkit-mask: linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
-        -webkit-mask-composite: xor; mask-composite: exclude;
-        padding:1px; pointer-events:none;
+        background:conic-gradient(from 0deg, hsl(var(--brand)) 0deg, transparent 120deg, transparent 240deg, hsl(var(--brand)) 360deg);
+        filter:blur(.5px);
+        -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+        -webkit-mask-composite:xor; mask-composite:exclude; padding:1px; pointer-events:none;
       }
-      @media(prefers-reduced-motion:no-preference){
-        .hover-lift{ transition: transform .3s ease, box-shadow .3s ease; }
-        .hover-lift:hover{ transform: translateY(-2px); box-shadow: 0 10px 30px hsl(var(--brand)/.18); }
-      }
-      .field{ @apply w-full rounded-lg border border-white/10 bg-white/5 px-4 h-12 text-sm placeholder:text-white/50; }
-      .label{ @apply text-xs uppercase tracking-wide text-white/60 font-semibold; }
-      .val{ @apply text-white/90; }
-      .section-title{ @apply text-[22px] md:text-3xl font-extrabold tracking-tight; }
     </style>
   </head>
 
-  <body class="min-h-screen bg-grid text-white antialiased selection:bg-yellow-300 selection:text-black">
-    <!-- Skip link -->
-    <a href="#main" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-3 focus:py-2 focus:rounded-md focus:bg-black/80 focus:text-white">Aller au contenu</a>
-
-    <!-- Header (identique à l'index) -->
+  <body class="min-h-screen bg-grid antialiased selection:bg-yellow-300 selection:text-black">
+    <!-- Header -->
     <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/50 border-b border-white/10">
       <div class="container flex h-16 items-center gap-3">
-        <a href="index.html" class="flex items-center gap-2 group">
-          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.998 35.764c-.004-.018-.01-.05-.023-.094a3.13 3.13 0 0 0-.193-.511 6.54 6.54 0 0 0-.053-.12c-1.271-.871-3.802-2.1-6.072-2.641C30.9875 31.8691 27.6413 31.4783 24 31.4783s-6.9875.3908-9.7095 1.0406c-2.29.5465-4.8462 1.7915-6.1059 2.6643-.0115.0243-.0232.0498-.0349.076-.0513.1159-.0933.2294-.1207.3298-.0262.0958-.0294.1443-.0298.1498 0 .0253.0104.3379.68485.8926.66061.5432 1.73734 1.1217 3.24421 1.6458C14.9242 39.319 19.1919 40 24 40s9.0758-.681 12.0709-1.7228c1.5069-.5241 2.5836-1.1026 3.2442-1.6458.5855-.4815.6706-.7803.6829-.8674ZM4.9518 32.7688 21.4543 6.3027c1.1745-1.8836 3.9169-1.88361 5.0914 0L43.0534 32.777c.0175.0282.0344.0568.0506.0859l-1.7477.9723c1.7477-.9723 1.7475-.9726 1.7477-.9723l.0011.0021.0014.0025.0036.0064.0098.0179c.0077.0142.0178.0328.0298.0555.0241.0452.0565.1072.0943.1826.075.1493.1756.3591.2777.6018.1684.4004.4783 1.1994.4783 2.0074 0 1.7036-.997 3.0384-2.1442 3.9818-1.1611.9548-2.7204 1.7255-4.4708 2.3343C33.8654 43.2794 29.133 44 24 44s-9.8669-.7206-13.3865-1.9448c-1.75037-.6088-3.30971-1.3795-4.47081-2.3343C4.9969 38.7775 4 37.4427 4 35.7391c0-.8666.2926-1.6469.4932-2.0998.1105-.2495.2202-.4589.3036-.6082.0421-.0755.0786-.1376.1066-.184 0 0 .0119-.0195.0216-.0341l.0075-.0119.0051-.0082Zm31.035-3.7648L24 9.78 12.0131 29.004c.453-.1431.9048-.2698 1.3486-.3758C16.4281 27.8961 20.0901 27.4783 24 27.4783s7.5719.4178 10.6383 1.1499c.4437.106 .8956.2327 1.3485.3758Z"/></svg>
+        <a href="index.html" class="flex items-center gap-2">
+          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/>
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M39.998 35.764c-.004-.018-.01-.05-.023-.094a3.13 3.13 0 0 0-.193-.511 6.54 6.54 0 0 0-.053-.12c-1.271-.871-3.802-2.1-6.072-2.641C30.9875 31.8691 27.6413 31.4783 24 31.4783s-6.9875.3908-9.7095 1.0406c-2.29.5465-4.8462 1.7915-6.1059 2.6643-.0115.0243-.0232.0498-.0349.076-.0513.1159-.0933.2294-.1207.3298-.0262.0958-.0294.1443-.0298.1498 0 .0253.0104.3379.68485.8926.66061.5432 1.73734 1.1217 3.24421 1.6458C14.9242 39.319 19.1919 40 24 40s9.0758-.681 12.0709-1.7228c1.5069-.5241 2.5836-1.1026 3.2442-1.6458.5855-.4815.6706-.7803.6829-.8674Z"/>
+          </svg>
           <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
         </a>
 
@@ -106,37 +85,38 @@
       </div>
     </header>
 
-    <main id="main" class="relative">
+    <main id="main">
       <section class="container py-10 md:py-14 grid lg:grid-cols-[280px_1fr] gap-6 items-start">
-        <!-- Sidebar (actions compte) -->
+        <!-- Sidebar -->
         <aside class="hidden lg:block sticky top-20 self-start">
           <div class="glass ring-gradient rounded-2xl p-4">
             <nav class="grid">
               <a href="#identite" class="px-3 py-2 rounded-lg hover:bg-white/5">Identité</a>
               <a href="#coordonnees" class="px-3 py-2 rounded-lg hover:bg-white/5">Coordonnées</a>
+              <a href="#objectifs" class="px-3 py-2 rounded-lg hover:bg-white/5">Objectifs & mesures</a>
               <a href="#preferences" class="px-3 py-2 rounded-lg hover:bg-white/5">Préférences</a>
               <a href="#securite" class="px-3 py-2 rounded-lg hover:bg-white/5">Sécurité</a>
-              <a href="#facturation" class="px-3 py-2 rounded-lg hover:bg-white/5">Facturation</a>
+              <a href="#facturation" class="px-3 py-2 rounded-lg hover:bg-white/5">Abonnement & factures</a>
             </nav>
           </div>
         </aside>
 
-        <!-- Contenu -->
+        <!-- Content -->
         <div class="grid gap-6">
-          <!-- Header profil -->
-          <section aria-labelledby="title" class="rounded-3xl glass p-6 md:p-8 ring-gradient overflow-hidden">
+          <!-- En-tête profil -->
+          <section class="rounded-3xl glass p-6 md:p-8 ring-gradient overflow-hidden">
             <div class="flex flex-wrap items-center gap-5">
               <div class="relative">
                 <div class="absolute -inset-2 -z-10 rounded-2xl bg-yellow-300/20 blur-xl"></div>
                 <div class="rounded-2xl overflow-clip ring-gradient">
-                  <img src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=800&auto=format&fit=crop" alt="Avatar de profil" class="size-24 md:size-28 object-cover aspect-square" />
+                  <img src="https://images.unsplash.com/photo-1544006659-f0b21884ce1d?q=80&w=800&auto=format&fit=crop" alt="Photo de profil cliente" class="size-24 md:size-28 object-cover aspect-square" />
                 </div>
               </div>
               <div class="min-w-0">
-                <h1 id="title" class="text-2xl md:text-3xl font-extrabold tracking-tight">Sophie Dubois</h1>
-                <p class="text-white/70">Coach sportif certifiée</p>
+                <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight">Emma Martin</h1>
+                <p class="text-white/70">Cliente Fit by T — depuis 2024</p>
                 <div class="mt-3 flex flex-wrap gap-2">
-                  <a href="reservation.html" class="hover-lift inline-flex items-center gap-2 rounded-lg bg-yellow-300 px-4 py-2 text-sm font-bold text-black">Mes séances</a>
+                  <a href="reservation.html" class="inline-flex items-center gap-2 rounded-lg bg-yellow-300 px-4 py-2 text-sm font-bold text-black">Mes séances</a>
                   <a href="booking.html" class="inline-flex items-center gap-2 rounded-lg border border-white/15 px-4 py-2 text-sm hover:bg-white/5">Réserver</a>
                 </div>
               </div>
@@ -145,75 +125,108 @@
 
           <!-- Identité -->
           <section id="identite" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
-            <h2 class="section-title mb-4">Informations personnelles</h2>
-            <div class="grid md:grid-cols-2 gap-4">
-              <div>
-                <div class="label mb-1">Nom complet</div>
-                <div class="val">Sophie Dubois</div>
-              </div>
-              <div>
-                <div class="label mb-1">Rôle</div>
-                <div class="val">Coach sportif</div>
-              </div>
-              <div>
-                <div class="label mb-1">Date de naissance</div>
-                <div class="val">12/03/1990</div>
-              </div>
-              <div>
-                <div class="label mb-1">Ville</div>
-                <div class="val">Paris, France</div>
-              </div>
+            <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Informations personnelles</h2>
+            <div class="grid md:grid-cols-2 gap-3">
+              <label class="grid gap-1">
+                <span class="text-sm text-white/80">Nom</span>
+                <input class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" value="Martin" />
+              </label>
+              <label class="grid gap-1">
+                <span class="text-sm text-white/80">Prénom</span>
+                <input class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" value="Emma" />
+              </label>
+              <label class="grid gap-1">
+                <span class="text-sm text-white/80">Date de naissance</span>
+                <input type="date" class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" value="1995-05-12" />
+              </label>
+              <label class="grid gap-1">
+                <span class="text-sm text-white/80">Ville</span>
+                <input class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" value="Paris, France" />
+              </label>
             </div>
             <div class="mt-6 flex gap-3">
-              <button class="rounded-lg border border-white/15 px-4 py-2 text-sm hover:bg-white/5">Modifier</button>
-              <button class="rounded-lg px-4 py-2 text-sm bg-yellow-300 text-black font-semibold hover:brightness-95">Mettre à jour la photo</button>
+              <button class="rounded-lg bg-yellow-300 text-black px-4 py-2 text-sm font-semibold hover:brightness-95">Enregistrer</button>
+              <button class="rounded-lg border border-white/15 px-4 py-2 text-sm hover:bg-white/5">Mettre à jour la photo</button>
             </div>
           </section>
 
           <!-- Coordonnées -->
           <section id="coordonnees" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
-            <h2 class="section-title mb-4">Coordonnées</h2>
-            <div class="grid md:grid-cols-2 gap-4">
+            <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Coordonnées</h2>
+            <div class="grid md:grid-cols-2 gap-3">
               <label class="grid gap-1">
-                <span class="label">Email</span>
-                <input type="email" class="field" value="sophie.dubois@email.com" />
+                <span class="text-sm text-white/80">Email</span>
+                <input type="email" class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" value="emma.martin@email.com" />
               </label>
               <label class="grid gap-1">
-                <span class="label">Téléphone</span>
-                <input type="tel" class="field" value="+33 6 12 34 56 78" />
+                <span class="text-sm text-white/80">Téléphone</span>
+                <input type="tel" class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" value="+33 6 12 34 56 78" />
               </label>
               <label class="md:col-span-2 grid gap-1">
-                <span class="label">Adresse</span>
-                <input type="text" class="field" value="123 Rue de la Liberté, 75001 Paris" />
+                <span class="text-sm text-white/80">Adresse</span>
+                <input class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" value="24 Rue Oberkampf, 75011 Paris" />
               </label>
             </div>
-            <div class="mt-6 flex items-center gap-3">
-              <button class="rounded-lg px-4 py-2 text-sm bg-yellow-300 text-black font-semibold hover:brightness-95">Enregistrer</button>
-              <p class="text-xs text-white/60">Vos données sont chiffrées et ne seront jamais revendues.</p>
+            <p class="text-xs text-white/60 mt-3">Vos données sont chiffrées et ne sont jamais revendues.</p>
+            <div class="mt-4">
+              <button class="rounded-lg bg-yellow-300 text-black px-4 py-2 text-sm font-semibold hover:brightness-95">Enregistrer</button>
+            </div>
+          </section>
+
+          <!-- Objectifs & mesures -->
+          <section id="objectifs" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
+            <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Objectifs & mesures</h2>
+            <div class="grid md:grid-cols-3 gap-3">
+              <label class="grid gap-1">
+                <span class="text-sm text-white/80">Objectif principal</span>
+                <select class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none">
+                  <option>Perte de poids</option>
+                  <option>Prise de masse</option>
+                  <option>Performance</option>
+                  <option>Bien-être général</option>
+                </select>
+              </label>
+              <label class="grid gap-1">
+                <span class="text-sm text-white/80">Poids actuel (kg)</span>
+                <input inputmode="decimal" class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" value="64" />
+              </label>
+              <label class="grid gap-1">
+                <span class="text-sm text-white/80">Taille (cm)</span>
+                <input inputmode="numeric" class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" value="168" />
+              </label>
+            </div>
+            <div class="grid gap-3 mt-3">
+              <label class="grid gap-1">
+                <span class="text-sm text-white/80">Notes / contraintes</span>
+                <textarea class="rounded-lg bg-white/5 border border-white/10 px-3 py-2 h-28 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none" placeholder="Blessure, disponibilité, préférences…"></textarea>
+              </label>
+            </div>
+            <div class="mt-4">
+              <button class="rounded-lg bg-yellow-300 text-black px-4 py-2 text-sm font-semibold hover:brightness-95">Mettre à jour</button>
             </div>
           </section>
 
           <!-- Préférences -->
           <section id="preferences" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
-            <h2 class="section-title mb-4">Préférences</h2>
-            <div class="grid md:grid-cols-3 gap-4">
+            <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Préférences</h2>
+            <div class="grid md:grid-cols-3 gap-3">
               <label class="grid gap-1">
-                <span class="label">Langue</span>
-                <select class="field">
+                <span class="text-sm text-white/80">Langue</span>
+                <select class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none">
                   <option>Français</option>
                   <option>English</option>
                 </select>
               </label>
               <label class="grid gap-1">
-                <span class="label">Fuseau horaire</span>
-                <select class="field">
+                <span class="text-sm text-white/80">Fuseau horaire</span>
+                <select class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none">
                   <option>Europe/Paris (UTC+1/+2)</option>
                   <option>UTC</option>
                 </select>
               </label>
               <label class="grid gap-1">
-                <span class="label">Notifications</span>
-                <select class="field">
+                <span class="text-sm text-white/80">Notifications</span>
+                <select class="rounded-lg bg-white/5 border border-white/10 h-11 px-3 text-sm focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none">
                   <option>Push + Email</option>
                   <option>Push uniquement</option>
                   <option>Email uniquement</option>
@@ -221,30 +234,29 @@
                 </select>
               </label>
             </div>
-            <div class="mt-6 flex gap-3">
-              <button class="rounded-lg px-4 py-2 text-sm bg-yellow-300 text-black font-semibold hover:brightness-95">Mettre à jour</button>
-              <a href="reservation.html" class="rounded-lg border border-white/15 px-4 py-2 text-sm hover:bg-white/5">Voir mes prochaines séances</a>
+            <div class="mt-4">
+              <button class="rounded-lg bg-yellow-300 text-black px-4 py-2 text-sm font-semibold hover:brightness-95">Enregistrer</button>
             </div>
           </section>
 
           <!-- Sécurité -->
           <section id="securite" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
-            <h2 class="section-title mb-4">Sécurité du compte</h2>
-            <div class="grid gap-4 md:grid-cols-2">
-              <div class="rounded-xl bg-white/5 p-4">
+            <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight mb-4">Sécurité du compte</h2>
+            <div class="grid gap-3 md:grid-cols-2">
+              <div class="rounded-xl bg-white/5 border border-white/10 p-4">
                 <div class="flex items-center justify-between gap-3">
                   <div>
                     <p class="font-semibold">Mot de passe</p>
-                    <p class="text-sm text-white/60">Dernière mise à jour : il y a 3 mois</p>
+                    <p class="text-sm text-white/60">Dernière mise à jour : il y a 2 mois</p>
                   </div>
-                  <button class="rounded-lg border border-white/15 px-3 py-1.5 text-sm hover:bg-white/5">Changer</button>
+                  <a href="forgot.html" class="rounded-lg border border-white/15 px-3 py-1.5 text-sm hover:bg-white/5">Changer</a>
                 </div>
               </div>
-              <div class="rounded-xl bg-white/5 p-4">
+              <div class="rounded-xl bg-white/5 border border-white/10 p-4">
                 <div class="flex items-center justify-between gap-3">
                   <div>
                     <p class="font-semibold">Double authentification</p>
-                    <p class="text-sm text-white/60">Recommandé pour sécuriser votre compte</p>
+                    <p class="text-sm text-white/60">Ajoutez une couche de sécurité</p>
                   </div>
                   <button class="rounded-lg bg-yellow-300 text-black px-3 py-1.5 text-sm font-semibold hover:brightness-95">Activer</button>
                 </div>
@@ -252,27 +264,62 @@
             </div>
           </section>
 
-          <!-- Facturation -->
+          <!-- Abonnement & factures -->
           <section id="facturation" class="rounded-3xl glass p-6 md:p-8 ring-gradient">
             <div class="flex items-center justify-between gap-4 mb-4">
-              <h2 class="section-title">Facturation</h2>
+              <h2 class="text-[22px] md:text-3xl font-extrabold tracking-tight">Abonnement & factures</h2>
               <a href="checkout.html" class="rounded-lg border border-white/15 px-3 py-1.5 text-sm hover:bg-white/5">Gérer mes paiements</a>
             </div>
-            <div class="grid md:grid-cols-2 gap-4">
-              <div class="rounded-xl bg-white/5 p-4">
-                <p class="text-sm text-white/60">Formule actuelle</p>
+            <div class="grid md:grid-cols-2 gap-3">
+              <div class="rounded-xl bg-white/5 border border-white/10 p-4">
+                <p class="text-sm text-white/60">Formule active</p>
                 <p class="text-lg font-semibold">Premium (mensuel)</p>
                 <p class="text-sm text-white/60">Renouvellement le 15 du mois</p>
+                <div class="mt-3 flex gap-2">
+                  <a href="pricing.html" class="rounded-lg bg-yellow-300 text-black px-3 py-1.5 text-sm font-semibold hover:brightness-95">Changer de formule</a>
+                </div>
               </div>
-              <div class="rounded-xl bg-white/5 p-4">
+              <div class="rounded-xl bg-white/5 border border-white/10 p-4">
                 <p class="text-sm text-white/60">Moyen de paiement</p>
                 <p class="text-lg font-semibold">•••• •••• •••• 4216</p>
                 <p class="text-sm text-white/60">Expire 08/26</p>
+                <div class="mt-3">
+                  <a href="checkout.html" class="rounded-lg border border-white/15 px-3 py-1.5 text-sm hover:bg-white/5">Mettre à jour la carte</a>
+                </div>
               </div>
             </div>
-            <div class="mt-6 flex gap-3">
-              <a href="pricing.html" class="rounded-lg px-4 py-2 text-sm bg-yellow-300 text-black font-semibold hover:brightness-95">Changer de formule</a>
-              <a href="checkout.html" class="rounded-lg border border-white/15 px-4 py-2 text-sm hover:bg-white/5">Mettre à jour la carte</a>
+
+            <div class="mt-6">
+              <h3 class="text-lg font-semibold mb-2">Dernières factures</h3>
+              <div class="rounded-xl overflow-hidden border border-white/10">
+                <table class="w-full text-sm">
+                  <thead class="bg-white/5">
+                    <tr class="text-left">
+                      <th class="px-4 py-2">Date</th>
+                      <th class="px-4 py-2">Référence</th>
+                      <th class="px-4 py-2">Montant</th>
+                      <th class="px-4 py-2">Statut</th>
+                      <th class="px-4 py-2"></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr class="border-t border-white/10">
+                      <td class="px-4 py-2">15/08/2025</td>
+                      <td class="px-4 py-2">INV-2025-0821</td>
+                      <td class="px-4 py-2">199,00 €</td>
+                      <td class="px-4 py-2"><span class="rounded-full bg-white/10 px-2 py-0.5">Payée</span></td>
+                      <td class="px-4 py-2 text-right"><a href="#" class="underline underline-offset-2">Télécharger</a></td>
+                    </tr>
+                    <tr class="border-t border-white/10">
+                      <td class="px-4 py-2">15/07/2025</td>
+                      <td class="px-4 py-2">INV-2025-0721</td>
+                      <td class="px-4 py-2">199,00 €</td>
+                      <td class="px-4 py-2"><span class="rounded-full bg-white/10 px-2 py-0.5">Payée</span></td>
+                      <td class="px-4 py-2 text-right"><a href="#" class="underline underline-offset-2">Télécharger</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </section>
         </div>
@@ -290,7 +337,7 @@
       </section>
     </main>
 
-    <!-- Footer (identique à l'index) -->
+    <!-- Footer -->
     <footer class="border-t border-white/10 bg-black/40">
       <div class="container py-8 grid md:grid-cols-3 gap-6 text-sm text-white/70">
         <div>
@@ -317,20 +364,15 @@
     <!-- Scripts -->
     <script>
       // Mobile nav
-      const btn = document.getElementById('menuBtn');
-      const mnav = document.getElementById('mnav');
-      if(btn && mnav){
-        const toggle = () => {
-          const open = mnav.classList.contains('hidden');
-          mnav.classList.toggle('hidden');
-          btn.setAttribute('aria-expanded', String(open));
-        }
-        btn.addEventListener('click', (e)=>{ e.stopPropagation(); toggle(); });
-        document.addEventListener('click', (e)=>{ if(!mnav.contains(e.target) && e.target !== btn){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
-        window.addEventListener('resize', ()=>{ if(window.innerWidth >= 768){ mnav.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
-      }
+      (function(){
+        const btn=document.getElementById('menuBtn'); const m=document.getElementById('mnav'); if(!btn||!m) return;
+        const toggle=()=>{const open=m.classList.contains('hidden'); m.classList.toggle('hidden'); btn.setAttribute('aria-expanded', String(open));};
+        btn.addEventListener('click',e=>{e.stopPropagation(); toggle();});
+        document.addEventListener('click',e=>{ if(!m.contains(e.target) && e.target!==btn){ m.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+        addEventListener('resize',()=>{ if(innerWidth>=768){ m.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+      })();
       // Year
-      const yEl = document.getElementById('y'); if(yEl) yEl.textContent = new Date().getFullYear();
+      (function(){ const y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear(); })();
     </script>
   </body>
 </html>

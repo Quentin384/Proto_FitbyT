@@ -1,264 +1,232 @@
-<html>
+<!DOCTYPE html>
+<html lang="fr" class="scroll-smooth" data-theme="dark">
   <head>
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin="" />
-    <link
-      rel="stylesheet"
-      as="style"
-      onload="this.rel='stylesheet'"
-      href="https://fonts.googleapis.com/css2?display=swap&amp;family=Noto+Serif%3Awght%40400%3B500%3B700%3B900&amp;family=Noto+Sans%3Awght%40400%3B500%3B700%3B900"
-    />
+    <meta name="color-scheme" content="dark light" />
+    <title>Fit by T — Messages</title>
+    <meta name="description" content="Échanges avec votre coach, liste de conversations et envoi de messages." />
 
-    <title>Stitch Design</title>
-    <link rel="icon" type="image/x-icon" href="data:image/x-icon;base64," />
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <!-- Tailwind CSS (CDN) -->
+    <script>
+      window.tailwind = {
+        theme: {
+          extend: {
+            container: { center: true, padding: { DEFAULT:'1rem', md:'1.5rem', lg:'2rem' } }
+          }
+        }
+      }
+    </script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,container-queries"></script>
+
+    <!-- App styles -->
+    <style>
+      :root{
+        --bg: 12 12% 6%;
+        --card: 45 16% 10%;
+        --brand: 49 88% 51%;
+      }
+      html{ font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Noto Sans", Arial; }
+      .bg-grid{
+        background-image:
+          radial-gradient(1200px 400px at 10% -10%, hsl(var(--brand)/.16), transparent 40%),
+          radial-gradient(1000px 600px at 90% 0%, hsl(260 90% 66%/.16), transparent 40%),
+          radial-gradient(500px 400px at 60% 110%, hsl(170 80% 60%/.14), transparent 40%),
+          linear-gradient(to bottom, hsl(var(--bg)), hsl(var(--bg)));
+        background-repeat:no-repeat;
+      }
+      .glass{ backdrop-filter:saturate(140%) blur(10px); background:hsl(var(--card)/.55); border:1px solid hsl(0 0% 100% / .08); }
+      .ring-gradient{ position:relative; }
+      .ring-gradient::before{
+        content:""; position:absolute; inset:-1px; border-radius:16px;
+        background:conic-gradient(from 0deg, hsl(var(--brand)) 0deg, transparent 120deg, transparent 240deg, hsl(var(--brand)) 360deg);
+        filter:blur(.5px);
+        -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
+        -webkit-mask-composite:xor; mask-composite:exclude; padding:1px; pointer-events:none;
+      }
+      .msg{ max-width: 64ch; }
+    </style>
   </head>
-  <body>
-    <div class="relative flex size-full min-h-screen flex-col bg-[#222011] dark group/design-root overflow-x-hidden" style='font-family: "Noto Serif", "Noto Sans", sans-serif;'>
-      <div class="layout-container flex h-full grow flex-col">
-        <header class="relative flex items-center justify-between whitespace-nowrap border-b border-solid border-b-[#484323] px-4 md:px-10 py-3">
-          <div class="flex items-center gap-4 text-white">
-            <div class="size-4">
-              <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path
-                  fill-rule="evenodd"
-                  clip-rule="evenodd"
-                  d="M47.2426 24L24 47.2426L0.757355 24L24 0.757355L47.2426 24ZM12.2426 21H35.7574L24 9.24264L12.2426 21Z"
-                  fill="currentColor"
-                ></path>
-              </svg>
+
+  <body class="min-h-screen bg-grid text-white antialiased selection:bg-yellow-300 selection:text-black">
+    <!-- Header (aligné à l’index/paiement) -->
+    <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/50 border-b border-white/10">
+      <div class="container flex h-16 items-center gap-3">
+        <a href="index.html" class="flex items-center gap-2">
+          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg">
+            <path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.998 35.764c-.004-.018-.01-.05-.023-.094a3.13 3.13 0 0 0-.193-.511 6.54 6.54 0 0 0-.053-.12c-1.271-.871-3.802-2.1-6.072-2.641C30.9875 31.8691 27.6413 31.4783 24 31.4783s-6.9875.3908-9.7095 1.0406c-2.29.5465-4.8462 1.7915-6.1059 2.6643-.0115.0243-.0232.0498-.0349.076-.0513.1159-.0933.2294-.1207.3298-.0262.0958-.0294.1443-.0298.1498 0 .0253.0104.3379.68485.8926.66061.5432 1.73734 1.1217 3.24421 1.6458C14.9242 39.319 19.1919 40 24 40s9.0758-.681 12.0709-1.7228c1.5069-.5241 2.5836-1.1026 3.2442-1.6458.5855-.4815.6706-.7803.6829-.8674Z"/>
+          </svg>
+          <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
+        </a>
+
+        <nav class="ml-auto hidden md:flex items-center gap-7 text-sm">
+          <a class="hover:opacity-90" href="index.html">Accueil</a>
+          <a class="hover:opacity-90" href="pricing.html">Tarifs</a>
+          <a class="hover:opacity-90" href="booking.html">Réserver</a>
+          <a class="hover:opacity-90" href="checkout.html">Paiement</a>
+          <a class="hover:opacity-90" href="reservation.html">Mes séances</a>
+          <a class="hover:opacity-90" href="profile.html">Profil</a>
+        </nav>
+
+        <!-- Mobile -->
+        <button id="menuBtn" class="ml-auto md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 size-10" aria-controls="mnav" aria-expanded="false" aria-label="Ouvrir le menu">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/></svg>
+        </button>
+      </div>
+      <div id="mnav" class="hidden md:hidden border-t border-white/10">
+        <nav class="container py-3 grid gap-2 text-sm">
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="index.html">Accueil</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="pricing.html">Tarifs</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="booking.html">Réserver</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="checkout.html">Paiement</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="reservation.html">Mes séances</a>
+          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="profile.html">Profil</a>
+        </nav>
+      </div>
+    </header>
+
+    <!-- Main -->
+    <main class="container py-6 grid gap-6 lg:grid-cols-[320px_1fr]">
+      <!-- Sidebar conversations -->
+      <aside class="glass ring-gradient rounded-2xl p-4 h-max">
+        <div class="mb-3">
+          <label class="grid gap-1">
+            <span class="sr-only">Rechercher</span>
+            <div class="flex items-center rounded-lg overflow-hidden">
+              <span class="px-3 h-11 grid place-items-center bg-white/5 border border-white/10 border-r-0">
+                <svg xmlns="http://www.w3.org/2000/svg" class="size-4 opacity-80" viewBox="0 0 256 256" fill="currentColor"><path d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"/></svg>
+              </span>
+              <input placeholder="Rechercher" class="h-11 flex-1 rounded-lg rounded-l-none bg-white/5 border border-white/10 px-3 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none"/>
             </div>
-            <h2 class="text-white text-lg font-bold leading-tight tracking-[-0.015em]">FitbyT</h2>
-          </div>
-          <div class="flex flex-1 justify-end gap-4 md:gap-8">
-            <button id="mobile-menu-toggle" aria-controls="mobile-menu" aria-expanded="false" class="md:hidden inline-flex items-center justify-center rounded-lg border border-[#675f32] text-white size-9">
-              <span class="sr-only">Ouvrir le menu</span>
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5">
-                <path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd" />
-              </svg>
-            </button>
-            <div class="hidden md:flex items-center gap-4 md:gap-9 overflow-x-auto whitespace-nowrap">
-              <a class="text-white text-sm font-medium leading-normal" href="index.html">Accueil</a>
-              <a class="text-white text-sm font-medium leading-normal" href="pricing.html">Tarifs</a>
-              <a class="text-white text-sm font-medium leading-normal" href="booking.html">Réserver</a>
-              <a class="text-white text-sm font-medium leading-normal" href="checkout.html">Paiement</a>
-              <a class="text-white text-sm font-medium leading-normal" href="reservation.html">Mes séances</a>
-              <a class="text-white text-sm font-medium leading-normal" href="profile.html">Profil</a>
+          </label>
+        </div>
+
+        <nav class="grid divide-y divide-white/10">
+          <!-- item -->
+          <a href="#" class="flex items-center gap-3 py-3 hover:bg-white/5 rounded-lg px-2">
+            <img class="size-12 rounded-full object-cover" src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=200&auto=format&fit=crop" alt="">
+            <div class="min-w-0">
+              <p class="font-medium truncate">Sophie Martin</p>
+              <p class="text-sm text-white/60 truncate">Salut, comment s’est passée ta séance ce matin ?</p>
             </div>
-          </div>
-          <!-- Mobile menu panel -->
-          <div id="mobile-menu" class="md:hidden hidden absolute right-4 top-14 w-64 rounded-lg border border-[#484323] bg-[#222011] shadow-lg z-50">
-            <nav class="flex flex-col p-2">
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="index.html">Accueil</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="pricing.html">Tarifs</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="booking.html">Réserver</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="checkout.html">Paiement</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="reservation.html">Mes séances</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="profile.html">Profil</a>
-              <div class="my-2 border-t border-[#484323]"></div>
-              <p class="px-3 pt-1 pb-2 text-[#cac191] text-xs font-semibold uppercase tracking-wide">Espace coach</p>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="disponibility.html">Disponibilités</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="analytics.html">Statistiques</a>
-              <a class="px-3 py-2 rounded-md text-white text-sm font-medium hover:bg-[#484323]" href="contact.html">Contact</a>
-            </nav>
-          </div>
-        </header>
-        <div class="px-4 sm:px-6 lg:px-10 flex flex-1 justify-center py-5 flex-col md:flex-row gap-4">
-          <div class="layout-content-container flex flex-col w-full md:w-80">
-            <div class="px-4 py-3">
-              <label class="flex flex-col min-w-40 h-12 w-full">
-                <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
-                  <div
-                    class="text-[#cac191] flex border-none bg-[#484323] items-center justify-center pl-4 rounded-l-lg border-r-0"
-                    data-icon="MagnifyingGlass"
-                    data-size="24px"
-                    data-weight="regular"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24px" height="24px" fill="currentColor" viewBox="0 0 256 256">
-                      <path
-                        d="M229.66,218.34l-50.07-50.06a88.11,88.11,0,1,0-11.31,11.31l50.06,50.07a8,8,0,0,0,11.32-11.32ZM40,112a72,72,0,1,1,72,72A72.08,72.08,0,0,1,40,112Z"
-                      ></path>
-                    </svg>
-                  </div>
-                  <input
-                    placeholder="Rechercher"
-                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#484323] focus:border-none h-full placeholder:text-[#cac191] px-4 rounded-l-none border-l-0 pl-2 text-base font-normal leading-normal"
-                    value=""
-                  />
-                </div>
-              </label>
+          </a>
+          <a href="#" class="flex items-center gap-3 py-3 hover:bg-white/5 rounded-lg px-2">
+            <img class="size-12 rounded-full object-cover" src="https://images.unsplash.com/photo-1544005311-94ddf0286df2?q=80&w=200&auto=format&fit=crop" alt="">
+            <div class="min-w-0">
+              <p class="font-medium truncate">Alexandre Dubois</p>
+              <p class="text-sm text-white/60 truncate">J’ai bien progressé sur les squats, merci !</p>
             </div>
-            <div class="flex items-center gap-4 bg-[#222011] px-4 min-h-[72px] py-2">
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA_PEineKSVlNbUxa6eQL_iMina5jVHrgsQ-HVaMipJIGe9DIYQ0EveJP7OY28hziYlJ7KPv-nhp2g4VS_xtIlhtZD8XGcE5Ot_WoFUF0mrAFZ2Oev3Ab-CxAvrUHWWtHWGqJbNrySQCCaW_AdYakhvGBr0QzzuYehOlIDi9l5O89VUWr_-UmkkaaNMkXriyLHj6zBOwIQLS24evaLMrlrYIeWDAvdHoDNdY9NBCuc3zgu_PJKy1iOhiTpFtdm2qHYo1aDghK4N9OeP");'
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-white text-base font-medium leading-normal line-clamp-1">Sophie Martin</p>
-                <p class="text-[#cac191] text-sm font-normal leading-normal line-clamp-2">Salut, comment s'est passée ta séance ce matin ?</p>
-              </div>
+          </a>
+          <a href="#" class="flex items-center gap-3 py-3 hover:bg-white/5 rounded-lg px-2">
+            <img class="size-12 rounded-full object-cover" src="https://images.unsplash.com/photo-1529665253569-6d01c0eaf7b6?q=80&w=200&auto=format&fit=crop" alt="">
+            <div class="min-w-0">
+              <p class="font-medium truncate">Camille Leclerc</p>
+              <p class="text-sm text-white/60 truncate">N’oublie pas l’échauffement avant de commencer.</p>
             </div>
-            <div class="flex items-center gap-4 bg-[#222011] px-4 min-h-[72px] py-2">
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuA3C1PEplCd6asTAS2WLd6hfoNMGZRY2PPUfGjdBkGSuLEgRC089AmILhx9_-BPUPuYD8GU1J0FmUIYasI7Bc1SU-0-o5MwMAmvy8rXtWtLTZAHMzz2gMOzeO6wgKV0cjoOGNgM9GHaEIjgJz91Twqg507XEJ-vuJdbHXqKqqhePH4d38wdrRLjloNW0opHbWai2BWqYfGrOtH282TH3oTMZyw9Br7xD7XUCalEqsguJ_ye3X-CQecM6g80LQJgh3jNK2qlDO2E7ctT");'
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-white text-base font-medium leading-normal line-clamp-1">Alexandre Dubois</p>
-                <p class="text-[#cac191] text-sm font-normal leading-normal line-clamp-2">J'ai bien progressé sur les squats, merci !</p>
-              </div>
+          </a>
+          <a href="#" class="flex items-center gap-3 py-3 hover:bg-white/5 rounded-lg px-2">
+            <img class="size-12 rounded-full object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=200&auto=format&fit=crop" alt="">
+            <div class="min-w-0">
+              <p class="font-medium truncate">Thomas Durand</p>
+              <p class="text-sm text-white/60 truncate">Je suis prêt pour le défi de la semaine !</p>
             </div>
-            <div class="flex items-center gap-4 bg-[#222011] px-4 min-h-[72px] py-2">
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCGwiLLKkMfx8gHPW3Rse8w3TO6S2l6w05-u9S8wtdSYnsV99jM_25jouBrxLKCTAhc37UaRAHxvObSSxIpkespJ9vntNGap0-mOwNeCgz7-1mut0iFWmY1LXBX5Nddj8BY1ok9PRM7UMUzNByFGCSMSekRx_719bwpDZ8o5O0k54xsWDFdGUj9a_pXI65k4YQ8GDPyCFo-0OCBdh3mkjUsv3bW4otdPzc68aePnAsLH4IBKeVgVIV597Fde1Hdb56CuB1uBN57idry");'
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-white text-base font-medium leading-normal line-clamp-1">Camille Leclerc</p>
-                <p class="text-[#cac191] text-sm font-normal leading-normal line-clamp-2">N'oublie pas l'échauffement avant de commencer.</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-4 bg-[#222011] px-4 min-h-[72px] py-2">
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDOC2x5XgnZ5UWD3gW0t6QBHwnb0e6kcAQyL3w_a2IHM20Iv7F6I-eFfOCEJ09G1gG-A8_gTjwRCH591CErPfpAs5puYMP36RI4wbatMwxGjt-SchFkTaZwZFOlVy_sPGfk-QvEPFYcBHXC60H5xBh0c_hUabiHmcHAkckYXcLb3TZtY8eLf0yIB6jgkehUEL4Vf1JaoQWAspzrSKHiI9Bb7e9qZwZbfV9E2giVWvkJnPGY90cQWMWkm2a2WgvF2Hk8uix8n73kyADF");'
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-white text-base font-medium leading-normal line-clamp-1">Thomas Durand</p>
-                <p class="text-[#cac191] text-sm font-normal leading-normal line-clamp-2">Je suis prêt pour le défi de la semaine !</p>
-              </div>
-            </div>
-            <div class="flex items-center gap-4 bg-[#222011] px-4 min-h-[72px] py-2">
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full h-14 w-fit"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCQoaVD9V5Oczm8U0z9Lmp6NKvRK11RYh1bk2-7ApgBR170YiLSKowVg6l-z-kLvVXEnGpjvrqhp-Xp-lT_bYDGkVXnUIF4fKmnNc9_d3X-_bQbfQ4SwnQbzOqypu4nqGsgKZuSo8n_r9Kx3w8WEe-ZHpei95z-4GfDe1quuvE0lN-g0itPFMHlATnwk_LOjm7u6OfGWDJ6l0qZZpI59JdNTcVuhOHg827uRMR_SWkTr5JLSEdNN8DMvasKORY61c75mrmvKDQfMOfC");'
-              ></div>
-              <div class="flex flex-col justify-center">
-                <p class="text-white text-base font-medium leading-normal line-clamp-1">Julie Moreau</p>
-                <p class="text-[#cac191] text-sm font-normal leading-normal line-clamp-2">Tes conseils sur la nutrition m'aident beaucoup.</p>
-              </div>
+          </a>
+        </nav>
+      </aside>
+
+      <!-- Thread -->
+      <section class="grid gap-4">
+        <!-- Header thread -->
+        <div class="glass ring-gradient rounded-2xl p-4 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <img class="size-10 rounded-full object-cover" src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=200&auto=format&fit=crop" alt="">
+            <div>
+              <p class="font-semibold leading-tight">Sophie Martin</p>
+              <p class="text-xs text-white/60">Dernière connexion: il y a 2h</p>
             </div>
           </div>
-          <div class="layout-content-container flex flex-col max-w-[960px] w-full flex-1">
-            <div class="flex flex-wrap justify-between gap-3 p-4"><p class="text-white tracking-light text-[32px] font-bold leading-tight min-w-72">Sophie Martin</p></div>
-            <div class="flex items-end gap-3 p-4">
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCe5X31SLpwAMtWOgk55_wgimwe1MTl1UDjOaEzbd3900zjtQDt3dKxlKtojQrfPzbbC449hcsrCHLctr9qfAGunkn5MwxsQBKJbejLyWmwpgT7AuWCkllZS9tWIZLVQZ1X1m-RTOp4UZGSMq66cp_mNu8K-DGxJbaqB1kp_ln6c8OJJoVqa3YdLOn2WNrEoa1J4aEdA6-8AOIOxL9zt2-8QhkqoZShBR6-AkNMnRQdgoFDXHZv9nGqIHtkvdETrfej1N7bIUxFzeww");'
-              ></div>
-              <div class="flex flex-1 flex-col gap-1 items-start">
-                <p class="text-[#cac191] text-[13px] font-normal leading-normal max-w-[360px]">Sophie Martin</p>
-                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3 bg-[#484323] text-white">
-                  Salut ! Comment s'est passée ta séance ce matin ?
-                </p>
-              </div>
-            </div>
-            <div class="flex items-end gap-3 p-4 justify-end">
-              <div class="flex flex-1 flex-col gap-1 items-end">
-                <p class="text-[#cac191] text-[13px] font-normal leading-normal max-w-[360px] text-right">Coach</p>
-                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3 bg-[#f0ce0f] text-[#222011]">
-                  Salut Sophie, elle s'est bien déroulée. J'ai travaillé sur l'endurance et la flexibilité. Et toi, comment te sens-tu ?
-                </p>
-              </div>
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuC3jylKqPEuoeZ7AbGXj7OUL6h2Ush-Hehdcq_qk7Wdu00RcXLV-wObcilTcuwqMUTN7GJbSuHdQJh3JMw16Oao8hHT-z2x0TP1wpcmFxKHCVgbipmHsA4m-TLgDdGrgP3m3lFDc3teQcbZ9UY3nAM6T_KiN2q61r9KoPPfaa68dR-F3GitFtjEcQjXYD_SqojhfC9LHVwLWs4MlbM9B7YGvjErsJvrs1wESvhPuhNmODL6jUf7GvFE4XDonrGT1Gt1oS2CITDfN36x");'
-              ></div>
-            </div>
-            <div class="flex items-end gap-3 p-4">
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuDR2G3YF4m7CFhJXjKZ8H5Zvd__drMFW48omXIlfxd80ou6VRZM8OESG_agy81Ok3WJsly8vBg6ah14LaVflQV-9GxudW1KD0w_IozenZAXa_G964YekhsG34937fu6qKZFLZgHyTi-AvL0sSMRVQRsYgluvAAlKsyQTmyO_fOtwJmO8IrLFDCwx-Zave6Cp12vDDj59J7xDW0B7C946MiLOEu9kBVuO8SYqJlcaq_X1NNtdt8GDBm0mikwu--rmVtU2mhiu2_DFo1A");'
-              ></div>
-              <div class="flex flex-1 flex-col gap-1 items-start">
-                <p class="text-[#cac191] text-[13px] font-normal leading-normal max-w-[360px]">Sophie Martin</p>
-                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3 bg-[#484323] text-white">
-                  Je me sens super bien ! J'ai fait une séance de yoga et je suis prête pour le reste de la journée.
-                </p>
-              </div>
-            </div>
-            <div class="flex items-end gap-3 p-4 justify-end">
-              <div class="flex flex-1 flex-col gap-1 items-end">
-                <p class="text-[#cac191] text-[13px] font-normal leading-normal max-w-[360px] text-right">Coach</p>
-                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3 bg-[#f0ce0f] text-[#222011]">
-                  C'est génial ! N'oublie pas de bien t'hydrater et de manger sainement pour optimiser tes résultats.
-                </p>
-              </div>
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBrrTSM386VrvxPISESBuSvf_tz2BimReE7KfT33w9PKE6hHcZNLwvDhu4sxR0A8RrFObeo91DD76YfsyN1Z_ddtnBofCYn5QFQHsxN_Z6DoVftOsyNakEf-B-z9f9esK5UFYhYaUy7zhrFTXl0JFtr6QPBoO0-yjFIXWylzMnGc93eZZlQhzCzYJNSfQMDVfcj7dO4U2p1rVqE3eoBeTfNm60ITGOsi9iUZ3NCrMFBvGZ4hJP4X8TiZ6dCl8QRDmGVCV-B5G6GEnJQ");'
-              ></div>
-            </div>
-            <div class="flex items-end gap-3 p-4">
-              <div
-                class="bg-center bg-no-repeat aspect-square bg-cover rounded-full w-10 shrink-0"
-                style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuCjSFRmRGsWJDe0zj9BLLtMa3-FqqttPoOkJEkC6831U9HoSMfNljzdNypYR0BDvai78NXN_2AKrWC7hnsbN0lEL_Nrw5VpxJZS0EZxLzoY-mVQvyky7fwe2RwocVdTbcHRiX-TaoZ513bzNnTDuljEzDR4b1yf-6kJuEXdFsLn0sHz83K0HWB5kPvCde6gN1LCizFFgmIKnEn3Cxd29XEAJXX2m4TGeEJVpg86VPH5mMuYNnfAClXpDjhRxxqh867jPtOfct6lp5_S");'
-              ></div>
-              <div class="flex flex-1 flex-col gap-1 items-start">
-                <p class="text-[#cac191] text-[13px] font-normal leading-normal max-w-[360px]">Sophie Martin</p>
-                <p class="text-base font-normal leading-normal flex max-w-[360px] rounded-lg px-4 py-3 bg-[#484323] text-white">
-                  Merci pour le conseil ! Je vais préparer un smoothie protéiné pour le déjeuner.
-                </p>
-              </div>
-            </div>
-            <div class="flex items-center px-4 py-3 gap-3 @container">
-              <label class="flex flex-col min-w-40 h-12 flex-1">
-                <div class="flex w-full flex-1 items-stretch rounded-lg h-full">
-                  <input
-                    placeholder="Commencer à écrire"
-                    class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-white focus:outline-0 focus:ring-0 border-none bg-[#484323] focus:border-none h-full placeholder:text-[#cac191] px-4 rounded-r-none border-r-0 pr-2 text-base font-normal leading-normal"
-                    value=""
-                  />
-                  <div class="flex border-none bg-[#484323] items-center justify-center pr-4 rounded-r-lg border-l-0 !pr-2">
-                    <div class="flex items-center gap-4 justify-end">
-                      <div class="flex items-center gap-1">
-                        <button class="flex items-center justify-center p-1.5">
-                          <div class="text-[#cac191]" data-icon="Image" data-size="20px" data-weight="regular">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" height="20px" fill="currentColor" viewBox="0 0 256 256">
-                              <path
-                                d="M216,40H40A16,16,0,0,0,24,56V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40Zm0,16V158.75l-26.07-26.06a16,16,0,0,0-22.63,0l-20,20-44-44a16,16,0,0,0-22.62,0L40,149.37V56ZM40,172l52-52,80,80H40Zm176,28H194.63l-36-36,20-20L216,181.38V200ZM144,100a12,12,0,1,1,12,12A12,12,0,0,1,144,100Z"
-                              ></path>
-                            </svg>
-                          </div>
-                        </button>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </label>
-            </div>
+          <a href="booking.html" class="rounded-lg bg-yellow-300 text-black px-3 py-2 text-sm font-bold hover:brightness-95">Réserver</a>
+        </div>
+
+        <!-- Messages -->
+        <div class="glass rounded-2xl p-4 grid gap-4">
+          <!-- received -->
+          <div class="flex items-end gap-3">
+            <img class="size-9 rounded-full object-cover" src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=200&auto=format&fit=crop" alt="">
+            <p class="msg rounded-lg px-4 py-3 bg-white/5 border border-white/10">Salut ! Comment s’est passée ta séance ce matin ?</p>
+          </div>
+          <!-- sent -->
+          <div class="flex items-end gap-3 justify-end">
+            <p class="msg rounded-lg px-4 py-3 bg-yellow-300 text-black">Super bien ! Endurance + mobilité. Je me sens en forme 💪</p>
+            <img class="size-9 rounded-full object-cover" src="https://images.unsplash.com/photo-1502685104226-ee32379fefbe?q=80&w=200&auto=format&fit=crop" alt="">
+          </div>
+          <!-- received -->
+          <div class="flex items-end gap-3">
+            <img class="size-9 rounded-full object-cover" src="https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=200&auto=format&fit=crop" alt="">
+            <p class="msg rounded-lg px-4 py-3 bg-white/5 border border-white/10">Top ! Hydrate-toi bien et pense à 10’ de stretching ce soir.</p>
           </div>
         </div>
+
+        <!-- Composer (inputs = style “Paiement”) -->
+        <form class="glass rounded-2xl p-3 grid gap-3">
+          <label class="grid gap-1">
+            <span class="sr-only">Votre message</span>
+            <textarea rows="3" placeholder="Écrire un message…" class="rounded-lg bg-white/5 border border-white/10 px-3 py-2 text-sm placeholder:text-white/50 focus:ring-2 focus:ring-yellow-300/40 focus:border-yellow-300/40 outline-none"></textarea>
+          </label>
+          <div class="flex gap-2 justify-between flex-wrap">
+            <div class="flex gap-2">
+              <label class="inline-flex items-center gap-2 rounded-lg border border-white/10 px-3 h-11 bg-white/5 cursor-pointer hover:bg-white/10">
+                <input type="file" class="sr-only" />
+                <span class="text-sm">Joindre un fichier</span>
+              </label>
+            </div>
+            <button type="submit" class="rounded-lg bg-yellow-300 text-black font-semibold px-4 h-11">Envoyer</button>
+          </div>
+        </form>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/40 mt-8">
+      <div class="container py-8 grid md:grid-cols-3 gap-6 text-sm text-white/70">
+        <div>
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="size-5 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/></svg>
+            <span class="font-semibold">Fit by T</span>
+          </div>
+          <p>Coaching sportif personnalisé à Paris et en ligne.</p>
+        </div>
+        <nav class="grid gap-2">
+          <a href="index.html" class="hover:opacity-90">Accueil</a>
+          <a href="pricing.html" class="hover:opacity-90">Tarifs</a>
+          <a href="booking.html" class="hover:opacity-90">Réserver</a>
+          <a href="contact.html" class="hover:opacity-90">Contact</a>
+        </nav>
+        <div class="grid gap-2">
+          <a href="#" class="hover:opacity-90">Mentions légales</a>
+          <a href="#" class="hover:opacity-90">Politique de confidentialité</a>
+          <p class="text-xs text-white/50">© <span id="y"></span> Fit by T. Tous droits réservés.</p>
+        </div>
       </div>
-    </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script>
+      // Mobile nav
+      (function(){
+        const btn=document.getElementById('menuBtn'); const m=document.getElementById('mnav'); if(!btn||!m) return;
+        const toggle=()=>{const open=m.classList.contains('hidden'); m.classList.toggle('hidden'); btn.setAttribute('aria-expanded', String(open));};
+        btn.addEventListener('click',e=>{e.stopPropagation(); toggle();});
+        document.addEventListener('click',e=>{ if(!m.contains(e.target) && e.target!==btn){ m.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+        addEventListener('resize',()=>{ if(innerWidth>=768){ m.classList.add('hidden'); btn.setAttribute('aria-expanded','false'); }});
+      })();
+      // Year
+      (function(){ const y=document.getElementById('y'); if(y) y.textContent=new Date().getFullYear(); })();
+    </script>
   </body>
-  <script>
-    (function () {
-      const btn = document.getElementById('mobile-menu-toggle');
-      const menu = document.getElementById('mobile-menu');
-      if (!btn || !menu) return;
-      const close = () => {
-        if (!menu.classList.contains('hidden')) menu.classList.add('hidden');
-        btn.setAttribute('aria-expanded', 'false');
-      };
-      const open = () => {
-        menu.classList.remove('hidden');
-        btn.setAttribute('aria-expanded', 'true');
-      };
-      btn.addEventListener('click', (e) => {
-        e.stopPropagation();
-        menu.classList.contains('hidden') ? open() : close();
-      });
-      document.addEventListener('click', (e) => {
-        if (!menu.contains(e.target) && e.target !== btn) close();
-      });
-      document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') close();
-      });
-      window.addEventListener('resize', () => {
-        if (window.innerWidth >= 768) close();
-      });
-    })();
-  </script>
 </html>

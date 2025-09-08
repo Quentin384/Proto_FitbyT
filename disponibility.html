@@ -41,28 +41,34 @@
         -webkit-mask:linear-gradient(#000,#000) content-box, linear-gradient(#000,#000);
         -webkit-mask-composite:xor; mask-composite:exclude; padding:1px; pointer-events:none;
       }
-      .btn{ height:2.5rem; border-radius:.65rem; padding:0 .9rem; border:1px solid hsl(0 0% 100% /.15); background:transparent; color:#fff; }
+      .btn{ height:clamp(2.25rem, 6.5vw, 2.75rem); border-radius:.65rem; padding:0 .9rem; border:1px solid hsl(0 0% 100% /.15); background:transparent; color:#fff; }
       .btn-primary{ background:hsl(var(--brand)); color:#000; border-color:transparent; font-weight:800; }
       .btn-danger{ border-color:rgba(255,255,255,.18); color:#fca5a5; }
-      .field{ border-radius:.65rem; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15); color:#fff; height:2.75rem; padding:0 .75rem; }
+      .field{ border-radius:.65rem; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.15); color:#fff; height:clamp(2.5rem, 7vw, 2.75rem); padding:0 .75rem; width:100%; }
       .field:focus{ outline:none; box-shadow:0 0 0 2px hsl(var(--brand)/.35); border-color:hsl(var(--brand)/.6) }
       .field::placeholder{ color:rgba(255,255,255,.55); }
       .row-error{ outline:2px solid #ef4444; outline-offset:2px; border-radius:.75rem; }
 
       /* Calendar */
-      .cal-grid{ display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:.45rem; }
-      .cal-day{ position:relative; height:2.75rem; display:flex; align-items:center; justify-content:center; border-radius:.9rem; }
+      .cal-grid{ display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:.35rem; }
+      .cal-head{ color:rgba(255,255,255,.8); font-weight:700; display:flex; align-items:center; justify-content:center; height:clamp(1.75rem, 4.2vw, 2.25rem); font-size:clamp(.7rem, 2.5vw, .9rem); }
+      .cal-day{
+        position:relative;
+        height:clamp(2.1rem, 6.2vw, 2.75rem);
+        display:flex; align-items:center; justify-content:center; border-radius:.9rem;
+        font-size:clamp(.8rem, 3vw, 1rem);
+      }
       .cal-day:hover{ background-color: rgba(255,255,255,.06); }
-      .cal-day.is-muted{ opacity:.45; }
+      .cal-day.is-muted{ opacity:.5; }
       .cal-day.is-today{ outline:2px dashed hsl(var(--brand)/.7); outline-offset:2px; }
       .cal-day.is-picked{ background:hsl(var(--brand)); color:#000; font-weight:800; }
-      .cal-head{ color:rgba(255,255,255,.8); font-weight:700; display:flex; align-items:center; justify-content:center; height:2.25rem; }
 
       /* Badges inside calendar cells (count of slots) */
       .cal-badge{
-        position:absolute; right:.35rem; top:.35rem; min-width:1.15rem; height:1.15rem;
+        position:absolute; right:.25rem; top:.25rem;
+        min-width:clamp(1rem, 3.2vw, 1.15rem); height:clamp(1rem, 3.2vw, 1.15rem);
         border-radius:9999px; background:hsl(var(--brand)); color:#111; font-weight:800;
-        display:grid; place-items:center; font-size:.7rem; padding:0 .2rem;
+        display:grid; place-items:center; font-size:clamp(.6rem, 2vw, .7rem); padding:0 .2rem;
       }
 
       /* Force dark native time inputs across browsers */
@@ -79,6 +85,11 @@
       @media(prefers-reduced-motion:no-preference){
         .hover-lift{ transition: transform .3s ease, box-shadow .3s ease; }
         .hover-lift:hover{ transform: translateY(-2px); box-shadow: 0 10px 30px hsl(var(--brand)/.18); }
+      }
+
+      /* Petites optimisations très petits écrans */
+      @media (max-width: 360px){
+        .cal-grid{ gap:.25rem; }
       }
     </style>
   </head>
@@ -185,13 +196,13 @@
         </div>
       </section>
 
-      <section class="container pb-12 grid lg:grid-cols-[1.1fr_.9fr] gap-6 items-start">
+      <section class="container pb-12 grid gap-6 items-start lg:grid-cols-[1.1fr_.9fr]">
         <!-- Calendrier -->
-        <div class="ring-gradient glass rounded-2xl p-5">
-          <div class="flex items-center justify-between mb-3">
-            <button id="prev" class="btn" aria-label="Mois précédent">⟵</button>
-            <div class="text-lg font-semibold" id="monthTitle">—</div>
-            <button id="next" class="btn" aria-label="Mois suivant">⟶</button>
+        <div class="ring-gradient glass rounded-2xl p-4 sm:p-5">
+          <div class="flex items-center justify-between mb-3 gap-2">
+            <button id="prev" class="btn w-full sm:w-auto" aria-label="Mois précédent">⟵</button>
+            <div class="text-base sm:text-lg font-semibold text-center min-w-0 flex-1" id="monthTitle">—</div>
+            <button id="next" class="btn w-full sm:w-auto" aria-label="Mois suivant">⟶</button>
           </div>
           <div class="cal-grid">
             <div class="cal-head">L</div><div class="cal-head">M</div><div class="cal-head">M</div>
@@ -202,21 +213,20 @@
         </div>
 
         <!-- Éditeur de créneaux -->
-        <div class="ring-gradient glass rounded-2xl p-5 grid gap-4">
-          <div class="flex items-center justify-between gap-3">
-            <h2 class="text-[22px] md:text-2xl font-extrabold tracking-tight">Créneaux du jour</h2>
-            <button id="addSlot" class="btn">+ Ajouter un créneau</button>
+        <div class="ring-gradient glass rounded-2xl p-4 sm:p-5 grid gap-4">
+          <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <h2 class="text-[20px] sm:text-[22px] md:text-2xl font-extrabold tracking-tight">Créneaux du jour</h2>
+            <button id="addSlot" class="btn w-full sm:w-auto">+ Ajouter un créneau</button>
           </div>
-
-          <!-- (Résumé supprimé) -->
 
           <div id="slotsWrap" class="grid gap-3">
             <!-- rows -->
           </div>
 
-          <div class="flex items-center justify-end gap-2 pt-2">
-            <button id="resetDay" class="btn btn-danger">Effacer la journée</button>
-            <button id="saveDay" class="btn btn-primary">Enregistrer</button>
+          <div class="flex flex-col sm:flex-row sm:items-center justify-end gap-2 pt-2">
+            <button id="cloneTo" class="btn w-full sm:w-auto">Dupliquer…</button>
+            <button id="resetDay" class="btn btn-danger w-full sm:w-auto">Effacer la journée</button>
+            <button id="saveDay" class="btn btn-primary w-full sm:w-auto">Enregistrer</button>
           </div>
 
           <p class="text-xs text-white/60">Astuce : gardez 15–30 min de marge entre deux créneaux.</p>
@@ -224,46 +234,78 @@
       </section>
     </main>
 
-<!-- Footer -->
-<footer class="border-t border-white/10 bg-black/40">
-  <div class="container py-8 grid grid-cols-3 md:grid-cols-4 gap-6 text-sm text-white/70">
-    <!-- Marque : pleine largeur en mobile, 1 col en desktop -->
-    <div class="col-span-3 md:col-span-1">
-      <div class="flex items-center gap-2 mb-2">
-        <svg class="size-5 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/></svg>
-        <span class="font-semibold">Fit by T</span>
+    <!-- Modal duplication -->
+    <div id="cloneModal" class="fixed inset-0 hidden items-center justify-center z-50">
+      <div class="absolute inset-0 bg-black/60"></div>
+      <div class="relative glass ring-gradient rounded-2xl w-[92vw] max-w-md p-4 sm:p-5 mx-auto">
+        <div class="flex items-start justify-between gap-3">
+          <h3 class="text-lg sm:text-xl font-extrabold tracking-tight">Dupliquer les créneaux</h3>
+          <button id="cloneClose" class="btn" aria-label="Fermer">✕</button>
+        </div>
+        <p class="text-sm text-white/70 mt-1">Copier les créneaux du <span id="clonePickedLabel" class="font-semibold"></span> vers d'autres jours <span class="text-white/60">(remplace les créneaux existants des jours ciblés)</span>.</p>
+
+        <div class="mt-4 grid gap-3">
+          <div>
+            <div class="text-sm font-semibold mb-1">Jours de la semaine (dans le mois courant)</div>
+            <div id="weekdayChooser" class="grid grid-cols-3 sm:grid-cols-4 gap-2"></div>
+          </div>
+          <label class="inline-flex items-center gap-2 text-sm">
+            <input id="cloneFromPicked" type="checkbox" class="rounded border-white/30 bg-transparent">
+            <span>À partir du jour sélectionné uniquement</span>
+          </label>
+          <label class="inline-flex items-center gap-2 text-sm">
+            <input id="cloneSaveDirect" type="checkbox" class="rounded border-white/30 bg-transparent">
+            <span>Enregistrer directement les copies (sinon en brouillon)</span>
+          </label>
+        </div>
+
+        <div class="flex flex-col sm:flex-row sm:items-center justify-end gap-2 mt-5">
+          <button id="cloneCancel" class="btn w-full sm:w-auto">Annuler</button>
+          <button id="cloneApply" class="btn btn-primary w-full sm:w-auto">Appliquer</button>
+        </div>
       </div>
-      <p>Coaching sportif personnalisé à Grenoble et en ligne.</p>
-      <p class="text-xs text-white/50 mt-3">© <span id="y"></span> Fit by T. Tous droits réservés.</p>
     </div>
 
-    <!-- Navigation -->
-    <nav class="grid gap-2">
-      <h3 class="text-white font-semibold mb-1">Navigation</h3>
-      <a href="index.html" class="hover:opacity-90">Accueil</a>
-      <a href="pricing.html" class="hover:opacity-90">Tarifs</a>
-      <a href="booking.html" class="hover:opacity-90">Réserver</a>
-      <a href="reservation.html" class="hover:opacity-90">Mes séances</a>
-      <a href="profile.html" class="hover:opacity-90">Profil</a>
-      <a href="checkout.html" class="hover:opacity-90">Paiement</a>
-    </nav>
+    <!-- Footer -->
+    <footer class="border-t border-white/10 bg-black/40">
+      <div class="container py-8 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-sm text-white/70">
+        <!-- Marque -->
+        <div class="col-span-1">
+          <div class="flex items-center gap-2 mb-2">
+            <svg class="size-5 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/></svg>
+            <span class="font-semibold">Fit by T</span>
+          </div>
+          <p>Coaching sportif personnalisé à Grenoble et en ligne.</p>
+          <p class="text-xs text-white/50 mt-3">© <span id="y"></span> Fit by T. Tous droits réservés.</p>
+        </div>
 
-    <!-- Espace coach -->
-    <nav class="grid gap-2">
-      <h3 class="text-white font-semibold mb-1">Espace coach</h3>
-      <a href="analytics.html" class="hover:opacity-90">Statistiques</a>
-      <a href="planning.html" class="hover:opacity-90">Planning</a>
-      <a href="disponibility.html" class="hover:opacity-90">Disponibilités</a>
-    </nav>
+        <!-- Navigation -->
+        <nav class="grid gap-2">
+          <h3 class="text-white font-semibold mb-1">Navigation</h3>
+          <a href="index.html" class="hover:opacity-90">Accueil</a>
+          <a href="pricing.html" class="hover:opacity-90">Tarifs</a>
+          <a href="booking.html" class="hover:opacity-90">Réserver</a>
+          <a href="reservation.html" class="hover:opacity-90">Mes séances</a>
+          <a href="profile.html" class="hover:opacity-90">Profil</a>
+          <a href="checkout.html" class="hover:opacity-90">Paiement</a>
+        </nav>
 
-    <!-- Légal -->
-    <div class="grid gap-2">
-      <h3 class="text-white font-semibold mb-1">Légal</h3>
-      <a href="#" class="hover:opacity-90">Mentions légales</a>
-      <a href="#" class="hover:opacity-90">Politique de confidentialité</a>
-    </div>
-  </div>
-</footer>
+        <!-- Espace coach -->
+        <nav class="grid gap-2">
+          <h3 class="text-white font-semibold mb-1">Espace coach</h3>
+          <a href="analytics.html" class="hover:opacity-90">Statistiques</a>
+          <a href="planning.html" class="hover:opacity-90">Planning</a>
+          <a href="disponibility.html" class="hover:opacity-90">Disponibilités</a>
+        </nav>
+
+        <!-- Légal -->
+        <div class="grid gap-2">
+          <h3 class="text-white font-semibold mb-1">Légal</h3>
+          <a href="#" class="hover:opacity-90">Mentions légales</a>
+          <a href="#" class="hover:opacity-90">Politique de confidentialité</a>
+        </div>
+      </div>
+    </footer>
 
     <script>
       // Mobile nav
@@ -379,7 +421,8 @@
 
         function makeRow(sl, i, iso){
           const wrap=document.createElement('div');
-          wrap.className='grid grid-cols-[1fr_1fr_1fr_auto] gap-2 items-center';
+          // Empile en mobile (1 col), 2 colonnes en sm, 4 colonnes en lg (évite les arbitrary utilities)
+          wrap.className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 items-center [&>*]:w-full';
 
           // Inputs
           const s=document.createElement('input');
@@ -400,7 +443,8 @@
           });
           sel.value = sl.mode || 'both';
 
-          del.textContent='Supprimer'; del.className='btn btn-danger h-11';
+          del.textContent='Supprimer';
+          del.className='btn btn-danger h-11 w-full lg:w-auto';
 
           const validate = ()=>{
             wrap.classList.remove('row-error');
@@ -487,6 +531,68 @@
           const btn = document.getElementById('saveDay'); const old=btn.textContent;
           btn.textContent='Enregistré ✔'; setTimeout(()=> { btn.textContent=old; updateSaveBtn(); }, 1200);
         });
+
+        // --- Duplication modal logic ---
+        const cloneModal = document.getElementById('cloneModal');
+        const weekdayChooser = document.getElementById('weekdayChooser');
+        const clonePickedLabel = document.getElementById('clonePickedLabel');
+        const WEEKDAYS = ['Lun','Mar','Mer','Jeu','Ven','Sam','Dim']; // Monday=0
+
+        function openClone(){
+          if(!cloneModal) return;
+          // Build weekday chooser
+          if(weekdayChooser){
+            weekdayChooser.innerHTML='';
+            WEEKDAYS.forEach((name,idx)=>{
+              const id=`wd_${idx}`;
+              const label=document.createElement('label');
+              label.className='inline-flex items-center gap-2 text-sm';
+              label.innerHTML=`<input type="checkbox" class="rounded border-white/30 bg-transparent" name="wd" id="${id}" value="${idx}"><span>${name}</span>`;
+              weekdayChooser.appendChild(label);
+            });
+            const wdPicked = (picked.getDay()+6)%7; // Monday=0
+            const el = document.getElementById(`wd_${wdPicked}`); if(el) el.checked=true;
+          }
+          const from = document.getElementById('cloneFromPicked'); if(from) from.checked=true;
+          const save = document.getElementById('cloneSaveDirect'); if(save) save.checked=false;
+          if(clonePickedLabel) clonePickedLabel.textContent = fmtFRLong.format(picked);
+
+          cloneModal.classList.remove('hidden');
+          cloneModal.classList.add('flex');
+        }
+        function closeClone(){ if(!cloneModal) return; cloneModal.classList.add('hidden'); cloneModal.classList.remove('flex'); }
+
+        function applyClone(){
+          const source = getDraft(toISO(picked));
+          if(!source.length){ alert('Aucun créneau à copier.'); return; }
+          const checks=[...document.querySelectorAll('input[name="wd"]:checked')];
+          if(!checks.length){ alert('Sélectionnez au moins un jour de semaine.'); return; }
+          const weekdays = checks.map(c=> parseInt(c.value,10));
+          const fromPicked = !!document.getElementById('cloneFromPicked')?.checked;
+          const saveDirect = !!document.getElementById('cloneSaveDirect')?.checked;
+
+          const monthStart = new Date(anchor.getFullYear(), anchor.getMonth(), 1);
+          const monthEnd = new Date(anchor.getFullYear(), anchor.getMonth()+1, 0);
+          let count=0;
+          for(let d=new Date(monthStart); d<=monthEnd; d.setDate(d.getDate()+1)){
+            const w = (d.getDay()+6)%7; // Monday=0
+            if(!weekdays.includes(w)) continue;
+            if(fromPicked && d < picked) continue;
+            const iso=toISO(d);
+            const copy = JSON.parse(JSON.stringify(source));
+            if(saveDirect){ setSavedDay(iso, copy); dirty[iso]=false; }
+            else { setDraft(iso, copy); }
+            count++;
+          }
+          drawCalendar(); drawSlots(); updateSaveBtn();
+          closeClone();
+          alert(`Copié sur ${count} jour(s) ${saveDirect?'(enregistré)':'(en brouillon)'}.`);
+        }
+
+        document.getElementById('cloneTo')?.addEventListener('click', openClone);
+        document.getElementById('cloneClose')?.addEventListener('click', closeClone);
+        document.getElementById('cloneCancel')?.addEventListener('click', closeClone);
+        document.getElementById('cloneApply')?.addEventListener('click', applyClone);
 
         // init
         drawCalendar(); drawSlots(); updateSaveBtn();

@@ -293,12 +293,37 @@
         let anchor = new Date(today.getFullYear(), today.getMonth(), 1);
         let picked = new Date(today);
 
-        // Storage
+        // Storage (brouillon vs enregistré)
         const KEY='fitbyT_avail_v1';
         const loadAll = ()=> JSON.parse(localStorage.getItem(KEY) || '{}');
         const saveAll = (obj)=> localStorage.setItem(KEY, JSON.stringify(obj));
-        const loadDay = (iso)=> { const all=loadAll(); return Array.isArray(all[iso]) ? all[iso] : []; };
-        const saveDay = (iso, slots)=> { const all=loadAll(); all[iso]=slots; saveAll(all); };
+        const getSavedDay = (iso)=> { const all=loadAll(); return Array.isArray(all[iso]) ? all[iso] : []; };
+        const setSavedDay = (iso, slots)=> { const all=loadAll(); all[iso]=slots; saveAll(all); };
+
+        // Drafts non enregistrés
+        const drafts = {};   // { iso: Slot[] }
+        const dirty = {};    // { iso: boolean }
+
+        const clone = (arr)=> JSON.parse(JSON.stringify(arr||[]));
+        const getDraft = (iso)=> {
+          if(!drafts[iso]) { drafts[iso] = clone(getSavedDay(iso)); dirty[iso]=false; }
+          return drafts[iso];
+        };
+        const setDraft = (iso, slots)=> { drafts[iso]=clone(slots); dirty[iso]=true; updateSaveBtn(); };
+        const isDirty = (iso)=> !!dirty[iso];
+
+        function updateSaveBtn(){
+          const btn=document.getElementById('saveDay');
+          const iso = toISO(picked);
+          if(!btn) return;
+          if(isDirty(iso)){
+            btn.classList.add('ring-2','ring-yellow-300/60');
+            btn.textContent='Enregistrer (modifications en attente)';
+          } else {
+            btn.classList.remove('ring-2','ring-yellow-300/60');
+            btn.textContent='Enregistrer';
+          }
+        }
 
         // Utils
         const daysInMonth=(d)=> new Date(d.getFullYear(), d.getMonth()+1, 0).getDate();
@@ -329,8 +354,8 @@
             if (isSameDay(cur, today))  el.classList.add('is-today');
             if (isSameDay(cur, picked)) el.classList.add('is-picked');
 
-            // badge count
-            const count = loadDay(toISO(cur)).length;
+            // badge count (compte uniquement les créneaux ENREGISTRÉS)
+            const count = getSavedDay(toISO(cur)).length;
             if(count){
               const b=document.createElement('span');
               b.className='cal-badge';
@@ -338,7 +363,7 @@
               el.appendChild(b);
             }
 
-            el.addEventListener('click', ()=>{ picked = cur; drawCalendar(); drawSlots(); });
+            el.addEventListener('click', ()=>{ picked = cur; drawCalendar(); drawSlots(); updateSaveBtn(); });
             daysHost.appendChild(el);
           }
 
@@ -384,18 +409,18 @@
           };
 
           s.addEventListener('change', ()=>{
-            const cur=loadDay(iso); if(!cur[i]) return; cur[i].start=s.value; saveDay(iso,cur);
+            const cur=getDraft(iso); if(!cur[i]) return; cur[i].start=s.value; setDraft(iso,cur);
             validate(); drawCalendar();
           });
           e.addEventListener('change', ()=>{
-            const cur=loadDay(iso); if(!cur[i]) return; cur[i].end=e.value; saveDay(iso,cur);
+            const cur=getDraft(iso); if(!cur[i]) return; cur[i].end=e.value; setDraft(iso,cur);
             validate(); drawCalendar();
           });
           sel.addEventListener('change', ()=>{
-            const cur=loadDay(iso); if(!cur[i]) return; cur[i].mode=sel.value; saveDay(iso,cur);
+            const cur=getDraft(iso); if(!cur[i]) return; cur[i].mode=sel.value; setDraft(iso,cur);
           });
           del.addEventListener('click', ()=>{
-            const cur=loadDay(iso); cur.splice(i,1); saveDay(iso,cur);
+            const cur=getDraft(iso); cur.splice(i,1); setDraft(iso,cur);
             drawCalendar(); drawSlots();
           });
 
@@ -406,7 +431,7 @@
 
         function drawSlots(){
           const iso = toISO(picked);
-          const slots = loadDay(iso);
+          const slots = getDraft(iso);
           slotsWrap.innerHTML='';
           if(slots.length===0){
             slotsWrap.innerHTML = `
@@ -419,6 +444,7 @@
               .sort((a,b)=> (a.start||'').localeCompare(b.start||''))
               .forEach((sl,i)=> slotsWrap.appendChild( makeRow(sl, i, iso) ));
           }
+          updateSaveBtn();
         }
 
         // Actions
@@ -427,39 +453,43 @@
 
         document.getElementById('addSlot').addEventListener('click', ()=>{
           const iso = toISO(picked);
-          const cur=loadDay(iso);
+          const cur=getDraft(iso);
           // suggestion automatique d'un créneau qui ne chevauche pas
-          const base = cur.length ? (cur.slice().sort((a,b)=>a.end.localeCompare(b.end)).at(-1).end || '09:00') : '09:00';
+          const base = cur.length ? (cur.slice().sort((a,b)=> (a.end||'').localeCompare(b.end||'')).at(-1).end || '09:00') : '09:00';
           const [h,m]=base.split(':').map(Number);
           const start = `${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
           const endH = Math.min(h+1, 23); // +1h
           const end = `${String(endH).padStart(2,'0')}:${String(m).padStart(2,'0')}`;
           cur.push({start, end, mode:'both'});
-          saveDay(iso, cur);
+          setDraft(iso, cur);
           drawCalendar(); drawSlots();
         });
 
         document.getElementById('resetDay').addEventListener('click', ()=>{
           const iso = toISO(picked);
-          saveDay(iso, []);
+          setDraft(iso, []);
           drawCalendar(); drawSlots();
         });
 
         document.getElementById('saveDay').addEventListener('click', ()=>{
-          // Validation globale
+          // Validation globale sur le brouillon
           const iso = toISO(picked);
-          const cur = loadDay(iso);
+          const cur = getDraft(iso);
           const invalid = cur.some(s=> !s.start || !s.end || s.start>=s.end);
           if(invalid){
             alert('Certains créneaux sont incomplets ou invalides (début ≥ fin).');
             return;
           }
+          // Persistance
+          setSavedDay(iso, cur);
+          dirty[iso]=false; updateSaveBtn();
+          drawCalendar();
           const btn = document.getElementById('saveDay'); const old=btn.textContent;
-          btn.textContent='Enregistré ✔'; setTimeout(()=> btn.textContent=old, 1200);
+          btn.textContent='Enregistré ✔'; setTimeout(()=> { btn.textContent=old; updateSaveBtn(); }, 1200);
         });
 
         // init
-        drawCalendar(); drawSlots();
+        drawCalendar(); drawSlots(); updateSaveBtn();
       })();
     </script>
   </body>

@@ -77,38 +77,87 @@
     <header class="sticky top-0 z-40 backdrop-blur supports-[backdrop-filter]:bg-black/30 bg-black/50 border-b border-white/10">
       <div class="container flex h-16 items-center gap-3">
         <a href="index.html" class="flex items-center gap-2 group">
-          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.998 35.764c-.004-.018-.01-.05-.023-.094a3.13 3.13 0 0 0-.193-.511 6.54 6.54 0 0 0-.053-.12c-1.271-.871-3.802-2.1-6.072-2.641C30.9875 31.8691 27.6413 31.4783 24 31.4783s-6.9875.3908-9.7095 1.0406c-2.29.5465-4.8462 1.7915-6.1059 2.6643-.0115.0243-.0232.0498-.0349.076-.0513.1159-.0933.2294-.1207.3298-.0262.0958-.0294.1443-.0298.1498 0 .0253.0104.3379.68485.8926.66061.5432 1.73734 1.1217 3.24421 1.6458C14.9242 39.319 19.1919 40 24 40s9.0758-.681 12.0709-1.7228c1.5069-.5241 2.5836-1.1026 3.2442-1.6458.5855-.4815.6706-.7803.6829-.8674ZM4.9518 32.7688 21.4543 6.3027c1.1745-1.8836 3.9169-1.88361 5.0914 0L43.0534 32.777c.0175.0282.0344.0568.0506.0859l-1.7477.9723c1.7477-.9723 1.7475-.9726 1.7477-.9723l.0011.0021.0014.0025.0036.0064.0098.0179c.0077.0142.0178.0328.0298.0555.0241.0452.0565.1072.0943.1826.075.1493.1756.3591.2777.6018.1684.4004.4783 1.1994.4783 2.0074 0 1.7036-.997 3.0384-2.1442 3.9818-1.1611.9548-2.7204 1.7255-4.4708 2.3343C33.8654 43.2794 29.133 44 24 44s-9.8669-.7206-13.3865-1.9448c-1.75037-.6088-3.30971-1.3795-4.47081-2.3343C4.9969 38.7775 4 37.4427 4 35.7391c0-.8666.2926-1.6469.4932-2.0998.1105-.2495.2202-.4589.3036-.6082.0421-.0755.0786-.1376.1066-.184 0 0 .0119-.0195 .0216-.0341l.0075-.0119.0051-.0082Z"/></svg>
+          <svg class="size-6 text-yellow-300" viewBox="0 0 48 48" fill="currentColor" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"><path d="M13.8261 30.5736C16.7203 29.8826 20.2244 29.4783 24 29.4783C27.7756 29.4783 31.2797 29.8826 34.1739 30.5736C36.9144 31.2278 39.9967 32.7669 41.3563 33.8352L24.8486 7.36089C24.4571 6.73303 23.5429 6.73303 23.1514 7.36089L6.64374 33.8352C8.00331 32.7669 11.0856 31.2278 13.8261 30.5736Z"/><path fill-rule="evenodd" clip-rule="evenodd" d="M39.998 35.764c-.004-.018-.01-.05-.023-.094a3.13 3.13 0 0 0-.193-.511 6.54 6.54 0 0 0-.053-.12c-1.271-.871-3.802-2.1-6.072-2.641C30.9875 31.8691 27.6413 31.4783 24 31.4783s-6.9875.3908-9.7095 1.0406c-2.29.5465-4.8462 1.7915-6.1059 2.6643-.0115.0243-.0232.0498-.0349.076-.0513.1159-.0933.2294-.1207.3298-.0262.0958-.0294.1443-.0298.1498 0 .0253.0104.3379.68485.8926.66061.5432 1.73734 1.1217 3.24421 1.6458C14.9242 39.319 19.1919 40 24 40s9.0758-.681 12.0709-1.7228c1.5069-.5241 2.5836-1.1026 3.2442-1.6458.5855-.4815.6706-.7803.6829-.8674ZM4.9518 32.7688 21.4543 6.3027c1.1745-1.8836 3.9169-1.88361 5.0914 0L43.0534 32.777c.0175.0282.0344.0568.0506.0859l-1.7477.9723c1.7477-.9723 1.7475-.9726 1.7477-.9723l.0011.0021.0014.0025.0036.0064.0098.0179c.0077.0142.0178.0328.0298.0555.0241.0452.0565.1072.0943.1826.075.1493.1756.3591.2777.6018.1684.4004.4783 1.1994.4783 2.0074 0 1.7036-.997 3.0384-2.1442 3.9818-1.1611.9548-2.7204 1.7255-4.4708 2.3343C33.8654 43.2794 29.133 44 24 44s-9.8669-.7206-13.3865-1.9448c-1.75037-.6088-3.30971-1.3795-4.47081-2.3343C4.9969 38.7775 4 37.4427 4 35.7391c0-.8666.2926-1.6469.4932-2.0998.1105-.2495.2202-.4589.3036-.6082.0421-.0755.0786-.1376.1066-.184 0 0 .0119-.0195.0216-.0341l.0075-.0119.0051-.0082Zm31.035-3.7648L24 9.78 12.0131 29.004c.453-.1431.9048-.2698 1.3486-.3758C16.4281 27.8961 20.0901 27.4783 24 27.4783s7.5719.4178 10.6383 1.1499c.4437.106 .8956.2327 1.3485.3758Z"/></svg>
           <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
         </a>
 
+        <!-- Desktop nav -->
         <nav class="ml-auto hidden md:flex items-center gap-7 text-sm">
           <a class="hover:opacity-90" href="index.html">Accueil</a>
           <a class="hover:opacity-90" href="pricing.html">Tarifs</a>
-          <a class="hover:opacity-90" href="booking.html">Réserver</a>
-          <a class="hover:opacity-90" href="checkout.html">Paiement</a>
           <a class="hover:opacity-90" href="reservation.html">Mes séances</a>
           <a class="hover:opacity-90" href="profile.html">Profil</a>
-          <a class="hover:opacity-90" href="analytics.html">Statistiques</a>
-          <a class="hover:opacity-90 font-semibold text-yellow-300" href="planning.html" aria-current="page">Planning</a>
-          <a class="hover:opacity-90" href="disponibility.html">Disponibilités</a>
+
+          <!-- Panier (après Profil) -->
+          <a href="checkout.html"
+             class="relative inline-flex items-center justify-center rounded-lg border border-white/20 size-10 hover:bg-white/5 focus:outline-none focus:ring-2 focus:ring-yellow-300/60"
+             aria-label="Voir le panier">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5" stroke="currentColor" class="size-5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 2.25h1.386c.51 0 .955.343 1.09.836l.383 1.437M7.5 14.25h10.125c.621 0 1.167-.403 1.338-1.002l2.061-7.192A.75.75 0 0 0 20.313 5.25H6.374m1.126 9L6.374 5.25m1.126 9L4.5 19.5m0 0a1.5 1.5 0 1 0 3 0m-3 0h3m12 0a1.5 1.5 0 1 0 3 0m-3 0h3" />
+            </svg>
+            <span class="sr-only">Panier</span>
+            <span id="cartCountDesktop"
+                  class="absolute -top-1 -right-1 min-w-5 h-5 px-1 rounded-full bg-yellow-300 text-black text-[10px] font-extrabold grid place-items-center hidden">0</span>
+          </a>
+
+          <a href="register.html" class="rounded-lg border border-yellow-300/80 px-3 py-1.5 font-semibold text-yellow-300 hover:bg-yellow-300 hover:text-black transition">S'inscrire</a>
+          <a href="booking.html" class="rounded-lg bg-yellow-300 px-4 py-2 font-bold text-black hover:brightness-95 transition">Réserver</a>
         </nav>
 
-        <!-- Mobile -->
+        <!-- Mobile menu button -->
         <button id="menuBtn" class="ml-auto md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 size-10" aria-controls="mnav" aria-expanded="false" aria-label="Ouvrir le menu">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/></svg>
         </button>
       </div>
+
+      <!-- Mobile nav -->
       <div id="mnav" class="hidden md:hidden border-t border-white/10">
         <nav class="container py-3 grid gap-2 text-sm">
           <a class="px-2 py-2 rounded-md hover:bg-white/5" href="index.html">Accueil</a>
           <a class="px-2 py-2 rounded-md hover:bg-white/5" href="pricing.html">Tarifs</a>
           <a class="px-2 py-2 rounded-md hover:bg-white/5" href="booking.html">Réserver</a>
-          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="checkout.html">Paiement</a>
           <a class="px-2 py-2 rounded-md hover:bg-white/5" href="reservation.html">Mes séances</a>
           <a class="px-2 py-2 rounded-md hover:bg-white/5" href="profile.html">Profil</a>
-          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="analytics.html">Statistiques</a>
-          <a class="px-2 py-2 rounded-md bg-white/5" href="planning.html" aria-current="page">Planning</a>
-          <a class="px-2 py-2 rounded-md hover:bg-white/5" href="disponibility.html">Disponibilités</a>
+
+          <!-- Panier (après Profil) -->
+          <a class="px-2 py-2 rounded-md hover:bg-white/5 flex items-center gap-2 relative" href="checkout.html">
+            <svg xmlns="http://www.w3.org/2000/svg"
+                 fill="none" viewBox="0 0 24 24"
+                 stroke-width="1.5" stroke="currentColor"
+                 class="w-5 h-5">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M2.25 2.25h1.386c.51 0 .955.343 1.09.836l.383 1.437M7.5 14.25h10.125c.621 0 1.167-.403 1.338-1.002l2.061-7.192A.75.75 0 0 0 20.313 5.25H6.374m1.126 9L6.374 5.25m1.126 9L4.5 19.5m0 0a1.5 1.5 0 1 0 3 0m-3 0h3m12 0a1.5 1.5 0 1 0 3 0m-3 0h3" />
+            </svg>
+            <span>Panier</span>
+            <span id="cartCountMobile"
+                  class="absolute top-1.5 left-6 min-w-5 h-5 px-1 rounded-full bg-yellow-300 text-black text-[10px] font-extrabold grid place-items-center hidden">0</span>
+          </a>
+
+          <!-- Espace coach (accordéon) -->
+          <details class="group rounded-md">
+            <summary class="px-2 py-2 rounded-md hover:bg-white/5 flex items-center justify-between cursor-pointer list-none">
+              <span class="inline-flex items-center gap-2">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 opacity-80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M15.59 14.37a4.5 4.5 0 1 0-7.18 0M15 19.128a9 9 0 1 0-6 0" />
+                </svg>
+                Espace coach
+              </span>
+              <svg class="w-4 h-4 transition-transform group-open:rotate-180 opacity-80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.085l3.71-3.855a.75.75 0 1 1 1.08 1.04l-4.24 4.41a.75.75 0 0 1-1.08 0L5.25 8.27a.75.75 0 0 1-.02-1.06Z" clip-rule="evenodd" />
+              </svg>
+            </summary>
+            <div class="mt-1 ml-3 grid">
+              <a class="px-2 py-2 rounded-md hover:bg-white/5" href="planning.html">Planning</a>
+              <a class="px-2 py-2 rounded-md hover:bg-white/5" href="analytics.html">Statistiques</a>
+              <a class="px-2 py-2 rounded-md hover:bg-white/5" href="disponibility.html">Disponibilités</a>
+            </div>
+          </details>
+
+          <!-- CTAs -->
+          <a class="px-2 py-2 rounded-md hover:bg-yellow-300/10 text-yellow-300 border border-yellow-300/30" href="register.html">S'inscrire</a>
+          <a class="px-2 py-2 rounded-md bg-yellow-300 text-black font-semibold" href="booking.html">Réserver</a>
         </nav>
       </div>
     </header>

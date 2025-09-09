@@ -111,6 +111,7 @@
           <span class="text-white text-lg font-extrabold tracking-tight">Fit by T</span>
         </a>
 
+        <!-- Desktop nav -->
         <nav class="ml-auto hidden md:flex items-center gap-7 text-sm">
           <a class="hover:opacity-90" href="index.html">Accueil</a>
           <a class="hover:opacity-90" href="pricing.html">Tarifs</a>
@@ -134,11 +135,13 @@
           <a href="booking.html" class="rounded-lg bg-yellow-300 px-4 py-2 font-bold text-black hover:brightness-95 transition">Réserver</a>
         </nav>
 
+        <!-- Mobile menu button -->
         <button id="menuBtn" class="ml-auto md:hidden inline-flex items-center justify-center rounded-lg border border-white/20 size-10" aria-controls="mnav" aria-expanded="false" aria-label="Ouvrir le menu">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/></svg>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="size-5"><path fill-rule="evenodd" d="M3.75 5.25A.75.75 0 0 1 4.5 4.5h15a.75.75 0  0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm0 7.5a.75.75 0 0 1 .75-.75h15a.75.75 0 0 1 0 1.5h-15a.75.75 0 0 1-.75-.75Zm.75 6.75a.75.75 0 0 0 0 1.5h15a.75.75 0 0 0 0-1.5h-15Z" clip-rule="evenodd"/></svg>
         </button>
       </div>
 
+      <!-- Mobile nav -->
       <div id="mnav" class="hidden md:hidden border-t border-white/10">
         <nav class="container py-3 grid gap-2 text-sm">
           <a class="px-2 py-2 rounded-md hover:bg-white/5" href="index.html">Accueil</a>
@@ -147,6 +150,7 @@
           <a class="px-2 py-2 rounded-md hover:bg-white/5" href="reservation.html">Mes séances</a>
           <a class="px-2 py-2 rounded-md hover:bg-white/5" href="profile.html">Profil</a>
 
+          <!-- Panier -->
           <a class="px-2 py-2 rounded-md hover:bg-white/5 flex items-center gap-2 relative" href="checkout.html">
             <svg xmlns="http://www.w3.org/2000/svg"
                  fill="none" viewBox="0 0 24 24"
@@ -160,6 +164,7 @@
                   class="absolute top-1.5 left-6 min-w-5 h-5 px-1 rounded-full bg-yellow-300 text-black text-[10px] font-extrabold grid place-items-center hidden">0</span>
           </a>
 
+          <!-- Espace coach -->
           <details class="group rounded-md">
             <summary class="px-2 py-2 rounded-md hover:bg-white/5 flex items-center justify-between cursor-pointer list-none">
               <span class="inline-flex items-center gap-2">
@@ -169,7 +174,7 @@
                 Espace coach
               </span>
               <svg class="w-4 h-4 transition-transform group-open:rotate-180 opacity-80" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.085l3.71-3.855a.75.75 0 1 1 1.08 1.04l-4.24 4.41a.75.75 0  0 1-1.08 0L5.25 8.27a.75.75 0 0 1-.02-1.06Z" clip-rule="evenodd" />
+                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 0 1 1.06.02L10 11.085l3.71-3.855a.75.75 0 1 1 1.08 1.04l-4.24 4.41a.75.75 0 0 1-1.08 0L5.25 8.27a.75.75 0 0 1-.02-1.06Z" clip-rule="evenodd" />
               </svg>
             </summary>
             <div class="mt-1 ml-3 grid">
@@ -179,6 +184,7 @@
             </div>
           </details>
 
+          <!-- CTAs -->
           <a class="px-2 py-2 rounded-md hover:bg-yellow-300/10 text-yellow-300 border border-yellow-300/30" href="register.html">S'inscrire</a>
           <a class="px-2 py-2 rounded-md bg-yellow-300 text-black font-semibold" href="booking.html">Réserver</a>
         </nav>
@@ -478,7 +484,7 @@
 
         applyDupBtn.addEventListener('click', ()=>{
           const srcIso = toISO(picked);
-          const source = getDraft(srcIso); // on permet de copier y compris des modifs non encore enregistrées du jour source
+          const source = getDraft(srcIso); // copie y compris brouillon du jour source
           if(!source.length){ alert('Aucun créneau à copier depuis le jour source.'); return; }
           if(selectedTargets.size===0){ alert('Aucun jour cible sélectionné.'); return; }
 
@@ -486,8 +492,11 @@
           drawCalendar(); updateDupUI();
           alert(`Copié et enregistré sur ${selectedTargets.size} jour(s).`);
 
+          // Sortir du mode multi-sélection après duplication
           selectedTargets.clear();
-          updateDupUI(); drawCalendar();
+          multiToggle.checked = false; // NEW: décocher
+          updateDupUI();
+          drawCalendar();
         });
 
         multiToggle.addEventListener('change', ()=>{
@@ -648,6 +657,14 @@
           drawCalendar();
           const btn = document.getElementById('saveDay'); const old=btn.textContent;
           btn.textContent='Enregistré ✔'; setTimeout(()=> { btn.textContent=old; updateSaveBtn(); }, 1200);
+
+          // NEW: quitter le mode multi-sélection après enregistrement manuel
+          if (multiToggle) {
+            multiToggle.checked = false;
+            selectedTargets.clear();
+            updateDupUI();
+            drawCalendar();
+          }
         });
 
         // init
